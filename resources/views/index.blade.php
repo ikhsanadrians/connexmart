@@ -48,10 +48,10 @@
       </div>
 
    </div>
-   <div class="carouse w-full h-96 rounded-lg shadow-sm overflow-hidden object-cover">
-     <img class="w-full h-full object-cover" src="{{ asset('images/static/caroselrevisi.png')}}" alt="carousel">
+   <div class="carouse w-full h-96 rounded-lg shadow-sm overflow-hidden">
+     <img class="w-full h-full object-fill lg:object-cover" src="{{ asset('images/static/caroselrevisi.png')}}" alt="carousel">
    </div>
-   <div class="grid grid-cols-2 gap-4">
+   <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
     <div class="cnx-pay h-3/4  font-semibold text-xl mt-6 rounded-md border-[1.5px] border-gray-200 p-4">
         <div class="title flex items-center gap-1 font-bold">
            <p>Your</p>
@@ -66,7 +66,7 @@
         <div class="title flex items-center gap-1 font-bold">
            <h1>Best Category</h1>
         </div>
-        <div class="product-category-list grid grid-cols-3 mt-4 gap-3 h-fit">
+        <div class="product-category-list grid grid-cols-1 lg:grid-cols-3 mt-4 gap-3 h-fit">
             <div class="food-1 h-3/4 rounded-md relative overflow-hidden user-select-none pointer-events-none border-gray-200 border-[1.5px]">
                 <div class="img w-full h-full overflow-hidden user-select-none pointer-events-none">
                     <img class="brightness-75 w-full h-full object-cover user-select-none pointer-events-none" src="https://images.pexels.com/photos/1289256/pexels-photo-1289256.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="drink">
