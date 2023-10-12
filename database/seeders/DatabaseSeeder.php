@@ -7,7 +7,7 @@ use App\Models\Transaction;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Category;
-use App\Models\Product; 
+use App\Models\Product;
 use App\Models\Roles;
 use App\Models\Wallet;
 
@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
          Roles::create([
             "name" => "admin",
          ]);
-         
+
          Roles::create([
             "name" => "bank"
          ]);
@@ -35,7 +35,7 @@ class DatabaseSeeder extends Seeder
             "name" => "siswa"
          ]);
 
-         
+
          User::create([
             "name" => "ikhsan_adrians",
             "role_id" => 4,
@@ -50,7 +50,7 @@ class DatabaseSeeder extends Seeder
             "name" => "Snack"
          ]);
 
-         
+
          Category::create([
             "name" => "Drink"
          ]);
@@ -106,17 +106,17 @@ class DatabaseSeeder extends Seeder
            "debit" => 0
          ]);
 
-         $buyedProduct = [1,2];
 
          Transaction::create([
             "user_id" => 1,
-            "product_contain" => json_encode($buyedProduct),
+            "product_id" => 1,
             "status" => 'not_paid',
             "order_id" => 'INV-12345',
+            "quantity" => 2,
             "price" => 3000
          ]);
 
-         
+
 
     }
 }

@@ -12,8 +12,7 @@
             </div>
         </div>
         <div class="header-charts flex items-center gap-6">
-            <div class="carts relative">
-                
+            <a href="{{ route('cart.index') }}" class="carts relative">
                @if(Auth::user() && count(Auth::user()->transcations) >= 1)
                     <div class="pulse w-3 h-3 animate-pulse bg-blue-500 rounded-full absolute right-0 top-0">
                     </div>
@@ -21,7 +20,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="#003034" class="bi bi-cart" viewBox="0 0 16 16">
                         <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
                     </svg>
-            </div>
+            </a>
             @if(!Auth::user())
             <div class="header-menu flex items-center gap-4 font-semibold">
                 <button id="login-btn" class="border-[1.8px] border-slate-600 py-2 px-4 rounded-lg hover:opacity-80">Login</button>

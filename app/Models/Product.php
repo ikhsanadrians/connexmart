@@ -18,4 +18,8 @@ class Product extends Model
         "category_id",
         "stand",
     ];
+
+    public function transactions(){
+      return $this->hasMany(Transaction::class);
+    }
 }

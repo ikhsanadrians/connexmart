@@ -19,4 +19,5 @@ Route::get('/',[IndexController::class,'index'])->name('home');
 Route::post('/',[IndexController::class,'auth'])->name('auth');
 Route::get('/cart',[TransactionController::class,'index'])->name('cart.index');
 Route::post('/cart',[TransactionController::class,'sentToCart'])->name('cart.proceed');
+Route::put('/cart',[TransactionController::class,'payCart'])->name('cart.pay');
 Route::post('/logout',[IndexController::class,'logout'])->name('logout');

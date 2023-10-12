@@ -14,11 +14,12 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
-            $table->json('product_contain');
+            $table->foreignId('product_id')->constrained();
             $table->enum('status',['not_paid','paid']);
             $table->string('order_id');
-            $table->double('price',5); 
-            $table->timestamps();       
+            $table->double('price',5);
+            $table->integer('quantity');
+            $table->timestamps();
         });
     }
 

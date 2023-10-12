@@ -65,7 +65,7 @@
                 Rp.{{ $user_wallet->credit }}
             </h1>
         @endforeach
-      @else 
+      @else
         <div class="title">
             Login To Get Your Balance!
         </div>
@@ -116,9 +116,9 @@
                 <img src="{{ asset('images/static/martgroup.png') }}" alt="">
             </div>
             <div class="content  p-4">
-                <h1>{{ $product->name }}</h1>     
+                <h1>{{ $product->name }}</h1>
                 <p class="font-semibold text-black">Rp{{ $product->price }}</p>
-                
+
                 <div class="product-action flex items-center justify-between h-full gap-2">
                     <div class="wishlist-button mt-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="red" class="bi bi-heart" viewBox="0 0 16 16">
@@ -128,20 +128,20 @@
                     <div class="action-right">
                         <form method="post" action="{{ route('cart.proceed') }}" class=" flex items-center gap-2">
                           @csrf
-                          <input name="quantity" class="w-14 py-1 px-2 mt-2 bg-gray-100 shadow-lg border-2" type="number" min="1" value="1">   
+                          <input name="quantity" class="w-14 py-1 px-2 mt-2 bg-gray-100 shadow-lg border-2" type="number" min="1" value="1">
                           <input type="hidden" name="product_id" value="{{ $product->id }}">
                           <button type="submit" class="add-to-cart flex items-center bg-[#003034] text-white py-2 px-4 text-sm mt-2 rounded-md">
                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
                                   <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
-                                </svg>        
+                                </svg>
                               Add To Cart
-                          </button> 
+                          </button>
                         </form>
-                    
+
                     </div>
-                </div>  
+                </div>
             </div>
-        </div>           
+        </div>
        @endforeach
      </div>
    </div>
