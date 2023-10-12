@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\IndexController;
+use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,4 +17,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/',[IndexController::class,'index'])->name('home');
 Route::post('/',[IndexController::class,'auth'])->name('auth');
+Route::get('/cart',[TransactionController::class,'index'])->name('cart.index');
+Route::post('/cart',[TransactionController::class,'sentToCart'])->name('cart.proceed');
 Route::post('/logout',[IndexController::class,'logout'])->name('logout');

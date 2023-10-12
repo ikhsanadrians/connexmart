@@ -15,6 +15,7 @@
             <div class="login-header">
                 <div class="login-title font-semibold text-center text-2xl">
                     <p>Login</p>
+
                 </div>
             </div>
             <div class="login-error hidden text-center w-full mt-2 bg-red-200 py-2 rounded-md">
@@ -52,17 +53,28 @@
      <img class="w-full h-full object-fill lg:object-cover" src="{{ asset('images/static/caroselrevisi.png')}}" alt="carousel">
    </div>
    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-    <div class="cnx-pay h-3/4  font-semibold text-xl mt-6 rounded-md border-[1.5px] border-gray-200 p-4">
+    <div class="cnx-pay  bg-white h-3/4  font-semibold text-xl mt-6 rounded-md border-[1.5px] border-gray-200 p-4">
+      @if(Auth::user())
         <div class="title flex items-center gap-1 font-bold">
            <p>Your</p>
            <img src="{{ asset('images/static/connexpay.png') }}" alt="cnx-pay" class="h-8">
            <p>Balance</p>
         </div>
-        <h1 class="balance text-4xl mt-4 font-bold text-gray-700">
-           Rp.156.000
-        </h1>
+        @foreach (Auth::user()->wallet as $user_wallet )
+            <h1 class="balance text-4xl mt-4 font-bold text-gray-700">
+                Rp.{{ $user_wallet->credit }}
+            </h1>
+        @endforeach
+      @else 
+        <div class="title">
+            Login To Get Your Balance!
+        </div>
+      @endif
+
+
       </div>
-      <div class="cnx-category h-3/4  font-semibold text-xl mt-6 rounded-md border-[1.5px] border-gray-200 p-4">
+
+      <div class="cnx-category h-3/4  font-semibold text-xl mt-6 rounded-md border-[1.5px] border-gray-200 p-4 bg-white">
         <div class="title flex items-center gap-1 font-bold">
            <h1>Best Category</h1>
         </div>
@@ -94,6 +106,44 @@
         </div>
 
       </div>
+   </div>
+   <div class="products-list-card bg-white p-6 rounded-lg border-[1.5px] border-gray-200">
+    <h1 class="font-semibold text-xl">Products</h1>
+     <div class="product-list grid grid-cols-4 gap-4 mt-3">
+       @foreach ($products as $product )
+         <div class="product-card border-gray-200 overflow-hidden rounded-md shadow-md border-[1.5px] ">
+            <div class="content-img">
+                <img src="{{ asset('images/static/martgroup.png') }}" alt="">
+            </div>
+            <div class="content  p-4">
+                <h1>{{ $product->name }}</h1>     
+                <p class="font-semibold text-black">Rp{{ $product->price }}</p>
+                
+                <div class="product-action flex items-center justify-between h-full gap-2">
+                    <div class="wishlist-button mt-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="red" class="bi bi-heart" viewBox="0 0 16 16">
+                            <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                        </svg>
+                    </div>
+                    <div class="action-right">
+                        <form method="post" action="{{ route('cart.proceed') }}" class=" flex items-center gap-2">
+                          @csrf
+                          <input name="quantity" class="w-14 py-1 px-2 mt-2 bg-gray-100 shadow-lg border-2" type="number" min="1" value="1">   
+                          <input type="hidden" name="product_id" value="{{ $product->id }}">
+                          <button type="submit" class="add-to-cart flex items-center bg-[#003034] text-white py-2 px-4 text-sm mt-2 rounded-md">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                  <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
+                                </svg>        
+                              Add To Cart
+                          </button> 
+                        </form>
+                    
+                    </div>
+                </div>  
+            </div>
+        </div>           
+       @endforeach
+     </div>
    </div>
 
 
