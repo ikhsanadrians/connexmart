@@ -1,9 +1,9 @@
 <header class="bg-slate-50 shadow-lg">
     <div class="container mx-auto lg:px-12 py-4 px-8 flex items-center justify-between">
         <div class="title-search flex items-center gap-4">
-            <div class="header-title">
+            <a href="/" class="header-title">
                 <img src="{{ asset('images/static/connexmart.png') }}" alt="connexmart" class="h-10">
-            </div>
+            </a>
             <div class="search relative flex items-center">
                 <svg class="absolute left-3" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#9196a3" class="bi bi-search" viewBox="0 0 16 16">
                     <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
@@ -28,13 +28,13 @@
             </div>
             @else
             <div class="if-logined flex items-center gap-5">
-                <div class="user  flex items-center gap-2">
+                <a href="{{ route('profile') }}" class="user  flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#003034" class="bi bi-person-circle" viewBox="0 0 16 16">
                         <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
                         <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
                       </svg>
                      <h1 class="text-gray-600">{{ Auth::user()->name }}</h1>
-                 </div>
+                 </a>
                  <form action="{{ route('logout') }}" method="post" class="logout flex items-center">
                     @csrf
                     <button type="submit">

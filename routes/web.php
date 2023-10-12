@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/',[IndexController::class,'index'])->name('home');
 Route::post('/',[IndexController::class,'auth'])->name('auth');
+Route::get('/profile',[IndexController::class,'profile'])->name('profile');
 Route::get('/cart',[TransactionController::class,'index'])->name('cart.index');
 Route::post('/cart',[TransactionController::class,'sentToCart'])->name('cart.proceed');
 Route::put('/cart',[TransactionController::class,'payCart'])->name('cart.pay');

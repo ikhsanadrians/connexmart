@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
-
+use App\Models\Transaction;
 
 class IndexController extends Controller
 {
@@ -37,8 +37,11 @@ class IndexController extends Controller
 
     }
 
-    public function addToCart(){
-        
+
+    public function profile(){
+       $transactions =  Transaction::with('product')->where('user_id', Auth::user()->id)->where('user_id',Auth::user()->id)->orderBy('created_at','desc')->get();
+
+       return view('profile',compact('transactions'));
     }
 
     public function logout(){
