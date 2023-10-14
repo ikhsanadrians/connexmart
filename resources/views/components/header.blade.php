@@ -12,7 +12,7 @@
             </div>
         </div>
         <div class="header-charts flex items-center gap-6">
-            <a href="{{ route('cart.index') }}" class="carts relative">
+            <a href="{{ Auth::user() ? route('cart.index') : '/' }}" class="carts relative">
                @if(Auth::user() && count(Auth::user()->transcations) >= 1)
                     <div class="pulse w-3 h-3 animate-pulse bg-blue-500 rounded-full absolute right-0 top-0">
                     </div>

@@ -1,11 +1,11 @@
 @extends('layouts.master')
 @section('content')
-  <div class="back flex items-center gap-2">
+  <a href="/" class="back flex items-center gap-2 cursor-pointer">
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
         <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
       </svg>
       <p>Back</p>
-  </div>
+  </a>
   <div class="title">
     <h1 class="text-2xl font-semibold">Your Cart</h1>
   </div>
@@ -32,29 +32,38 @@
             </div>
         @endforeach
     </div>
-    <div class="price-list bg-white rounded-md w-1/2 py-6 px-10">
-        <p class="text-xl font-semibold">Shopping Summary</p>
-        <div class="voucher border-b-2 mt-3">
-            <label for="">Have A Voucher?</label>
-            <input class="w-full outline-none mt-3" type="text" placeholder="Type Your Voucher Code Here">
+    <div class="price-list-balance w-1/2">
+        <div class="balance bg-white rounded-md my-2 w-full p-4 font-bold text-lg ">
+            <p class="flex items-center gap-2"><img class="h-6" src="{{ asset('images/static/connexpay.png') }}"> Balance</p>
+            @foreach(Auth::user()->wallet as $wallet)
+                <p>Rp.{{ $wallet->debit }}</p>
+            @endforeach
         </div>
-        <div class="shopping-data flex items-center mt-4 text-gray-500 justify-between">
-            <p>Total Price <span id="product_count">{{ $product_count }}</span> Product</p>
-            <p>Rp.{{ $total_prices }}</p>
-        </div>
-        <hr class="mt-2">
-        <div class="shoping-total font-semibold text-xl mt-4 flex items-center justify-between">
-            <p>Total Price</p>
-            <p>Rp.<span id="total_prices">{{ $total_prices }}</span></p>
-        </div>
-        <form action="{{ route('cart.pay') }}" method="post">
-            @method('PUT')
-            @csrf
-            <input type="hidden" name="transaction_id">
-            <button class="bg-[#003034] text-white w-full p-4 rounded-lg mt-8 font-bold flex items-center justify-center gap-2">Pay Using <img
-                class="h-6 invert-[1] brightness-0 " src="{{ asset('images/static/connexpay.png')}}" alt="cnx-pay"></button>
-        </form>
+        <div class="price-list bg-white rounded-md w-full py-10 px-10">
+            <p class="text-xl font-semibold">Shopping Summary</p>
+            <div class="voucher border-b-2 mt-3">
+                <label for="">Have A Voucher?</label>
+                <input class="w-full outline-none mt-3" type="text" placeholder="Type Your Voucher Code Here">
+            </div>
+            <div class="shopping-data flex items-center mt-4 text-gray-500 justify-between">
+                <p>Total Price <span id="product_count">{{ $product_count }}</span> Product</p>
+                <p>Rp.{{ $total_prices }}</p>
+            </div>
+            <hr class="mt-2">
+            <div class="shoping-total font-semibold text-xl mt-4 flex items-center justify-between">
+                <p>Total Price</p>
+                <p>Rp.<span id="total_prices">{{ $total_prices }}</span></p>
+            </div>
+            <form action="{{ route('cart.pay') }}" method="post">
+                @method('PUT')
+                @csrf
+                <input type="hidden" name="transaction_id">
+                <button class="bg-[#003034] text-white w-full p-4 rounded-lg mt-8 font-bold flex items-center justify-center gap-2">Pay Using <img
+                    class="h-6 invert-[1] brightness-0 " src="{{ asset('images/static/connexpay.png')}}" alt="cnx-pay"></button>
+            </form>
 
+        </div>
     </div>
+
   </div>
 @endsection
