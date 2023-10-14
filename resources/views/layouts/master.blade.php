@@ -17,5 +17,6 @@
     </div>
     <script src="{{asset('javascript/lib/jquery.min.js')}}"></script>
     <script src="{{asset('javascript/script/auth.js')}}"></script>
+    <script src="{{ asset('javascript/script/cart.js')}}"></script>
 </body>
 </html>

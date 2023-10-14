@@ -53,7 +53,7 @@
      <img class="w-full h-full object-fill lg:object-cover" src="{{ asset('images/static/caroselrevisi.png')}}" alt="carousel">
    </div>
    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-    <div class="cnx-pay  bg-white h-3/4  font-semibold text-xl mt-6 rounded-md border-[1.5px] border-gray-200 p-4">
+    <div class="cnx-pay  bg-white h-3/4 relative  font-semibold text-xl mt-6 rounded-md border-[1.5px] border-gray-200 p-4">
       @if(Auth::user())
         <div class="title flex items-center gap-1 font-bold">
            <p>Your</p>
@@ -61,10 +61,25 @@
            <p>Balance</p>
         </div>
         @foreach (Auth::user()->wallet as $user_wallet )
-            <h1 class="balance text-4xl mt-4 font-bold text-gray-700">
+            <h1 class="balance text-6xl mt-4 font-bold text-gray-700">
                 Rp.{{ $user_wallet->credit }}
             </h1>
         @endforeach
+        <div class="flex mt-4 gap-2 absolute bottom-4 right-4">
+            <div class="top-up flex flex-col justify-center items-center bg-gradient-to-r from-sky-400 to-blue-500 p-4 text-white rounded-md">
+                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
+                  </svg>
+                Top Up 
+            </div>
+            <div class="transfer flex flex-col justify-center items-center bg-gradient-to-r from-sky-400 to-blue-500 p-4 text-white rounded-md">
+                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                  </svg>
+                Transfer
+            </div>
+            
+        </div>
       @else
         <div class="title">
             Login To Get Your Balance!
