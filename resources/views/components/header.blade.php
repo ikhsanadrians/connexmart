@@ -1,4 +1,4 @@
-<header class="bg-slate-50 shadow-lg">
+<header class="bg-slate-50 shadow-lg sticky top-0 z-50">
     <div class="container mx-auto lg:px-12 py-4 px-8 flex items-center justify-between">
         <div class="title-search flex items-center gap-4">
             <a href="/" class="header-title">
