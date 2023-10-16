@@ -75,4 +75,9 @@ class TransactionController extends Controller
 
 
     }
+
+
+    public function topUp(){
+        return view('topup');
+    }
 }
