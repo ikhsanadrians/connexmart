@@ -7,6 +7,7 @@ use App\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
 use App\Models\Wallet;
+use App\Models\TopUp;
 
 class TransactionController extends Controller
 {
@@ -80,4 +81,25 @@ class TransactionController extends Controller
     public function topUp(){
         return view('topup');
     }
+
+    public function topUpProceed(Request $request){
+        if($request->ajax()){
+             $data = TopUp::create([
+                 "user_id" => Auth::user()->id,
+                 "nominals" => $request->nominals,
+                 "unique_code" => "TU-" . Auth::user()->id . now()->format('dmYHis')
+             ]);
+
+             return response()->json([
+                 "message" => "Success! Add Top Up",
+                 "data" => $data
+             ]);
+        }
+    }
+
+    public function receipt(Request $request){
+        $currentTopUp = TopUp::where('unique_code',$request->unique_code)->first();
+        return view('receipt',compact('currentTopUp'));
+    }
+
 }

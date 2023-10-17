@@ -75,8 +75,8 @@
 
             </div>
         </div>
-        @else 
-           <div class="empty-cart flex justify-center w-full items-center"> 
+        @else
+           <div class="empty-cart flex justify-center w-full items-center">
                <div class="flex flex-col text-center pt-32">
                    <img src="{{ asset('images/static/Empty-Cart.svg') }}" alt="empty" class="h-48">
                    <h1 class="mt-8 font-bold text-2xl">Your Cart Is Empty</h1>
