@@ -12,6 +12,7 @@
         <h1 class="text-2xl font-semibold">Your Cart</h1>
     </div>
     <div class="container-cart flex gap-4">
+        @if(count($carts))
         <div class="cart-list w-3/4 p-2 ">
             @foreach ($carts as $cart)
                 <div class="card my-3 bg-white relative p-4 rounded-lg flex gap-3 items-center">
@@ -44,7 +45,7 @@
                 <p class="flex items-center gap-2 font-semibold text-[#003034]"><img class="h-6"
                         src="{{ asset('images/static/connexpay.png') }}"> Balance</p>
                 @foreach (Auth::user()->wallet as $wallet)
-                    <p>{{ format_to_rp($wallet->debit) }}</p>
+                    <p>{{ format_to_rp($wallet->credit) }}</p>
                 @endforeach
             </div>
             <div class="price-list bg-white rounded-md w-full py-10 px-10">
@@ -74,6 +75,13 @@
 
             </div>
         </div>
-
+        @else 
+           <div class="empty-cart flex justify-center w-full items-center"> 
+               <div class="flex flex-col text-center pt-32">
+                   <img src="{{ asset('images/static/Empty-Cart.svg') }}" alt="empty" class="h-48">
+                   <h1 class="mt-8 font-bold text-2xl">Your Cart Is Empty</h1>
+               </div>
+           </div>
+        @endif
     </div>
 @endsection
