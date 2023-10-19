@@ -17,10 +17,10 @@
     </main>
     <div class="backdrop hidden bg-slate-900/70 fixed top-0 w-full h-full  z-40">
     </div>
-    <script src="{{ asset('javascript/lib/jquery.min.js') }}"></script>
-    <script src="{{ asset('javascript/script/auth.js') }}"></script>
-    <script src="{{ asset('javascript/script/cart.js') }}"></script>
-    <script src="{{ asset('javascript/script/topup.js')}}"></script>
+    <script type="module" src="{{ asset('javascript/lib/jquery.min.js') }}"></script>
+    <script type="module" src="{{ asset('javascript/script/auth.js') }}"></script>
+    <script type="module" src="{{ asset('javascript/script/cart.js') }}"></script>
+    <script type="module" src="{{ asset('javascript/script/topup.js')}}"></script>
 </body>
 
 </html>

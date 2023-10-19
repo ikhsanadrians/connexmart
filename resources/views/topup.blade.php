@@ -11,8 +11,9 @@
       </svg>
     <h1 class="text-2xl font-semibold">Top Up Success!</h1>
     <p id="unique-code"></p>
-    <span class="flex items-center">Rp <p id="nominals"></p></span>
-    <form action="{{ route('receipt') }}" method="GET">
+    <p id="user-name"></p>
+    <span class="flex items-center text-2xl font-bold"><p id="nominals">Rp 160.000</p></span>
+    <form action="{{ route('receipt') }}" method="POST">
         @csrf
         <input id="unique-code-value" type="hidden" name="unique_code" value="">
         <button type="submit" class="print flex items-center gap-2 bg-[#003034] text-white py-2 px-4 rounded-md font-semibold mt-4">
@@ -112,7 +113,7 @@
                 <div class="topup-summary mt-4">
                     <h1 class="font-bold">Top Up Summary</h1>
                     <p class="mt-2">Your Nominal to TopUp Is</p>
-                    <p class="font-bold text-2xl">Rp <span id="top-up-sum">0</span></p>
+                    <p class="font-bold text-2xl"><span id="top-up-sum">0</span></p>
                 </div>
             </div>
             <button disabled="true" id="top-up-submit" type="submit" class="top-up-btn bg-[#003034] text-white font-bold p-3 w-full mt-4 rounded-md">

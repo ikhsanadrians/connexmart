@@ -23,5 +23,5 @@ Route::post('/cart',[TransactionController::class,'sentToCart'])->name('cart.pro
 Route::put('/cart',[TransactionController::class,'payCart'])->name('cart.pay');
 Route::get('/topup',[TransactionController::class,'topUp'])->name('topup.index');
 Route::post('/topup',[TransactionController::class,'topUpProceed'])->name('topup.proceed');
-Route::get('topup/receipt',[TransactionController::class,'receipt'])->name('receipt');
+Route::post('topup/receipt',[TransactionController::class,'receipt'])->name('receipt');
 Route::post('/logout',[IndexController::class,'logout'])->name('logout');

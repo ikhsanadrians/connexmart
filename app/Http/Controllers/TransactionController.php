@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
 use App\Models\Wallet;
 use App\Models\TopUp;
+use App\Models\User;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class TransactionController extends Controller
 {
@@ -90,6 +92,8 @@ class TransactionController extends Controller
                  "unique_code" => "TU-" . Auth::user()->id . now()->format('dmYHis')
              ]);
 
+             $data->user = User::find(Auth::user()->id);
+
              return response()->json([
                  "message" => "Success! Add Top Up",
                  "data" => $data
@@ -99,6 +103,13 @@ class TransactionController extends Controller
 
     public function receipt(Request $request){
         $currentTopUp = TopUp::where('unique_code',$request->unique_code)->first();
+
+        $data = QrCode::size(200)->generate(
+            $currentTopUp->unique_code,
+        );
+
+        $currentTopUp->qr_code = $data;
+
         return view('receipt',compact('currentTopUp'));
     }
 
