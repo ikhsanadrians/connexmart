@@ -10,10 +10,11 @@
 <body>
     <div class="bg-white max-w-md mx-auto p-6 rounded-lg shadow-md">
         <h1 class="text-2xl font-semibold mb-4">Receipt</h1>
+        <img src="{{ asset('images/static/connexmart.png') }}" alt="tomy">
 
         <div class="mb-4">
             <p class="text-gray-600">Unique Number: <span class="text-black font-semibold">{{ $currentTopUp->unique_code }}</span></p>
-            <p class="text-gray-600">Date: <span class="text-black font-semibold">{{ }}</span></p>
+            <p class="text-gray-600">Date: <span class="text-black font-semibold">{{ $currentTopUp->created_at }}</span></p>
         </div>
 
         <div class="mb-4">

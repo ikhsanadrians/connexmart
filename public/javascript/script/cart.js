@@ -11,7 +11,7 @@ function calculateTotal() {
     return quantityAll;
 }
 
-function multiplyAll(){
+function multiplyAll(){  
     let quantityAll = 0;
     quantities.forEach()
 
