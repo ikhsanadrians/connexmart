@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Receipt</title>
+    <style>
+        @media print {
+           #back-to-home {
+              display: none;
+           }
+        }
+    </style>
     @vite('resources/css/app.css')
 </head>
 <body>
@@ -31,7 +38,7 @@
                     <p class="mt-2 text-sm text-gray-500">Show This QR code to Teller</p>
                 </div>
             </div>
-            <div class="back flex justify-center mt-12">
+            <div class="back flex justify-center mt-12" id="back-to-home">
                 <button onclick="backhome()" class="bg-[#003034] text-white font-semibold px-4 py-2">Back To Home</button>
             </div>
             <div class="mt-28 flex justify-center">

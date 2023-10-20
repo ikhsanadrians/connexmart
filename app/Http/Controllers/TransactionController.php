@@ -32,7 +32,7 @@ class TransactionController extends Controller
     public function payCart(Request $request){
         $total_prices = 0;
         $wallets = Wallet::where('user_id',Auth::user()->id)->first();
-        $current_debit = $wallets->debit;
+        $current_debit = $wallets->debit;       
         $current_credit = $wallets->credit;
 
         $carts = Transaction::with('product')->where('user_id', Auth::user()->id)->where('status','not_paid')->orderBy('created_at','desc')->get();
@@ -53,7 +53,7 @@ class TransactionController extends Controller
         ]);
 
 
-        return redirect()->route('home');
+        return redirect()->route('cart.receipt');
     }
 
     public function sentToCart(Request $request){
@@ -111,6 +111,38 @@ class TransactionController extends Controller
         $currentTopUp->qr_code = $data;
 
         return view('receipt',compact('currentTopUp'));
+    }
+  
+    public function cart_receipt(Request $request){
+        $total_prices = 0; 
+        $currentTransactions = Transaction::where('status','paid')->where('user_id',Auth::user()->id)->get();
+   
+        $qrcode = $currentTransactions[0];
+        
+        foreach($currentTransactions as $transaction){
+            $total_prices += $transaction->price;
+        }
+
+        $data = QrCode::size(100)->generate(
+            $qrcode->order_id,
+        );  
+
+        $currentTransactions->qr_code = $data;
+        $currentTransactions->total_prices = $total_prices;
+
+        return view('receiptcart',compact('currentTransactions'));
+    }
+
+    public function cart_take(Request $request){
+        $currentTransactions = Transaction::where('status','paid')->where('user_id',Auth::user()->id)->get();
+        
+        foreach($currentTransactions as $transaction) {
+             $transaction->update([
+                 'status' => 'taken'
+             ]);
+        }       
+        
+        return redirect()->route('home');
     }
 
 }

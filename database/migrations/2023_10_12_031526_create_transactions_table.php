@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->foreignId('product_id')->constrained();
-            $table->enum('status',['not_paid','paid']);
+            $table->enum('status',['not_paid','paid','taken']);
             $table->string('order_id');
             $table->double('price',5);
             $table->integer('quantity');
