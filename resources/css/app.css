@@ -16,7 +16,21 @@ body {
     @apply bg-[#003034] text-white
 }
 
+table {
+    @apply bg-white rounded-lg overflow-hidden shadow-lg
+}
 
+tr,td,th {
+    @apply p-4 border-[1.6px]
+}
+
+td {
+    @apply text-center
+}
+
+th {
+    @apply bg-gray-100 text-gray-600
+}
 
 .lds-ellipsis {
     display: inline-block;

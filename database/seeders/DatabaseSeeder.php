@@ -42,6 +42,12 @@ class DatabaseSeeder extends Seeder
             "password" => bcrypt("mahabarata")
          ]);
 
+         User::create([
+            "name" => "admin",
+            "role_id" => 1,
+            "password" => bcrypt("admin123")
+         ]);
+
          Category::create([
             "name" => "Desert"
          ]);

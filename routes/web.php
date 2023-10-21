@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,3 +27,9 @@ Route::get('/topup',[TransactionController::class,'topUp'])->name('topup.index')
 Route::post('/topup',[TransactionController::class,'topUpProceed'])->name('topup.proceed');
 Route::post('topup/receipt',[TransactionController::class,'receipt'])->name('receipt');
 Route::post('/logout',[IndexController::class,'logout'])->name('logout');
+
+Route::prefix('admin')->group(function () {
+    Route::get('/',[AdminController::class,'index'])->name('admin.index');
+    Route::get('/login',[AdminController::class,'auth'])->name('admin.auth');
+    Route::post('/login',[AdminController::class,'auth_proceed'])->name('admin.auth.proceed');
+});
