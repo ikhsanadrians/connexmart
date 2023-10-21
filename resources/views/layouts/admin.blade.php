@@ -18,6 +18,10 @@
             @yield('content')
         </div>
     </main>
+    <div class="backdrop hidden  bg-slate-900/70 fixed top-0 w-full h-full  z-40">
+    </div>
+    <script type="module" src="{{ asset('javascript/lib/jquery.min.js') }}"></script>
+    <script type="module" src="{{ asset('javascript/script/admin.js')}}"></script>
 </body>
 
 </html>

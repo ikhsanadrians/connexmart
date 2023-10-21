@@ -12,4 +12,8 @@ class Roles extends Model
     protected $fillable = [
        "name"
     ];
+
+    public function users(){
+        return $this->hasManyT(User::class,'role_id');
+    }
 }

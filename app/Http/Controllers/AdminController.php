@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Roles;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
@@ -29,6 +30,38 @@ class AdminController extends Controller
         if(Auth::attempt($credentials)) return redirect()->route('admin.index');
 
         return redirect()->back();
-     }
+    }
+
+    public function userindex(){
+        $roles = Roles::all();
+        $users = User::with('roles')->get();
+        return view('admin.adduser',compact('roles','users'));
+    }
+
+    public function useradd(Request $request){
+      $validation = $request->validate([
+        "name" => "required",
+        "password" => "required",
+        "role_id" => "required"
+       ]);
+
+
+       $user = User::create($validation);
+
+       return redirect()->back();
+
+    }
+
+    public function entrytransaction(){
+        return view('admin.entrytransaction');
+    }
+
+    public function settings(){
+        return view('admin.settings');
+    }
+
+    public function notifications(){
+        return view('admin.notifications');
+    }
 
 }
