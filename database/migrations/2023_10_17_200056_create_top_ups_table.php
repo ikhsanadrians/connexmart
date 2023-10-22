@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained();
             $table->integer('nominals');
             $table->string('unique_code');
-            $table->enum('status',['unconfirmed','confirmed']);
+            $table->enum('status',['unconfirmed','confirmed','rejected']);
             $table->timestamps();
         });
     }

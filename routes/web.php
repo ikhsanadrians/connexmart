@@ -49,6 +49,7 @@ Route::prefix('bank')->group(function () {
     Route::get('/',[BankController::class,'index'])->name('bank.index');
     Route::get('/topup',[BankController::class,'topup'])->name('bank.topup');
     Route::put('/topup',[BankController::class,'topupconfirm'])->name('bank.topupconfirm');
+    Route::patch('/topup',[BankController::class,'topupreject'])->name('bank.topupreject');
     Route::get('/login',[BankController::class,'auth'])->name('bank.auth');
     Route::post('/login',[BankController::class,'auth_proceed'])->name('bank.auth.proceed');
 });

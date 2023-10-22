@@ -39,6 +39,17 @@ class BankController extends Controller
 
     }
 
+    public function topupreject(Request $request){
+        $topUp = TopUp::where('unique_code',$request->unique_code);
+        $topUp->update([
+            "status" => "rejected"
+        ]);
+
+        alert()->success("Success","Success Rejected Top Up!");
+
+        return redirect()->back();
+    }
+
     public function auth(){
         return view("bank.login");
     }
