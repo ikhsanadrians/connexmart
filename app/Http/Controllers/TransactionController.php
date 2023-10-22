@@ -73,7 +73,7 @@ class TransactionController extends Controller
 
             if ($sameTransaction) {
                 $sumQuantity =  $sameTransaction->quantity += $request->quantity;
-                $sumPrice = $sumQuantity * $sameTransaction->price;
+                $sumPrice = $sumQuantity * $product->price;
                 $sameTransaction->update([
                     'quantity' => $sumQuantity,
                     'price' => $sumPrice
