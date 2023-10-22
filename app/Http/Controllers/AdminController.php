@@ -76,6 +76,23 @@ class AdminController extends Controller
         }
     }
 
+    public function userdelete(Request $request){
+        if($request->ajax()){
+           $userToDelete = User::find($request->id_to_delete);
+
+           $userToDelete->delete();
+
+           if(!$userToDelete) return response()->json([
+             "message" => "cannot delete data"
+           ]);
+
+           return response()->json([
+             "message" => "success",
+             "data" => $userToDelete
+           ]);
+        }
+    }
+
     public function entrytransaction(){
         return view('admin.entrytransaction');
     }

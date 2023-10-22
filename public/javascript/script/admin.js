@@ -68,15 +68,40 @@ $('#update-btn').on('click',function(e){
         },
         success:function(data){
             closeModal()
-            console.log(data)
             $('#username-input').val("")
             $('#role-input').val("role").change()
             location.reload()
         },
         error: function(data){
-            console.log(data)
+             return
         }
-    })
 })
 
+})
+
+$('.delete-btn').on('click',function(e){
+    if( confirm('Apakah Yakin Ingin Menghapus User Ini?')){
+        e.preventDefault();
+        const currentUrl = window.location.pathname
+        const idToDelete = $(this).parent().siblings().eq(0).text();
+
+        $.ajax({
+            method: 'delete',
+            url : currentUrl,
+            dataType: 'json',
+            data: {
+                "id_to_delete" : idToDelete,
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            success:function(data){
+                location.reload()
+            },
+            error: function(data){
+                 return
+            }
+    })
+    }
+
+
+})
 

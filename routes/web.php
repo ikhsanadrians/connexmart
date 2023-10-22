@@ -32,9 +32,12 @@ Route::prefix('admin')->group(function () {
     Route::get('/',[AdminController::class,'index'])->name('admin.index');
     Route::get('/login',[AdminController::class,'auth'])->name('admin.auth');
     Route::post('/login',[AdminController::class,'auth_proceed'])->name('admin.auth.proceed');
+
     Route::get('/user',[AdminController::class,'userindex'])->name('user.index');
     Route::post('/user',[AdminController::class,'useradd'])->name('user.addpost');
     Route::put('/user',[AdminController::class,'userupdate'])->name('user.update');
+    Route::delete('/user',[AdminController::class,'userdelete'])->name('user.delete');
+
     Route::get('/entrytransaction',[AdminController::class,'entrytransaction'])->name('entry.index');
     Route::get('/settings',[AdminController::class,'settings'])->name('setting.index');
     Route::get('/notifications',[AdminController::class,'notifications'])->name('notification.index');
