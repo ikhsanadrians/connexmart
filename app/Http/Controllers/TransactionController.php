@@ -58,23 +58,28 @@ class TransactionController extends Controller
 
     public function sentToCart(Request $request){
 
+        if($request->ajax()){
+            $product = Product::find($request->product_id);
+            $productPrice = $product->price;
+            $productSummaryPrice  = ($productPrice * $request->quantity);
 
-        $product = Product::find($request->product_id);
-        $productPrice = $product->price;
-        $productSummaryPrice  = ($productPrice * $request->quantity);
+            Transaction::create([
+               "user_id" => Auth::user()->id,
+               "product_id" => $product->id,
+               "status" => "not_paid",
+               "order_id" => "INV-" . Auth::user()->id . now()->format('dmYHis'),
+               "quantity" => $request->quantity,
+               "price" =>  $productSummaryPrice
+            ]);
+
+            return response()->json([
+                "message" => "success",
+                "data" => $product
+            ]);
 
 
+        }
 
-        Transaction::create([
-           "user_id" => Auth::user()->id,
-           "product_id" => $product->id,
-           "status" => "not_paid",
-           "order_id" => "INV-" . Auth::user()->id . now()->format('dmYHis'),
-           "quantity" => $request->quantity,
-           "price" =>  $productSummaryPrice
-        ]);
-
-        return redirect()->back();
 
 
     }

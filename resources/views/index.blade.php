@@ -56,6 +56,30 @@
         </div>
 
     </div>
+    <div class="success-addproduct hidden fixed z-50 w-3/5 h-3/4 bg-gray-50 -translate-x-1/2 left-1/2 shadow-lg overflow-hidden rounded-lg">
+        <div class="wrappers p-6">
+            <div id="close-btn-successaddproduct" class="close group absolute top-7 right-6">
+                <svg class="group-hover:fill-red-500" xmlns="http://www.w3.org/2000/svg" width="25" height="25"
+                    fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                    <path
+                        d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
+                </svg>
+            </div>
+            <h1 class="text-xl font-semibold">Added Successfully!</h1>
+            <div class="products p-3 flex items-center gap-5 mt-4 w-full shadow-md bg-white shadow-slate-300 rounded-md overflow-hidden">
+                <div class="thumbnail h-14 overflow-hidden">
+                    <img src="{{ asset('images/static/martgroup.png') }}" alt="test" class="h-full w-full object-cover">
+                </div>
+                <div class="product-name flex items-center justify-between w-full pr-4">
+                    <p class="text-gray-600" id="success-product-name"></p>
+                    <a href="{{ route('cart.index') }}" class="see-cart bg-[#003034] text-white py-2 px-4 rounded-md">
+                        See Cart
+                    </a>
+                </div>
+            </div>
+            <h1 class="text-xl font-semibold mt-5">You May Also Like</h1>
+        </div>
+    </div>
     <div class="carouse w-full h-96 rounded-lg shadow-sm overflow-hidden hidden lg:block">
         <img class="w-full h-full object-cover" src="{{ asset('images/static/caroselrevisi.png') }}" alt="carousel">
     </div>
@@ -155,7 +179,7 @@
                     </div>
                     <div class="content  p-4">
                         <h1>{{ $product->name }}</h1>
-                        <p class="font-semibold text-black">Rp{{ $product->price }}</p>
+                        <p class="font-semibold text-black">{{ format_to_rp($product->price) }}</p>
 
                         <div class="product-action flex items-center justify-between h-full gap-2">
                             <div class="wishlist-button mt-2">
@@ -166,13 +190,12 @@
                                 </svg>
                             </div>
                             <div class="action-right">
-                                <form method="post" action="{{ route('cart.proceed') }}"
+                                <form
                                     class=" flex items-center gap-2">
-                                    @csrf
-                                    <input name="quantity" class="w-14 py-1 px-2 mt-2 bg-gray-100 shadow-lg border-2"
+                                    <input name="quantity" id="quantity" class="w-14 py-1 px-2 mt-2 bg-gray-100 shadow-lg border-2"
                                         type="number" min="1" value="1">
-                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                    <button type="submit"
+                                    <input type="hidden" id="product_id" name="product_id" value="{{ $product->id }}">
+                                    <button id="{{ $product->id }}" type="button"
                                         class="add-to-cart flex items-center bg-[#003034] text-white py-2 px-4 text-sm mt-2 rounded-md">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                             fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
