@@ -4,7 +4,7 @@
     <div class="wrappers flex h-full w-full">
         <div class="modal-input-group relative w-full px-4 py-8">
             <div class="flex justify-between pr-5">
-                <p class="font-bold px-6">Add New User</p>
+                <p class="font-bold px-6"><span id="user-name-modal">Add New User</span></p>
                 <button id="closemodal">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" class="bi bi-x-lg" viewBox="0 0 16 16">
                         <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
@@ -14,21 +14,21 @@
             <form action="{{ route('user.addpost')}}" method="POST" class="input mt-4 px-6">
                 @csrf
                 <div class="username py-1">
-                    <label for="">
+                    <label for="username">
                         Username
                     </label>
                     <input class="w-full rounded-md focus:outline-none focus:ring-2 ring-[#003034] bg-gray-100 my-2 p-2" type="text" name="name" id="username" placeholder="Type An Username Here">
 
                 </div>
                 <div class="py-1">
-                    <label for="">
+                    <label for="password">
                         Password
                     </label>
                     <input class="w-full rounded-md focus:outline-none focus:ring-2 ring-[#003034] bg-gray-100 my-2 p-2" type="password" name="password" id="password" placeholder="Type A Password Here">
 
                 </div>
                 <div class="py-1">
-                    <label for="">
+                    <label for="role">
                         Role
                     </label>
                     <select class="w-full rounded-md focus:outline-none focus:ring-2 ring-[#003034] bg-gray-100 my-2 p-2" name="role_id" id="">
@@ -78,7 +78,7 @@
                     <td>{{ $user->name }}</td>
                     <td>{{ ucfirst($user->roles->name) }}</td>
                     <td>
-                        <button class="bg-gradient-to-r from-yellow-600 to-yellow-400 p-2 text-white rounded-md">
+                        <button id="{{ $user->id }}" data-id="{{ $user->name }}" class="edit-btn bg-gradient-to-r from-yellow-600 to-yellow-400 p-2 text-white rounded-md">
                             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
                                 <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z"/>
                             </svg>

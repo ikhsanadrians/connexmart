@@ -32,6 +32,11 @@ th {
     @apply bg-gray-100 text-gray-600
 }
 
+.swal2-styled {
+    @apply !bg-[#003034] focus:border-none focus:outline-none
+}
+
+
 .lds-ellipsis {
     display: inline-block;
     position: relative;

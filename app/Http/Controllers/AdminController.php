@@ -6,6 +6,8 @@ use App\Models\Roles;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use RealRashid\SweetAlert\Facades\Alert;
+
 
 class AdminController extends Controller
 {
@@ -48,7 +50,9 @@ class AdminController extends Controller
 
        $user = User::create($validation);
 
-       return redirect()->back();
+       alert()->success('Success','Success Add New User!');
+
+       return redirect()->route('user.index');
 
     }
 

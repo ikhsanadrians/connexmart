@@ -10,6 +10,7 @@
 </head>
 
 <body class="bg-gray-200">
+    @include('sweetalert::alert')
     @include('components.headeradmin')
 
     <main class="px-0 flex">
