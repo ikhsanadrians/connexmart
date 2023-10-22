@@ -89,6 +89,7 @@ class TransactionController extends Controller
              $data = TopUp::create([
                  "user_id" => Auth::user()->id,
                  "nominals" => $request->nominals,
+                 "status" => "unconfirmed",
                  "unique_code" => "TU-" . Auth::user()->id . now()->format('dmYHis')
              ]);
 

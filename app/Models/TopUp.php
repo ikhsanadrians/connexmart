@@ -12,7 +12,8 @@ class TopUp extends Model
     protected $fillable = [
           "user_id",
           "nominals",
-          "unique_code"
+          "unique_code",
+          "status"
     ];
 
     public function user(){

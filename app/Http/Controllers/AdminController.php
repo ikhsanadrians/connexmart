@@ -12,7 +12,9 @@ use RealRashid\SweetAlert\Facades\Alert;
 class AdminController extends Controller
 {
     public function index(){
-        return view("admin.index");
+        $users = User::paginate('5');
+        $allusers = User::all();
+        return view("admin.index", compact("users","allusers"));
     }
 
     public function auth(){

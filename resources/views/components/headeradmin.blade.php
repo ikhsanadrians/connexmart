@@ -2,9 +2,19 @@
     <div class="py-4 px-4 flex items-center justify-between">
         <div class="title-search flex items-center gap-4">
             <a href="/" class="header-title">
-                <img src="{{ asset('images/static/connexmart.png') }}" alt="connexmart" class="h-10">
+                @if(Auth::user()->role_id == 1)
+                  <img src="{{ asset('images/static/connexmart.png') }}" alt="connexmart" class="h-10">
+                @else
+                <img src="{{ asset('images/static/connexpay.png') }}" alt="connexpay" class="h-10">
+                @endif
             </a>
-            <p>Admin</p>
+            <p>
+                @if(Auth::user()->role_id == 1 )
+                   Admin
+                @elseif(Auth::user()->role_id == 2)
+                   Bank
+                @endif
+            </p>
         </div>
         <div class="flex">
             <div class="header-menu flex items-center gap-2 mx-4">

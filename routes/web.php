@@ -3,6 +3,7 @@
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BankController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -42,4 +43,12 @@ Route::prefix('admin')->group(function () {
     Route::get('/settings',[AdminController::class,'settings'])->name('setting.index');
     Route::get('/notifications',[AdminController::class,'notifications'])->name('notification.index');
 
+});
+
+Route::prefix('bank')->group(function () {
+    Route::get('/',[BankController::class,'index'])->name('bank.index');
+    Route::get('/topup',[BankController::class,'topup'])->name('bank.topup');
+    Route::put('/topup',[BankController::class,'topupconfirm'])->name('bank.topupconfirm');
+    Route::get('/login',[BankController::class,'auth'])->name('bank.auth');
+    Route::post('/login',[BankController::class,'auth_proceed'])->name('bank.auth.proceed');
 });
