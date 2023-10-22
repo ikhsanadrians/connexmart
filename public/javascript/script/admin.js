@@ -1,22 +1,21 @@
-// const editButtons = document.querySelectorAll('.edit-btn')
-
 const openModal = (modalType) => {
     $('.addusermodal').removeClass('hidden')
     $('.backdrop').removeClass('hidden')
+}
 
-    if(modalType == "update") {
-        $('.submit-btn').prop('id','modal-btn')
-    } else {
-        $('.submit-btn').prop('id','submit')
-        $('#password-input').removeClass('hidden');
-    }
+const openModalUpdate = () => {
+    $('.updateusermodal').removeClass('hidden')
+    $('.backdrop').removeClass('hidden')
+}
+
+const closeModalUpdate = () => {
+    $('.updateusermodal').addClass('hidden')
+    $('.backdrop').addClass('hidden')
 }
 
 const closeModal = () => {
     $('.addusermodal').addClass('hidden')
     $('.backdrop').addClass('hidden')
-    $('#username-input').val("")
-    $('#role-input').val("role").change()
 }
 
 
@@ -26,19 +25,20 @@ $('#openaddmodal').on('click',function(){
 
 $('#closemodal').on('click',function(){
       closeModal();
+});
 
+$('#closemodalupdate').on('click',function(){
+    closeModalUpdate();
 });
 
 $('.edit-btn').on('click', function(e){
-    $('#user-name-modal').text(`Update User`)
-    $('#password-input').addClass('hidden');
-    openModal('update')
+    openModalUpdate()
     const userId = $(this).parent().siblings().eq(0).text();
     const userName = $(this).parent().siblings().eq(1).text();
     const userRoles = $(this).parent().siblings().eq(2).data('role');
 
 
-   let roleSelect = $(".role-select");
+   let roleSelect = $(".role-select-update");
 
     roleSelect.find('option').each(function() {
         let value = $(this).val();
@@ -46,29 +46,31 @@ $('.edit-btn').on('click', function(e){
         else $(this).prop('selected', false);
     });
 
-    $('#username-input').val(userName);
-    $('#username-input').data('userid',userId);
-    $('#submit').prop('id','modal-btn')
+    $('#username-input-update').val(userName);
+    $('#username-input-update').data('userid',userId);
 
 })
 
-$('#modal-btn').on('click',function(e){
+$('#update-btn').on('click',function(e){
     e.preventDefault();
     const currentUrl = window.location.pathname
-    let usernameValue = $('#username-input').val()
-    let roleValue = $('#role-input').val()
+    let usernameValue = $('#username-input-update').val()
+    let roleValue = $('#role-input-update').val()
     $.ajax({
         method: 'put',
         url : currentUrl,
         dataType: 'json',
         data: {
-            "user_id" : $('#username-input').data('userid'),
+            "user_id" : $('#username-input-update').data('userid'),
             "username" : usernameValue,
             "role" : roleValue,
             _token: $('meta[name="csrf-token"]').attr('content')
         },
         success:function(data){
             closeModal()
+            console.log(data)
+            $('#username-input').val("")
+            $('#role-input').val("role").change()
             location.reload()
         },
         error: function(data){

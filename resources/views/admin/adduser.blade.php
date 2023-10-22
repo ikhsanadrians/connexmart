@@ -39,14 +39,51 @@
                         @endforeach
                     </select>
                 </div>
-                <button id="" type="submit" class="submit-btn bg-[#003034] py-2 text-white px-4 rounded-md mt-4 w-full">
+                <button id="default" type="submit" class="submit-btn bg-[#003034] py-2 text-white px-4 rounded-md mt-4 w-full">
                     Submit
                 </button>
             </form>
         </div>
     </div>
-
 </div>
+<div class="updateusermodal hidden fixed z-50 w-3/5 h-3/4 bg-white -translate-x-1/2 left-1/2 shadow-lg overflow-hidden rounded-lg">
+    <div class="wrappers flex h-full w-full">
+        <div class="modal-input-group relative w-full px-4 py-8">
+            <div class="flex justify-between pr-5">
+                <p class="font-bold px-6"><span id="user-name-modal">Update User</span></p>
+                <button id="closemodalupdate">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" class="bi bi-x-lg" viewBox="0 0 16 16">
+                        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                      </svg>
+                </button>
+            </div>
+            <form class="input mt-4 px-6">
+                <div class="username py-1">
+                    <label for="username">
+                        Username
+                </label>
+                    <input data-userid="" id="username-input-update" class="w-full rounded-md focus:outline-none focus:ring-2 ring-[#003034] bg-gray-100 my-2 p-2" type="text" name="name" id="username" placeholder="Type An Username Here">
+                </div>
+                <div class="py-1">
+                    <label for="role">
+                        Role
+                    </label>
+                    <select id="role-input-update" class="role-select-update w-full rounded-md focus:outline-none focus:ring-2 ring-[#003034] bg-gray-100 my-2 p-2" name="role_id">
+                          <option value="role">Select User Role</option>
+                        @foreach($roles as $role)
+                          <option value="{{ $role->id }}">{{ ucfirst($role->name) }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <button id="update-btn" class="submit-btn bg-[#003034] py-2 text-white px-4 rounded-md mt-4 w-full">
+                    Submit
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
     <div class="headers flex justify-between">
         <h1 class="text-2xl font-bold">Add User</h1>
         <button id="openaddmodal" class="add-user bg-[#003034] text-white px-3 py-2 rounded-lg flex items-center gap-2">
