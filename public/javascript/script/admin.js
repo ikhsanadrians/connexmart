@@ -1,13 +1,22 @@
 // const editButtons = document.querySelectorAll('.edit-btn')
 
-const openModal = () => {
+const openModal = (modalType) => {
     $('.addusermodal').removeClass('hidden')
     $('.backdrop').removeClass('hidden')
+
+    if(modalType == "update") {
+        $('.submit-btn').prop('id','modal-btn')
+    } else {
+        $('.submit-btn').prop('id','submit')
+        $('#password-input').removeClass('hidden');
+    }
 }
 
 const closeModal = () => {
     $('.addusermodal').addClass('hidden')
     $('.backdrop').addClass('hidden')
+    $('#username-input').val("")
+    $('#role-input').val("role").change()
 }
 
 
@@ -17,12 +26,13 @@ $('#openaddmodal').on('click',function(){
 
 $('#closemodal').on('click',function(){
       closeModal();
+
 });
 
 $('.edit-btn').on('click', function(e){
     $('#user-name-modal').text(`Update User`)
     $('#password-input').addClass('hidden');
-    openModal()
+    openModal('update')
     const userId = $(this).parent().siblings().eq(0).text();
     const userName = $(this).parent().siblings().eq(1).text();
     const userRoles = $(this).parent().siblings().eq(2).data('role');
@@ -38,6 +48,7 @@ $('.edit-btn').on('click', function(e){
 
     $('#username-input').val(userName);
     $('#username-input').data('userid',userId);
+    $('#submit').prop('id','modal-btn')
 
 })
 

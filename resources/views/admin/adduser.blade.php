@@ -39,7 +39,7 @@
                         @endforeach
                     </select>
                 </div>
-                <button id="modal-btn" type="submit" class="bg-[#003034] py-2 text-white px-4 rounded-md mt-4 w-full">
+                <button id="" type="submit" class="submit-btn bg-[#003034] py-2 text-white px-4 rounded-md mt-4 w-full">
                     Submit
                 </button>
             </form>
