@@ -56,6 +56,26 @@ class AdminController extends Controller
 
     }
 
+    public function userupdate(Request $request){
+        if($request->ajax()){
+           $userToUpdate = User::find($request->user_id);
+
+           $userToUpdate->update([
+               "name" => $request->username,
+               "role_id => $request->role"
+           ]);
+
+           if(!$userToUpdate) return response()->json([
+             "message" => "cannot update data"
+           ]);
+
+           return response()->json([
+             "message" => "success",
+             "data" => $userToUpdate
+           ]);
+        }
+    }
+
     public function entrytransaction(){
         return view('admin.entrytransaction');
     }

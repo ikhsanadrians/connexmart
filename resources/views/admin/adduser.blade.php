@@ -16,29 +16,30 @@
                 <div class="username py-1">
                     <label for="username">
                         Username
-                    </label>
-                    <input class="w-full rounded-md focus:outline-none focus:ring-2 ring-[#003034] bg-gray-100 my-2 p-2" type="text" name="name" id="username" placeholder="Type An Username Here">
+                </label>
+
+                    <input data-userid="" id="username-input" class="w-full rounded-md focus:outline-none focus:ring-2 ring-[#003034] bg-gray-100 my-2 p-2" type="text" name="name" id="username" placeholder="Type An Username Here">
 
                 </div>
-                <div class="py-1">
+                <div class="py-1" id="password-input">
                     <label for="password">
                         Password
                     </label>
-                    <input class="w-full rounded-md focus:outline-none focus:ring-2 ring-[#003034] bg-gray-100 my-2 p-2" type="password" name="password" id="password" placeholder="Type A Password Here">
+                    <input  class="w-full rounded-md focus:outline-none focus:ring-2 ring-[#003034] bg-gray-100 my-2 p-2" type="password" name="password" id="password" placeholder="Type A Password Here">
 
                 </div>
                 <div class="py-1">
                     <label for="role">
                         Role
                     </label>
-                    <select class="w-full rounded-md focus:outline-none focus:ring-2 ring-[#003034] bg-gray-100 my-2 p-2" name="role_id" id="">
+                    <select id="role-input" class="role-select w-full rounded-md focus:outline-none focus:ring-2 ring-[#003034] bg-gray-100 my-2 p-2" name="role_id">
                           <option value="role">Select User Role</option>
                         @foreach($roles as $role)
                           <option value="{{ $role->id }}">{{ ucfirst($role->name) }}</option>
                         @endforeach
                     </select>
                 </div>
-                <button type="submit" class="bg-[#003034] py-2 text-white px-4 rounded-md mt-4 w-full">
+                <button id="modal-btn" type="submit" class="bg-[#003034] py-2 text-white px-4 rounded-md mt-4 w-full">
                     Submit
                 </button>
             </form>
@@ -74,9 +75,9 @@
             <tbody>
                 @foreach ( $users  as $key => $user)
                 <tr>
-                    <td>{{ $key + 1 }}</td>
-                    <td>{{ $user->name }}</td>
-                    <td>{{ ucfirst($user->roles->name) }}</td>
+                    <td class="id" data-id="{{ $user->id }}">{{ $key + 1 }}</td>
+                    <td class="username-td" data-username="{{ $user->name }}">{{ $user->name }}</td>
+                    <td class="roles-td" data-rolename="{{ $user->roles->name}}" data-role="{{ $user->roles->id }}">{{ ucfirst($user->roles->name) }}</td>
                     <td>
                         <button id="{{ $user->id }}" data-id="{{ $user->name }}" class="edit-btn bg-gradient-to-r from-yellow-600 to-yellow-400 p-2 text-white rounded-md">
                             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
