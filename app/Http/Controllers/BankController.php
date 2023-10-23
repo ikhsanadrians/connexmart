@@ -50,6 +50,11 @@ class BankController extends Controller
         return redirect()->back();
     }
 
+    public function clientindex(){
+        $clients = User::where('role_id',4)->with('wallet')->get();
+        return view('bank.client',compact('clients'));
+    }
+
     public function auth(){
         return view("bank.login");
     }

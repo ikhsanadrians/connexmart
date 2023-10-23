@@ -16,8 +16,8 @@
             </div>
         </div>
         <div class="card-bottom mt-8">
-            <h1 class="font-bold text-xl"></h1>
-            <p class="text-zinc-500">User</p>
+            <h1 class="font-bold text-xl">167</h1>
+            <p class="text-zinc-500">Client</p>
         </div>
      </div>
      <div class="card p-8 rounded-md bg-white shadow-md">
@@ -55,7 +55,7 @@
         </div>
         <div class="card-bottom mt-8">
             <h1 class="font-bold text-xl">126</h1>
-            <p class="text-zinc-500">Products</p>
+            <p class="text-zinc-500">Transactions</p>
         </div>
      </div>
   </div>
@@ -118,9 +118,9 @@
           </tr>
         </thead>
         <tbody>
-         @foreach ( $topups as $topup )
+         @foreach ( $topups as $key => $topup )
          <tr>
-             <td>{{ $topup->id }}</td>
+             <td>{{ $key + 1 }}</td>
              <td>{{ $topup->user->name }}</td>
              <td>{{ $topup->unique_code }}</td>
              <td>{{ $topup->created_at }}</td>
