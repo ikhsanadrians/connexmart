@@ -16,8 +16,10 @@
 
     <main class="px-0 flex">
         @include('components.sidebaradmin')
-        <div class="container pl-[20rem] pt-8">
-            @yield('content')
+        <div class="container w-full flex pl-[16rem] justify-center pt-8">
+            <div class="wrappers w-4/5">
+                @yield('content')
+            </div>
         </div>
     </main>
     <div class="backdrop hidden  bg-slate-900/70 fixed top-0 w-full h-full  z-40">

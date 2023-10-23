@@ -85,11 +85,11 @@
     </div>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <div
-            class="cnx-pay  bg-white h-3/4 relative  font-semibold text-xl mt-6 rounded-md border-[1.5px] border-gray-200 p-4">
+            class="cnx-pay  bg-white  h-[160px] lg:h-3/4 relative  font-semibold text-xl mt-6 rounded-md border-[1.5px] border-gray-200 p-4">
             @if (Auth::user())
-                <div class="title flex items-center gap-1 font-bold">
+                <div class="title flex items-center gap-1 font-bold text-sm">
                     <p>Your</p>
-                    <img src="{{ asset('images/static/connexpay.png') }}" alt="cnx-pay" class="h-8">
+                    <img src="{{ asset('images/static/connexpay.png') }}" alt="cnx-pay" class="h-5 lg:h-8">
                     <p>Balance</p>
                 </div>
                 @foreach (Auth::user()->wallet as $user_wallet)
@@ -99,8 +99,8 @@
                 @endforeach
                 <div class="flex mt-4 gap-2 absolute bottom-4 right-4">
                     <a href="{{ route('topup.index')}}"
-                        class="top-up flex flex-col justify-center items-center bg-gradient-to-r from-sky-400 to-blue-500 p-4 text-white rounded-md">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor"
+                        class="top-up flex flex-col justify-center items-center bg-gradient-to-r from-sky-400 to-blue-500 lg:p-4 p-2 text-sm text-white rounded-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                             class="bi bi-arrow-up" viewBox="0 0 16 16">
                             <path fill-rule="evenodd"
                                 d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z" />

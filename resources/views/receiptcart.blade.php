@@ -42,7 +42,7 @@
                                    <td class="border-[1.5px] border-gray-400 p-2">{{ $transaction->id }}</td>
                                    <td class="border-[1.5px] border-gray-400 p-2">{{ $transaction->product->name }}</td>   
                                    <td class="border-[1.5px] border-gray-400 p-2">{{ $transaction->quantity }}</td>
-                                   <td class="border-[1.5px] border-gray-400 p-2">{{ $transaction->price }}</td>
+                                   <td class="border-[1.5px] border-gray-400 p-2">{{ format_to_rp($transaction->price) }}</td>
                             </tr>
                             @endforeach
                         </table>
