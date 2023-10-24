@@ -34,7 +34,8 @@
             <th>Id</th>
             <th>Name</th>
             <th>Unique Code</th>
-            <th>Date</th>
+            <th>Nominals</th>
+            <th>Date</th>   
             <th>Status</th>
             <th>Action</th>
           </tr>
@@ -45,6 +46,7 @@
              <td>{{ $topup->id }}</td>
              <td>{{ $topup->user->name }}</td>
              <td>{{ $topup->unique_code }}</td>
+             <td>{{ format_to_rp($topup->nominals) }}</td>
              <td>{{ $topup->created_at }}</td>
              <td class="flex justify-center">
                 @if($topup->status == "unconfirmed")

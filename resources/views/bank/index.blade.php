@@ -113,6 +113,7 @@
             <th>Id</th>
             <th>Name</th>
             <th>Unique Code</th>
+            <th>Nominal</th>
             <th>Date</th>
             <th>Status</th>
           </tr>
@@ -123,6 +124,7 @@
              <td>{{ $key + 1 }}</td>
              <td>{{ $topup->user->name }}</td>
              <td>{{ $topup->unique_code }}</td>
+             <td>{{ format_to_rp($topup->nominals) }}</td>
              <td>{{ $topup->created_at }}</td>
              <td class="flex justify-center">
                 @if($topup->status == "unconfirmed")

@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('wallets', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
-            $table->double('credit',10);
-            $table->double('debit',10);
+            $table->double('credit',10)->default(0);
+            $table->double('debit',10)->default(0);
             $table->timestamps();
         });
     }

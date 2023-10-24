@@ -28,10 +28,12 @@
             <tr>
                 <td class="id">{{ $key + 1 }}</td>
                 <td class="username-td">{{ $client->name }}</td>
-                <td class="balance">{{ format_to_rp($client->wallet[0]->credit) }}</td>
-                <td>
-                 {{ format_to_rp($client->wallet[0]->debit ) }}
-                </td>
+                @foreach($client->wallet as $wallet)
+                   <td class="balance">{{ format_to_rp($wallet->credit) }}</td>
+                   <td>
+                    {{ format_to_rp($wallet->debit ) }}
+                   </td>
+                @endforeach
             </tr>
             @endforeach
         </tbody>
