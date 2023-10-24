@@ -45,7 +45,7 @@ Route::prefix('admin')->group(function () {
 
 });
 
-Route::prefix('bank')->group(function () {
+Route::middleware('admin')->prefix('bank')->group(function () {
     Route::get('/',[BankController::class,'index'])->name('bank.index');
     Route::get('/topup',[BankController::class,'topup'])->name('bank.topup');
     Route::get('/client',[BankController::class,'clientindex'])->name('bank.client');
