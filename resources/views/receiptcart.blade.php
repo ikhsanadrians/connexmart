@@ -21,9 +21,9 @@
                 <img src="{{ asset('images/static/connexmart.png') }}" alt="logo-cnx" class="h-8">
                 <div class="qr-code flex flex-col justify-center text-center">
                     {{ $currentTransactions->qr_code }}
-                </div> 
+                </div>
             </div>
-          
+
             <div class="flex justify-between pr-12">
                 <div class="transaction-detail">
                     <h1 class="text-2xl font-semibold mb-4 mt-4">Cart Receipt</h1>
@@ -40,7 +40,7 @@
                             @foreach ($currentTransactions as $transaction)
                             <tr class="p-2">
                                    <td class="border-[1.5px] border-gray-400 p-2">{{ $transaction->id }}</td>
-                                   <td class="border-[1.5px] border-gray-400 p-2">{{ $transaction->product->name }}</td>   
+                                   <td class="border-[1.5px] border-gray-400 p-2">{{ $transaction->product->name }}</td>
                                    <td class="border-[1.5px] border-gray-400 p-2">{{ $transaction->quantity }}</td>
                                    <td class="border-[1.5px] border-gray-400 p-2">{{ format_to_rp($transaction->price) }}</td>
                             </tr>
@@ -50,7 +50,7 @@
 
 
                 </div>
-               
+
             </div>
             <div class="total mt-4">
                 <p class="text-xl font-semibold">Total : {{ format_to_rp($currentTransactions->total_prices) }}</p>

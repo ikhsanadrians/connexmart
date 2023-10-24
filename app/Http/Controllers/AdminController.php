@@ -107,4 +107,13 @@ class AdminController extends Controller
         return view('admin.notifications');
     }
 
+    public function adminlogout(){
+        Auth::logout();
+
+        request()->session()->invalidate();
+
+        return redirect()->route('admin.auth');
+
+    }
+
 }

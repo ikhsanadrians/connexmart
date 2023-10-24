@@ -30,27 +30,35 @@ Route::post('topup/receipt',[TransactionController::class,'receipt'])->name('rec
 Route::post('/logout',[IndexController::class,'logout'])->name('logout');
 
 Route::prefix('admin')->group(function () {
-    Route::get('/',[AdminController::class,'index'])->name('admin.index');
-    Route::get('/login',[AdminController::class,'auth'])->name('admin.auth');
-    Route::post('/login',[AdminController::class,'auth_proceed'])->name('admin.auth.proceed');
 
+   Route::middleware('admin')->group(function(){
+    Route::get('/',[AdminController::class,'index'])->name('admin.index');
     Route::get('/user',[AdminController::class,'userindex'])->name('user.index');
     Route::post('/user',[AdminController::class,'useradd'])->name('user.addpost');
     Route::put('/user',[AdminController::class,'userupdate'])->name('user.update');
     Route::delete('/user',[AdminController::class,'userdelete'])->name('user.delete');
-
     Route::get('/entrytransaction',[AdminController::class,'entrytransaction'])->name('entry.index');
     Route::get('/settings',[AdminController::class,'settings'])->name('setting.index');
     Route::get('/notifications',[AdminController::class,'notifications'])->name('notification.index');
+   });
+
+    Route::get('/logout',[AdminController::class,'adminlogout'])->name('admin.logout');
+    Route::get('/login',[AdminController::class,'auth'])->name('admin.auth');
+    Route::post('/login',[AdminController::class,'auth_proceed'])->name('admin.auth.proceed');
 
 });
 
-Route::middleware('admin')->prefix('bank')->group(function () {
-    Route::get('/',[BankController::class,'index'])->name('bank.index');
-    Route::get('/topup',[BankController::class,'topup'])->name('bank.topup');
-    Route::get('/client',[BankController::class,'clientindex'])->name('bank.client');
-    Route::put('/topup',[BankController::class,'topupconfirm'])->name('bank.topupconfirm');
-    Route::patch('/topup',[BankController::class,'topupreject'])->name('bank.topupreject');
+Route::prefix('bank')->group(function () {
+
+    Route::middleware('bank')->group(function(){
+        Route::get('/',[BankController::class,'index'])->name('bank.index');
+        Route::get('/topup',[BankController::class,'topup'])->name('bank.topup');
+        Route::put('/topup',[BankController::class,'topupconfirm'])->name('bank.topupconfirm');
+        Route::patch('/topup',[BankController::class,'topupreject'])->name('bank.topupreject');
+        Route::get('/client',[BankController::class,'clientindex'])->name('bank.client');
+    });
+
     Route::get('/login',[BankController::class,'auth'])->name('bank.auth');
     Route::post('/login',[BankController::class,'auth_proceed'])->name('bank.auth.proceed');
+    Route::get('/logout',[BankController::class,'banklogout'])->name('bank.logout');
 });

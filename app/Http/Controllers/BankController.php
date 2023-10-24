@@ -74,4 +74,13 @@ class BankController extends Controller
         return redirect()->back();
     }
 
+    public function banklogout(){
+        Auth::logout();
+
+        request()->session()->invalidate();
+
+        return redirect()->route('bank.auth');
+
+    }
+
 }
