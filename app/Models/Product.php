@@ -22,4 +22,8 @@ class Product extends Model
     public function transactions(){
       return $this->hasMany(Transaction::class);
     }
+
+    public function category(){
+        return $this->belongsTo(Category::class);
+    }
 }

@@ -18,6 +18,15 @@ const closeModal = () => {
     $('.backdrop').addClass('hidden')
 }
 
+const openModalGoods = () => {
+    $('.addgoodmodal').removeClass('hidden')
+    $('.backdrop').removeClass('hidden')
+}
+
+const closeModalGoods  = () => {
+    $('.addgoodmodal').addClass('hidden');
+    $('.backdrop').addClass('hidden');
+}
 
 $('#openaddmodal').on('click',function(){
       openModal();
@@ -30,6 +39,19 @@ $('#closemodal').on('click',function(){
 $('#closemodalupdate').on('click',function(){
     closeModalUpdate();
 });
+
+
+$('#opengoodsmodal').on('click',function(){
+    openModalGoods()
+})
+
+
+$('#closegoodmodal').on('click',function(){
+    closeModalGoods()
+})
+
+
+
 
 $('.edit-btn').on('click', function(e){
     openModalUpdate()

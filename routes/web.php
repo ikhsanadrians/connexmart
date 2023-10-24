@@ -4,6 +4,7 @@ use App\Http\Controllers\IndexController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BankController;
+use App\Http\Controllers\MartController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -61,4 +62,21 @@ Route::prefix('bank')->group(function () {
     Route::get('/login',[BankController::class,'auth'])->name('bank.auth');
     Route::post('/login',[BankController::class,'auth_proceed'])->name('bank.auth.proceed');
     Route::get('/logout',[BankController::class,'banklogout'])->name('bank.logout');
+});
+
+
+Route::prefix('mart')->group(function () {
+
+    Route::middleware('mart')->group(function(){
+        Route::get('/',[MartController::class,'index'])->name('mart.index');
+        Route::get('/goodscategory',[MartController::class,'goodscategory'])->name('mart.goods.category');
+        Route::get('/goods',[MartController::class,'goodsindex'])->name('mart.goods');
+        Route::post('/goods',[MartController::class,'goodpost'])->name('mart.addgoods');
+        Route::get('/entrytransaction',[MartController::class,'entrytransaction'])->name('mart.entrytransaction');
+
+    });
+
+    Route::get('/login',[MartController::class,'auth'])->name('mart.auth');
+    Route::post('/login',[MartController::class,'auth_proceed'])->name('mart.auth.proceed');
+    Route::get('/logout',[MartController::class,'martlogout'])->name('mart.logout');
 });

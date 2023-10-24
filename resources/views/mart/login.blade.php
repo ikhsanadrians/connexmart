@@ -13,10 +13,10 @@
         <div class="login-forms mt-4 w-1/3 bg-white p-8">
             <div class="admin flex items-center gap-3 font-bold mb-5">
                 <img class="h-5" src="{{ asset('images/static/cnxgroup.png') }}" alt="">
-                <p>Bank</p>
+                <p>Mart</p>
             </div>
 
-            <form method="POST" action="{{ route('bank.auth.proceed') }}" class="mb-8">
+            <form method="POST" action="{{ route('mart.auth.proceed') }}" class="mb-8">
                 @csrf
                 <div class="user-id">
                     <label for="">Email Or Username</label>
