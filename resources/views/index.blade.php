@@ -195,7 +195,7 @@
                                     <input name="quantity" id="quantity" class="w-14 py-1 px-2 mt-2 bg-gray-100 shadow-lg border-2"
                                         type="number" min="1" value="1">
                                     <input type="hidden" id="product_id" name="product_id" value="{{ $product->id }}">
-                                    <button id="{{ $product->id }}" type="button"
+                                    <button data-islogined="@php if(Auth::user()) echo "logined"; else echo "not-logined"; @endphp" id="{{ $product->id }}" type="button"
                                         class="add-to-cart flex items-center bg-[#003034] text-white py-2 px-4 text-sm mt-2 rounded-md">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                             fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">

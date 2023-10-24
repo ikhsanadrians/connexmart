@@ -89,8 +89,6 @@ class TransactionController extends Controller
                 ]);
             }
 
-
-
             return response()->json([
                 "message" => "success",
                 "data" => $product

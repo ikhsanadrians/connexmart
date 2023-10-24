@@ -22,6 +22,21 @@ function openModal(){
     $('.backdrop').removeClass('hidden')
 }
 
+function showLoginCard(){
+    $('.login').removeClass('hidden')
+    $('.backdrop').removeClass('hidden')
+}
+
+function hideLoginCard(){
+    $('.login').addClass('hidden')
+    $('.backdrop').toggleClass('hidden')
+    $('.login-error').addClass('hidden')
+    $('#user-id').val("")
+    $('#user-password').val("")
+}
+
+
+
 function closeModal(){
     $('.success-addproduct').addClass('hidden')
     $('.backdrop').addClass('hidden')
@@ -41,36 +56,40 @@ quantities.forEach(element => {
         const quantityAll = calculateTotal();
         $('#product_count').text(quantityAll);
 
-        console.log(quantityAll);
     });
 });
 
 
 //addToCart Logic
 $('.add-to-cart').on('click',function(e){
-    e.preventDefault()
-    const currentUrl = '/cart'
-
-    let productName = $(this).closest('.product-card').find('h1').text();
-    $('#success-product-name').text(productName)
-    openModal()
-    let productId = $(this).attr('id')
-    let productQuantity = $(this).siblings().eq(0).val()
-
-    $.ajax({
-        method: 'post',
-        url : currentUrl,
-        dataType: 'json',
-        data: {
-            "product_id" : productId,
-            "quantity" : productQuantity,
-            _token: $('meta[name="csrf-token"]').attr('content')
-        },
-        success:function(data){
-           $('#quantity').val(1);
-        },
-        error: function(data){
-             return
-        }
-})
+    if($(this).attr('data-islogined') == "logined"){
+        e.preventDefault()
+        const currentUrl = '/cart'
+    
+        let productName = $(this).closest('.product-card').find('h1').text();
+        $('#success-product-name').text(productName)
+        openModal()
+        let productId = $(this).attr('id')
+        let productQuantity = $(this).siblings().eq(0).val()
+    
+        $.ajax({
+            method: 'post',
+            url : currentUrl,
+            dataType: 'json',
+            data: {
+                "product_id" : productId,
+                "quantity" : productQuantity,
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            success:function(data){
+               $('#quantity').val(1);
+            },
+            error: function(data){
+                 return
+            }
+    })
+    } else {
+        showLoginCard()
+    }
+   
 });
