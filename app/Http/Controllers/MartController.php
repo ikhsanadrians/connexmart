@@ -22,8 +22,7 @@ class MartController extends Controller
    }
 
    public function goodpost(Request $request){
-
-
+     
        $goods = Product::create([
          'name' => $request->name,
          'price' => $request->price,
@@ -38,6 +37,44 @@ class MartController extends Controller
 
        return redirect()->route('mart.goods');
 
+   }
+
+   public function goodsupdate(Request $request){
+        if($request->ajax()){
+          $goodsToUpdate = Product::find($request->product_id);
+          
+          $goodsToUpdate->update([
+            "name" => $request->product_name,
+            "price" => $request->product_price,
+            "stock" => $request->product_stock,
+            "photo" => "photo",
+            "desc" => $request->product_description,
+            "category_id" => $request->product_categoryid,
+            "stand" => 2
+          ]);
+
+          alert()->success("Success","Success Update Product");
+          
+          return response()->json([
+             "message" => "Success Update Data!",
+             "data" => $goodsToUpdate
+          ]);
+
+        }
+   }
+
+   public function goodsdelete(Request $request){
+if($request->ajax()) {
+  $deletedProduct = Product::find($request->id_to_delete);
+ 
+  alert()->success("Success","Success Delete Product");
+          
+  return response()->json([
+    "message" => "Success Delete Data!",
+    "data" => $deletedProduct
+  ]);
+
+      }
    }
 
    public function addcategory(){

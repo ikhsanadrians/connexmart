@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\TopUp;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Wallet;
@@ -72,6 +73,11 @@ class BankController extends Controller
         if(Auth::attempt($credentials)) return redirect()->route('bank.index');
 
         return redirect()->back();
+    }
+
+    public function transaction(){
+        $transactions = Transaction::all();
+        return view('bank.transaction',compact('transactions'));
     }
 
     public function banklogout(){

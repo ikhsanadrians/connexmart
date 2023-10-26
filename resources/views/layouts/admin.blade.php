@@ -17,7 +17,7 @@
     <main class="px-0 flex">
         @include('components.sidebaradmin')
         <div class="container w-full flex pl-[16rem] justify-center pt-8">
-            <div class="wrappers w-4/5">
+            <div class="wrappers w-[90%]">
                 @yield('content')
             </div>
         </div>

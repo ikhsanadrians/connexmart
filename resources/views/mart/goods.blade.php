@@ -11,9 +11,9 @@
                       </svg>
                 </button>
             </div>
-            <form action="{{ route('mart.addgoods')}}" method="POST" class="input mt-4 px-6">
+            <form class="input mt-4 px-6" action="{{ route('mart.addgoods')}}" method="POST">
                 @csrf
-                <div class="username py-1">
+                <div class="username py-1"> 
                     <label for="username">
                         Goods Name
                 </label>
@@ -31,10 +31,10 @@
                         <label for="category">
                            Category
                         </label>
-                        <select id="category-input" class="category-select w-full rounded-md focus:outline-none focus:ring-2 ring-[#003034] bg-gray-100 my-2 p-2" name="category_id">
+                        <select id="category-input" class="category-select-goods w-full rounded-md focus:outline-none focus:ring-2 ring-[#003034] bg-gray-100 my-2 p-2" name="category_id">
                               <option value="goods-category">Select Goods Category</option>
                             @foreach($productcategories as $productcategory)
-                              <option value="{{ $productcategory->id }}">{{ ucfirst($productcategory->name) }}</option>
+                              <option value="{{ $productcategory->id  }}">{{ ucfirst($productcategory->name) }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -51,7 +51,7 @@
                     </label>
                     <textarea name="description" id="" class="w-full rounded-md focus:outline-none focus:ring-2 ring-[#003034] bg-gray-100 my-2 p-2" placeholder="Type A Goods Description"></textarea>
                 </div>
-                <button id="default" type="submit" class="submit-btn bg-[#003034] py-2 text-white px-4 rounded-md mt-4 w-full">
+                <button type="submit" id="add-btn-goods" class="submit-btn bg-[#003034] py-2 text-white px-4 rounded-md mt-4 w-full">
                     Submit
                 </button>
             </form>
@@ -62,35 +62,56 @@
     <div class="wrappers flex h-full w-full">
         <div class="modal-input-group relative w-full px-4 py-8">
             <div class="flex justify-between pr-5">
-                <p class="font-bold px-6"><span id="user-name-modal">Update User</span></p>
-                <button id="closemodalupdate">
+                <p class="font-bold px-6"><span id="user-name-modal">Update Product</span></p>
+                <button id="closemodalgoodsupdate">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" class="bi bi-x-lg" viewBox="0 0 16 16">
                         <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
                       </svg>
                 </button>
             </div>
-            {{-- <form class="input mt-4 px-6">
+            <form method="POST" class="input mt-4 px-6">
                 <div class="username py-1">
-                    <label for="username">
-                        Username
+                    <label for="goodsname">
+                        Goods Name
                 </label>
-                    <input data-userid="" id="username-input-update" class="w-full rounded-md focus:outline-none focus:ring-2 ring-[#003034] bg-gray-100 my-2 p-2" type="text" name="name" id="username" placeholder="Type An Username Here">
+                    <input data-goodsname="" id="goods-input" class="w-full rounded-md focus:outline-none focus:ring-2 ring-[#003034] bg-gray-100 my-2 p-2" type="text" name="name" id="goods" placeholder="Type An Goods Name Here">
                 </div>
-                <div class="py-1">
+                <div class="grid grid-cols-3 gap-2">
+                    <div class="py-1" id="price-input">
+                        <label for="price">
+                            Price
+                        </label>
+                        <input  class="w-full rounded-md focus:outline-none focus:ring-2 ring-[#003034] bg-gray-100 my-2 p-2" type="text" name="price" id="goods-price" placeholder="Type A Price Here">
+
+                    </div>
+                    <div class="py-1">
+                        <label for="category">
+                           Category
+                        </label>
+                        <select id="category-input-update" class="category-select-goods w-full rounded-md focus:outline-none focus:ring-2 ring-[#003034] bg-gray-100 my-2 p-2" name="category_id">
+                              <option value="goods-category">Select Goods Category</option>
+                            @foreach($productcategories as $productcategory)
+                              <option value="{{ $productcategory->id }}">{{ ucfirst($productcategory->name) }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="py-1">
+                        <label for="role">
+                            Stock
+                        </label>
+                        <input min="0"  class="w-full rounded-md focus:outline-none focus:ring-2 ring-[#003034] bg-gray-100 my-2 p-2" type="number" name="stock" id="goods-stock" placeholder="Type A Stock Here">
+                    </div>
+                </div>
+                <div class="w-full">
                     <label for="role">
-                        Role
+                        Description
                     </label>
-                    <select id="role-input-update" class="role-select-update w-full rounded-md focus:outline-none focus:ring-2 ring-[#003034] bg-gray-100 my-2 p-2" name="role_id">
-                          <option value="role">Select User Role</option>
-                        @foreach($roles as $role)
-                          <option value="{{ $role->id }}">{{ ucfirst($role->name) }}</option>
-                        @endforeach
-                    </select>
+                    <textarea name="description" id="goods-description" class="w-full rounded-md focus:outline-none focus:ring-2 ring-[#003034] bg-gray-100 my-2 p-2" placeholder="Type A Goods Description"></textarea>
                 </div>
-                <button id="update-btn" class="submit-btn bg-[#003034] py-2 text-white px-4 rounded-md mt-4 w-full">
+                <button id="update-btn-goods" class="bg-[#003034] py-2 text-white px-4 rounded-md mt-4 w-full">
                     Submit
                 </button>
-            </form> --}}
+            </form>
         </div>
     </div>
 </div>
@@ -135,18 +156,18 @@
             <tbody>
                 @foreach ( $products  as $key => $product)
                 <tr>
-                    <td class="id" data-id="{{ $product->id }}">{{ $key + 1 }}</td>
-                    <td class="username-td" data-username="{{ $product->name }}">{{ $product->name }}</td>
-                    <td class="price-td" data-pricename="{{ $product->price}}" data-role="{{ $product->price }}">{{ format_to_rp($product->price) }}</td>
-                    <td>{{ $product->stock }}</td>
-                    <td>{{ $product->category->name }}</td>
+                    <td class="product-id" data-productid="{{ $product->id }}">{{ $key + 1 }}</td>
+                    <td class="product-td" data-description="{{ $product->desc }}">{{ $product->name }}</td>
+                    <td class="price-td" data-price="{{ $product->price }}">{{ format_to_rp($product->price) }}</td>
+                    <td d class="product-stock">{{ $product->stock }}</td>
+                    <td data-categoryid="{{ $product->category->id }}" class="product-category">{{ $product->category->name }}</td>
                     <td>
-                        <button id="{{ $product->id }}" data-id="{{ $product->name }}" class="edit-btn bg-gradient-to-r from-yellow-600 to-yellow-400 p-2 text-white rounded-md">
+                        <button id="{{ $product->id }}" data-id="{{ $product->name }}" class="edit-goods-update-btn bg-gradient-to-r from-yellow-600 to-yellow-400 p-2 text-white rounded-md">
                             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
                                 <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z"/>
                             </svg>
                         </button>
-                        <button id="{{ $product->id }}" class="delete-btn bg-gradient-to-r from-red-600 to-red-400 p-2 text-white rounded-md">
+                        <button id="{{ $product->id }}" class="delete-btn-goods-update bg-gradient-to-r from-red-600 to-red-400 p-2 text-white rounded-md">
                             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
                                 <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z"/>
                             </svg>

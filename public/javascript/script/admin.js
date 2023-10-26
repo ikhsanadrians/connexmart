@@ -28,6 +28,16 @@ const closeModalGoods  = () => {
     $('.backdrop').addClass('hidden');
 }
 
+const openModalGoodsUpdate = () => {
+    $('.updategoodsmodal').removeClass('hidden')
+    $('.backdrop').removeClass('hidden')
+}
+
+const closeModalGoodsUpdate = () => {
+    $('.updategoodsmodal').addClass('hidden')
+    $('.backdrop').addClass('hidden')
+}
+
 $('#openaddmodal').on('click',function(){
       openModal();
 })
@@ -41,6 +51,7 @@ $('#closemodalupdate').on('click',function(){
 });
 
 
+
 $('#opengoodsmodal').on('click',function(){
     openModalGoods()
 })
@@ -50,6 +61,9 @@ $('#closegoodmodal').on('click',function(){
     closeModalGoods()
 })
 
+$('#closemodalgoodsupdate').on('click',function(){  
+    closeModalGoodsUpdate()
+})
 
 
 
@@ -123,7 +137,88 @@ $('.delete-btn').on('click',function(e){
             }
     })
     }
-
-
 })
 
+$('.edit-goods-update-btn').on('click', function(e){
+    openModalGoodsUpdate()
+
+    const productId = $(this).parent().siblings().eq(0).text()
+    const productName = $(this).parent().siblings().eq(1).text()
+    const productPrice = $(this).parent().siblings().eq(2).data('price')
+    const productStock = $(this).parent().siblings().eq(3).text()
+    const productCategoryId = $(this).parent().siblings().eq(4).data('categoryid')
+    const productDescription = $(this).parent().siblings().eq(1).data('description')
+
+
+    let categoryProductSelect = $(".category-select-goods");
+   
+    categoryProductSelect.find('option').each(function(){
+        let value = $(this).val()
+        value == productCategoryId ? $(this).prop('selected',true) : $(this).prop('selected',false)
+    })
+    
+    $('#goods-input').val(productName)
+    $('#goods-price').val(productPrice)
+    $('#goods-stock').val(productStock)
+    $('#goods-description').val(productDescription)
+})
+
+$('#update-btn-goods').on('click', function(e){
+
+    e.preventDefault();
+    const currentUrl = window.location.pathname
+    
+    const productName = $('#goods-input').val()
+    const productPrice = $('#goods-price').val()
+    const productStock = $('#goods-stock').val()
+    const productDescription = $('#goods-description').val()
+    const productCategoryId = $('#category-input-update').val();
+
+    $.ajax({
+        method: 'put',
+        url : currentUrl,
+        dataType: 'json',
+        data: {
+            "product_id" : $('.product-id').data('productid'),
+            "product_name" : productName,
+            "product_price" : productPrice,
+            "product_description" : productDescription,
+            "product_stock" : productStock,
+            "product_categoryid" : productCategoryId,
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+        success:function(data){
+            closeModalGoodsUpdate()
+            location.reload()
+        },
+        error: function(data){
+             console.log(data)
+        }
+
+   })
+})
+
+
+$('.delete-btn-goods-update').on('click',function(e){
+    if( confirm('Apakah Yakin Ingin Menghapus Product Ini?')){
+        e.preventDefault();
+        const currentUrl = window.location.pathname
+        const idToDelete = $(this).parent().siblings().eq(0).text();
+
+        $.ajax({
+            method: 'delete',
+            url : currentUrl,
+            dataType: 'json',
+            data: {
+                "id_to_delete" : idToDelete,
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            success:function(data){
+                location.reload()
+            },
+            error: function(data){
+                 return
+            }
+    })
+    }
+})
