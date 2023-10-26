@@ -24,6 +24,7 @@ Route::get('/profile',[IndexController::class,'profile'])->name('profile');
 Route::get('/cart',[TransactionController::class,'index'])->name('cart.index');
 Route::post('/cart',[TransactionController::class,'sentToCart'])->name('cart.proceed');
 Route::put('/cart',[TransactionController::class,'payCart'])->name('cart.pay');
+Route::put('/cart/quantityupdate',[TransactionController::class,'updateQuantity'])->name('cart.quantity.update');
 Route::get('/cart/receipt',[TransactionController::class,'cart_receipt'])->name('cart.receipt');
 Route::get('/topup',[TransactionController::class,'topUp'])->name('topup.index');
 Route::post('/topup',[TransactionController::class,'topUpProceed'])->name('topup.proceed');

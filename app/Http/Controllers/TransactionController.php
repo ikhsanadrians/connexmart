@@ -96,6 +96,24 @@ class TransactionController extends Controller
         }
     }
 
+    public function updateQuantity(Request $request){
+
+        if($request->ajax()){
+
+            $quantityToUpdate = Transaction::where('id', $request->transaction_id)->where('user_id',Auth::user()->id)->first();
+
+            $quantityToUpdate->update([
+               'quantity' => $request->quantity
+            ]);
+
+            return response()->json([
+                "message" => "success, update quantity",
+                "data" => $quantityToUpdate
+            ]);
+        }
+
+    }
+
 
     public function topUp()
     {
