@@ -1,8 +1,24 @@
+import rupiah from "./utils/rupiahFormater.js";
+
 const quantities = document.querySelectorAll('.quantities')
 let currentInputElement = "";
 const priceElements = document.querySelectorAll('.price-products');
 
 // Fungsi untuk menghitung jumlah semua nilai input
+
+$(document).ready(function() {
+    initializeTotals();
+    updateTotals();
+});
+
+
+function initializeTotals() {
+    const totalPricesFromStorage = localStorage.getItem('total_prices');
+    if (totalPricesFromStorage) {
+        $('#total_prices').text(totalPricesFromStorage);
+    }
+}
+
 
 function calculateTotalQuantity() {
     let totalQuantity = 0;
@@ -28,7 +44,10 @@ function updateTotals() {
     const totalQuantity = calculateTotalQuantity();
     const totalPrice = calculateTotalPrice();
     $('#product_count').text(totalQuantity);
-    $('#total_prices').text(totalPrice);
+    localStorage.setItem('total_prices', totalPrice);
+    $('#total_prices').text(rupiah(totalPrice));
+
+    $('#product-price-top').text(rupiah(totalPrice));
 }
 
 
@@ -66,7 +85,13 @@ $('#close-btn-successaddproduct').on('click',function(){
 
 quantities.forEach(element => {
     element.addEventListener('change', function(e) {
+        let quantity = e.target.id 
+        let cart = $(`#cart-${quantity}`).val(e.target.value)
+        console.log(cart)
+
         updateTotals();
+       
+        // e.target.value = quantity
         // Memperbarui tampilan quantityAll
         $.ajax({
             method: 'put',
@@ -78,6 +103,7 @@ quantities.forEach(element => {
                 _token: $('meta[name="csrf-token"]').attr('content')
             },
             success:function(data){
+               
                 console.log(data)
             },
             error: function(data){
