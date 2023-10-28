@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Receipt</title>
     <style>
         @media print {
@@ -37,9 +38,9 @@
                                 <th class="border-[1.5px] border-gray-400 p-2">Quantity</th>
                                 <th class="border-[1.5px] border-gray-400 p-2">Price</th>
                             </tr>
-                            @foreach ($currentTransactions as $transaction)
+                            @foreach ($currentTransactions as $key => $transaction)
                             <tr class="p-2">
-                                   <td class="border-[1.5px] border-gray-400 p-2">{{ $transaction->id }}</td>
+                                   <td class="border-[1.5px] border-gray-400 p-2">{{ $key + 1 }}</td>
                                    <td class="border-[1.5px] border-gray-400 p-2">{{ $transaction->product->name }}</td>
                                    <td class="border-[1.5px] border-gray-400 p-2">{{ $transaction->quantity }}</td>
                                    <td class="border-[1.5px] border-gray-400 p-2">{{ format_to_rp($transaction->price) }}</td>
@@ -74,9 +75,27 @@
         </div>
 
     </div>
-
+    <script src="{{ asset('javascript/lib/jquery.min.js') }}"></script>
     <script>
         window.print()
+
+        $(document).ready(function() {
+            $.ajax({
+            method: 'put',
+            url : '/cart/receipt/take',
+            dataType: 'json',
+            data: {
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            success:function(data){
+                console.log(data)
+            },
+            error:function(data){
+                console.log(data)
+            }
+            })
+       });
+
 
         function backhome(){
             window.location.href = "/"

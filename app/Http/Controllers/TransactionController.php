@@ -32,30 +32,43 @@ class TransactionController extends Controller
 
     public function payCart(Request $request)
     {
-        $total_prices = 0;
-        $wallets = Wallet::where('user_id', Auth::user()->id)->first();
-        $current_debit = $wallets->debit;
-        $current_credit = $wallets->credit;
+        if($request->ajax()){
+            $total_prices = $request->total_prices;
+            $wallets = Wallet::where('user_id', Auth::user()->id)->first();
+            $current_debit = $wallets->debit;
+            $current_credit = $wallets->credit;
 
-        $carts = Transaction::with('product')->where('user_id', Auth::user()->id)->where('status', 'not_paid')->orderBy('created_at', 'desc')->get();
+            $carts = Transaction::with('product')->where('user_id', Auth::user()->id)->where('status', 'not_paid')->orderBy('created_at', 'desc')->get();
 
-        foreach ($carts as $product_cart) {
-            $total_prices += $product_cart->price;
-        }
 
-        foreach ($carts as $cr) {
-            $cr->update([
-                "status" => "paid"
+            // foreach ($carts as $product_cart) {
+            //     $total_prices += $pr duct_cart->price;
+            // }
+
+
+
+            foreach ($carts as $cr) {
+                $cr->update([
+                    "status" => "paid"
+                ]);
+            }
+
+            $wallets->update([
+                "debit" => ($current_debit += $total_prices),
+                "credit" => ($current_credit -= $total_prices)
             ]);
+
+
+            session(['total_price' => $total_prices]);
+
+
+            return response()->json([
+                 "status"=> "success",
+            ]);
+
+
         }
 
-        $wallets->update([
-            "debit" => ($current_debit += $total_prices),
-            "credit" => ($current_credit -= $total_prices)
-        ]);
-
-
-        return redirect()->route('cart.receipt');
     }
 
     public function sentToCart(Request $request)
@@ -152,8 +165,9 @@ class TransactionController extends Controller
         return view('receipt', compact('currentTopUp'));
     }
 
-    public function cart_receipt(Request $request)
+    public function cart_receipt()
     {
+
         $total_prices = 0;
         $currentTransactions = Transaction::where('status', 'paid')->where('user_id', Auth::user()->id)->get();
 
@@ -168,21 +182,27 @@ class TransactionController extends Controller
         );
 
         $currentTransactions->qr_code = $data;
-        $currentTransactions->total_prices = $total_prices;
+        $currentTransactions->total_prices = session('total_price');
+
 
         return view('receiptcart', compact('currentTransactions'));
+
     }
 
     public function cart_take(Request $request)
     {
-        $currentTransactions = Transaction::where('status', 'paid')->where('user_id', Auth::user()->id)->get();
+        if($request->ajax()){
+            $currentTransactions = Transaction::where('status', 'paid')->where('user_id', Auth::user()->id)->get();
 
-        foreach ($currentTransactions as $transaction) {
-            $transaction->update([
-                'status' => 'taken'
-            ]);
+            foreach ($currentTransactions as $transaction) {
+                $transaction->update([
+                    'status' => 'taken'
+                ]);
+            }
         }
 
-        return redirect()->route('home');
+        return response()->json([
+            "message" => "Berhasil Update"
+        ]);
     }
 }

@@ -46,8 +46,8 @@ function updateTotals() {
     $('#product_count').text(totalQuantity);
     localStorage.setItem('total_prices', totalPrice);
     $('#total_prices').text(rupiah(totalPrice));
-
     $('#product-price-top').text(rupiah(totalPrice));
+    $('#product-price-top').attr('data-prices',totalPrice);
 }
 
 
@@ -85,14 +85,9 @@ $('#close-btn-successaddproduct').on('click',function(){
 
 quantities.forEach(element => {
     element.addEventListener('change', function(e) {
-        let quantity = e.target.id 
-        let cart = $(`#cart-${quantity}`).val(e.target.value)
-        console.log(cart)
-
-        updateTotals();
-       
         // e.target.value = quantity
         // Memperbarui tampilan quantityAll
+        updateTotals();
         $.ajax({
             method: 'put',
             url : '/cart/quantityupdate',
@@ -103,12 +98,13 @@ quantities.forEach(element => {
                 _token: $('meta[name="csrf-token"]').attr('content')
             },
             success:function(data){
-               
+                updateTotals();
+
                 console.log(data)
             },
             error: function(data){
                  console.log(data)
-            }
+        }
     })
 
 
@@ -149,3 +145,29 @@ $('.add-to-cart').on('click',function(e){
     }
 
 });
+
+
+//payCart Logic
+$('#btn-pay').on('click',function(e){
+
+    const currentUrl = '/cart/pay'
+
+    e.preventDefault()
+    $.ajax({
+        method: 'put',
+        url : currentUrl,
+        dataType: 'json',
+        data: {
+            total_prices: $('#product-price-top').attr('data-prices') ,
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function (data) {
+            window.location.replace("/cart/receipt");
+        },
+        error: function (data){
+            console.log(data)
+        }
+     })
+
+
+})

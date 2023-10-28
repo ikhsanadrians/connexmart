@@ -58,8 +58,10 @@
 
     </div>
 
+
     <script>
         window.print()
+
 
         function backhome(){
             window.location.href = "/"
