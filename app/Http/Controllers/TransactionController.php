@@ -41,12 +41,6 @@ class TransactionController extends Controller
             $carts = Transaction::with('product')->where('user_id', Auth::user()->id)->where('status', 'not_paid')->orderBy('created_at', 'desc')->get();
 
 
-            // foreach ($carts as $product_cart) {
-            //     $total_prices += $pr duct_cart->price;
-            // }
-
-
-
             foreach ($carts as $cr) {
                 $cr->update([
                     "status" => "paid"
@@ -107,6 +101,18 @@ class TransactionController extends Controller
                 "data" => $product
             ]);
         }
+    }
+
+    public function cart_delete(Request $request){
+       if($request->ajax()){
+           $TransactionToDelete = Transaction::find($request->product_id);
+
+           $delete = $TransactionToDelete->delete();
+
+           return response()->json([
+               "message" => "success delete transaction",
+           ]);
+       }
     }
 
     public function updateQuantity(Request $request){

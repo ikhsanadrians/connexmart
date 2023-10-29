@@ -111,6 +111,33 @@ quantities.forEach(element => {
     });
 });
 
+//delete product in cart logic
+
+$('.btn-delete-product').on('click',function(e){
+    const currentUrl = "/cart"
+    const product = $(this);
+    const currentBtnId =  e.currentTarget.id
+
+    $.ajax({
+        method: 'delete',
+        url : currentUrl,
+        dataType: 'json',
+        data: {
+            "product_id" : currentBtnId,
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+        success:function(data){
+            product.parent().parent().parent().remove()
+            location.reload()
+        },
+        error: function(data){
+             console.log(data)
+        }
+    })
+
+
+})
+
 
 //addToCart Logic
 $('.add-to-cart').on('click',function(e){
