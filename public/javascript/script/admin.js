@@ -61,7 +61,7 @@ $('#closegoodmodal').on('click',function(){
     closeModalGoods()
 })
 
-$('#closemodalgoodsupdate').on('click',function(){  
+$('#closemodalgoodsupdate').on('click',function(){
     closeModalGoodsUpdate()
 })
 
@@ -151,12 +151,12 @@ $('.edit-goods-update-btn').on('click', function(e){
 
 
     let categoryProductSelect = $(".category-select-goods");
-   
+
     categoryProductSelect.find('option').each(function(){
         let value = $(this).val()
         value == productCategoryId ? $(this).prop('selected',true) : $(this).prop('selected',false)
     })
-    
+
     $('#goods-input').val(productName)
     $('#goods-price').val(productPrice)
     $('#goods-stock').val(productStock)
@@ -167,7 +167,7 @@ $('#update-btn-goods').on('click', function(e){
 
     e.preventDefault();
     const currentUrl = window.location.pathname
-    
+
     const productName = $('#goods-input').val()
     const productPrice = $('#goods-price').val()
     const productStock = $('#goods-stock').val()
@@ -215,9 +215,10 @@ $('.delete-btn-goods-update').on('click',function(e){
             },
             success:function(data){
                 location.reload()
+                // console.log(data)
             },
             error: function(data){
-                 return
+                 console.log(data)
             }
     })
     }

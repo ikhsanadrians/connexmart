@@ -51,9 +51,11 @@ class TransactionController extends Controller
 
 
                 foreach ($carts as $cr) {
-                    $cr->update([
-                        "status" => "paid"
-                    ]);
+                    if($cr->product->deleted_at == ""){
+                        $cr->update([
+                            "status" => "paid"
+                        ]);
+                    }
                 }
 
                 $wallets->update([

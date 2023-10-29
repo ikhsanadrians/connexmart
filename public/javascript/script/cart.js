@@ -206,7 +206,8 @@ $('#btn-pay').on('click',function(e){
             window.location.replace("/cart/receipt");
         },
         error: function (data){
-            openModalBalanceNotEnough();
+            // openModalBalanceNotEnough();
+            console.log(data)
         }
      })
 

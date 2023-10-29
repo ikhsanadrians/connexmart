@@ -72,6 +72,8 @@ class MartController extends Controller
     if ($request->ajax()) {
       $deletedProduct = Product::find($request->id_to_delete);
 
+      $deletedProduct->delete();
+
       alert()->success("Success", "Success Delete Product");
 
       return response()->json([

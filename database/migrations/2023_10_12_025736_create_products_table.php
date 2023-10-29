@@ -19,7 +19,8 @@ return new class extends Migration
             $table->integer("stock");
             $table->text("photo");
             $table->text("desc");
-            $table->foreignId("category_id")->constrained();
+            $table->softDeletes();
+            $table->foreignId("category_id")->constrained()->onDelete('cascade');
             $table->string("stand",2);
             $table->timestamps();
         });
