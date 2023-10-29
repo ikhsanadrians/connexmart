@@ -106,23 +106,38 @@
     <div class="carouse w-full h-96 rounded-lg shadow-sm overflow-hidden hidden lg:block">
         <img class="w-full h-full object-cover" src="{{ asset('images/static/caroselrevisi.png') }}" alt="carousel">
     </div>
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+    <div class="grid grid-cols-1 lg:mx-0 mx-4 lg:grid-cols-2 gap-4">
         <div
-            class="cnx-pay  bg-white  h-[160px] lg:h-3/4 relative  font-semibold text-xl mt-6 rounded-md border-[1.5px] border-gray-200 p-4">
+            class="cnx-pay  bg-white  h-fit lg:h-3/4 relative  font-semibold text-xl mt-6 rounded-md border-[1.5px] border-gray-200">
             @if (Auth::user())
-                <div class="title flex items-center gap-1 font-bold text-sm">
-                    <p>Your</p>
-                    <img src="{{ asset('images/static/connexpay.png') }}" alt="cnx-pay" class="h-5 lg:h-8">
-                    <p>Balance</p>
+                <div class="balance-mobile flex justify-between px-4">
+                    <div class="balance py-4">
+                        <div class="title flex items-center gap-1 font-bold lg:text-base text-sm">
+                            <p class="lg:block hidden">Your</p>
+                            <img src="{{ asset('images/static/connexpay.png') }}" alt="cnx-pay" class="h-5 lg:h-8">
+                            <p>Balance</p>
+                        </div>
+                        @foreach (Auth::user()->wallet as $user_wallet)
+                            <h1 class="balance text-2xl lg:text-5xl mt-4 font-bold text-gray-700">
+                                  {{ format_to_rp($user_wallet->credit) }}
+                            </h1>
+                        @endforeach
+                    </div>
+                    <div class="action-mobile flex items-center gap-1 px-3 text-sm justify-center lg:hidden">
+                        <a href="{{ route('topup.index')}}" class="top-up bg-blue-500 py-2 px-3 text-white rounded-lg">
+                            Top Up
+                        </a>
+                        <div class="transfer bg-blue-500 py-2 px-3 text-white rounded-lg">
+                            Transfer
+                        </div>
+                    </div>
+
                 </div>
-                @foreach (Auth::user()->wallet as $user_wallet)
-                    <h1 class="balance text-5xl mt-4 font-bold text-gray-700">
-                          {{ format_to_rp($user_wallet->credit) }}
-                    </h1>
-                @endforeach
-                <div class="flex mt-4 gap-2 absolute bottom-4 right-4">
+
+                <div class="mt-4 gap-2 absolute bottom-4 right-4 lg:flex hidden">
+                    <div class="flex">
                     <a href="{{ route('topup.index')}}"
-                        class="top-up flex flex-col justify-center items-center bg-gradient-to-r from-sky-400 to-blue-500 lg:p-4 p-2 text-sm text-white rounded-md">
+                        class="top-up flex flex-col justify-center items-center bg-gradient-to-r from-sky-400 to-blue-500 lg:p-4 p-2 text-white rounded-md">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                             class="bi bi-arrow-up" viewBox="0 0 16 16">
                             <path fill-rule="evenodd"
@@ -130,6 +145,7 @@
                         </svg>
                         Top Up
                     </a>
+                </div>
                     <div
                         class="transfer flex flex-col justify-center items-center bg-gradient-to-r from-sky-400 to-blue-500 p-4 text-white rounded-md">
                         <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor"
@@ -154,7 +170,7 @@
             <div class="title flex items-center gap-1 font-bold">
                 <h1>Best Category</h1>
             </div>
-            <div class="product-category-list grid grid-cols-1 lg:grid-cols-3 mt-4 gap-3 h-fit">
+            <div class="product-category-list lg:grid lg:grid-cols-3 mt-4 gap-3 h-fit">
                 <div
                     class="food-1 h-3/4 rounded-md relative overflow-hidden user-select-none pointer-events-none border-gray-200 border-[1.5px]">
                     <div class="img w-full h-full overflow-hidden user-select-none pointer-events-none">
@@ -215,7 +231,7 @@
                             <div class="action-right">
                                 <form
                                     class=" flex items-center gap-2">
-                                    <input name="quantity" id="quantity" class="w-14 py-1 px-2 mt-2 bg-gray-100 shadow-lg border-2"
+                                    <input name="quantity" id="quantity-{{ $product->id }}" class="w-14 py-1 px-2 mt-2 bg-gray-100 shadow-lg border-2"
                                         type="number" min="1" value="1">
                                     <input type="hidden" id="product_id" name="product_id" value="{{ $product->id }}">
                                     <button data-islogined="@php if(Auth::user()) echo "logined"; else echo "not-logined"; @endphp" id="{{ $product->id }}" type="button"

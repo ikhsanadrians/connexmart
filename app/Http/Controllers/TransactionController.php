@@ -32,34 +32,44 @@ class TransactionController extends Controller
 
     public function payCart(Request $request)
     {
-        if($request->ajax()){
+        if ($request->ajax()) {
+
             $total_prices = $request->total_prices;
             $wallets = Wallet::where('user_id', Auth::user()->id)->first();
-            $current_debit = $wallets->debit;
-            $current_credit = $wallets->credit;
 
-            $carts = Transaction::with('product')->where('user_id', Auth::user()->id)->where('status', 'not_paid')->orderBy('created_at', 'desc')->get();
+            if ($total_prices > $wallets->credit) {
+                return response()->json([
+                    "message" => "Your Balance Is Not Enough",
+                ],406);
+
+            } else {
+
+                $current_debit = $wallets->debit;
+                $current_credit = $wallets->credit;
+
+                $carts = Transaction::with('product')->where('user_id', Auth::user()->id)->where('status', 'not_paid')->orderBy('created_at', 'desc')->get();
 
 
-            foreach ($carts as $cr) {
-                $cr->update([
-                    "status" => "paid"
+                foreach ($carts as $cr) {
+                    $cr->update([
+                        "status" => "paid"
+                    ]);
+                }
+
+                $wallets->update([
+                    "debit" => ($current_debit += $total_prices),
+                    "credit" => ($current_credit -= $total_prices)
                 ]);
+
+
+                session(['total_price' => $total_prices]);
+
+
+                return response()->json([
+                    "status" => "success",
+                ]);
+
             }
-
-            $wallets->update([
-                "debit" => ($current_debit += $total_prices),
-                "credit" => ($current_credit -= $total_prices)
-            ]);
-
-
-            session(['total_price' => $total_prices]);
-
-
-            return response()->json([
-                 "status"=> "success",
-            ]);
-
 
         }
 
@@ -71,15 +81,15 @@ class TransactionController extends Controller
         if ($request->ajax()) {
             $product = Product::find($request->product_id);
             $productPrice = $product->price;
-            $productSummaryPrice  = ($productPrice * $request->quantity);
+            $productSummaryPrice = ($productPrice * $request->quantity);
 
-            $sameTransaction =  Transaction::where('product_id', $request->product_id)
-            ->where('user_id', Auth::user()->id)
-            ->where('status', 'not_paid')
-            ->first();
+            $sameTransaction = Transaction::where('product_id', $request->product_id)
+                ->where('user_id', Auth::user()->id)
+                ->where('status', 'not_paid')
+                ->first();
 
             if ($sameTransaction) {
-                $sumQuantity =  $sameTransaction->quantity += $request->quantity;
+                $sumQuantity = $sameTransaction->quantity += $request->quantity;
                 $sumPrice = $sumQuantity * $product->price;
                 $sameTransaction->update([
                     'quantity' => $sumQuantity,
@@ -92,7 +102,7 @@ class TransactionController extends Controller
                     "status" => "not_paid",
                     "order_id" => "INV-" . Auth::user()->id . now()->format('dmYHis'),
                     "quantity" => $request->quantity,
-                    "price" =>  $productSummaryPrice
+                    "price" => $productSummaryPrice
                 ]);
             }
 
@@ -103,26 +113,28 @@ class TransactionController extends Controller
         }
     }
 
-    public function cart_delete(Request $request){
-       if($request->ajax()){
-           $TransactionToDelete = Transaction::find($request->product_id);
+    public function cart_delete(Request $request)
+    {
+        if ($request->ajax()) {
+            $TransactionToDelete = Transaction::find($request->product_id);
 
-           $delete = $TransactionToDelete->delete();
+            $delete = $TransactionToDelete->delete();
 
-           return response()->json([
-               "message" => "success delete transaction",
-           ]);
-       }
+            return response()->json([
+                "message" => "success delete transaction",
+            ]);
+        }
     }
 
-    public function updateQuantity(Request $request){
+    public function updateQuantity(Request $request)
+    {
 
-        if($request->ajax()){
+        if ($request->ajax()) {
 
-            $quantityToUpdate = Transaction::where('id', $request->transaction_id)->where('user_id',Auth::user()->id)->first();
+            $quantityToUpdate = Transaction::where('id', $request->transaction_id)->where('user_id', Auth::user()->id)->first();
 
             $quantityToUpdate->update([
-               'quantity' => $request->quantity
+                'quantity' => $request->quantity
             ]);
 
             return response()->json([
@@ -197,7 +209,7 @@ class TransactionController extends Controller
 
     public function cart_take(Request $request)
     {
-        if($request->ajax()){
+        if ($request->ajax()) {
             $currentTransactions = Transaction::where('status', 'paid')->where('user_id', Auth::user()->id)->get();
 
             foreach ($currentTransactions as $transaction) {

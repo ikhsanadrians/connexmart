@@ -71,6 +71,16 @@ function hideLoginCard(){
 }
 
 
+function openModalBalanceNotEnough(){
+    $('.balance-not-enough').removeClass('hidden')
+    $('.backdrop').removeClass('hidden')
+}
+
+function closeModalBalanceNotEnough(){
+    $('.balance-not-enough').addClass('hidden')
+    $('.backdrop').addClass('hidden')
+}
+
 
 function closeModal(){
     $('.success-addproduct').addClass('hidden')
@@ -79,6 +89,10 @@ function closeModal(){
 
 $('#close-btn-successaddproduct').on('click',function(){
     closeModal()
+})
+
+$('#close-btn-balancenotenough').on('click',function(){
+    closeModalBalanceNotEnough()
 })
 
 
@@ -192,7 +206,7 @@ $('#btn-pay').on('click',function(e){
             window.location.replace("/cart/receipt");
         },
         error: function (data){
-            console.log(data)
+            openModalBalanceNotEnough();
         }
      })
 
