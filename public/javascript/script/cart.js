@@ -207,7 +207,6 @@ $('#btn-pay').on('click',function(e){
         },
         error: function (data){
             openModalBalanceNotEnough();
-            // console.log(data)
         }
      })
 

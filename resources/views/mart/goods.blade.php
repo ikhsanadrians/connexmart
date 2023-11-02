@@ -11,7 +11,7 @@
                       </svg>
                 </button>
             </div>
-            <form class="input mt-4 px-6" action="{{ route('mart.addgoods')}}" method="POST">
+            <form class="input mt-4 px-6" action="{{ route('mart.addgoods')}}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="username py-1"> 
                     <label for="username">
@@ -50,6 +50,21 @@
                         Description
                     </label>
                     <textarea name="description" id="" class="w-full rounded-md focus:outline-none focus:ring-2 ring-[#003034] bg-gray-100 my-2 p-2" placeholder="Type A Goods Description"></textarea>
+                </div>
+                <div class="w-full">
+                    <label for="thumbnail">Thumbnail</label>
+                    <br>    
+                    <div class="input-images flex items-center w-full h-12 bg-gray-100 relative">
+                        <div class="img-previews h-12 w-12 hidden">
+                            <img src="" alt="" id="imgPreview" class="h-full w-full object-cover">
+                        </div>
+                        <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-image icons absolute left-3" viewBox="0 0 16 16">
+                            <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                            <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z"/>
+                        </svg>
+                       <input type="file" name="image" id="thumbnail-input" class="w-3/4 ml-8 rounded-md flex items-center">
+                    
+                    </div>
                 </div>
                 <button type="submit" id="add-btn-goods" class="submit-btn bg-[#003034] py-2 text-white px-4 rounded-md mt-4 w-full">
                     Submit

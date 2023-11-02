@@ -223,3 +223,18 @@ $('.delete-btn-goods-update').on('click',function(e){
     })
     }
 })
+
+$('#thumbnail-input').on('change',function(e){
+    const file = this.files[0];
+    if (file){
+        let reader = new FileReader();
+        reader.onload = function(event){
+          console.log(event.target.result);
+          $('.icons').addClass('hidden')
+          $('.img-previews').removeClass('hidden')
+          $('#imgPreview').attr('src', event.target.result);
+        
+        }
+        reader.readAsDataURL(file);
+      }
+}) 

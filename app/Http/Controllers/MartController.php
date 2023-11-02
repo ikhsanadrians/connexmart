@@ -25,12 +25,20 @@ class MartController extends Controller
 
   public function goodpost(Request $request)
   {
+    $imageThumbnail = "";
 
+    if($request->hasFile('image')){
+      $imageThumbnail = $request->file('image')->move("images/" . now()->format('dmYHis'));
+    }
+
+    $thumbnailPath =  $imageThumbnail->getPathname();
+    
+     
     $goods = Product::create([
       'name' => $request->name,
       'price' => $request->price,
       'stock' => $request->stock,
-      'photo' => 'photo',
+      'photo' => $thumbnailPath,
       'desc' => $request->description,
       'category_id' => $request->category_id,
       'stand' => 2,
