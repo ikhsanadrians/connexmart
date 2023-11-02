@@ -18,6 +18,7 @@ return new class extends Migration
             $table->enum('status',['not_paid','paid','taken']);
             $table->string('order_id');
             $table->double('price',5);
+            $table->softDeletes();
             $table->integer('quantity');
             $table->timestamps();
         });

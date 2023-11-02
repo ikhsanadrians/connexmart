@@ -212,9 +212,13 @@
         <h1 class="font-semibold text-xl">Products</h1>
         <div class="product-list grid md:grid-cols-2 grid-cols-1 lg:grid-cols-4 gap-4 mt-3">
             @foreach ($products as $product)
-                <div class="product-card border-gray-200 overflow-hidden rounded-md shadow-md border-[1.5px] ">
-                    <div class="content-img">
-                        <img src="{{ asset('images/static/martgroup.png') }}" alt="">
+                <div class="product-card border-gray-200 overflow-hidden h-fit rounded-md shadow-md border-[1.5px] ">
+                    <div class="content-img w-full h-[170px] overflow-hidden">
+                        @if($product->photo == "")
+                           <img class="w-full h-full object-cover" src="{{ asset('images/static/martgroup.png') }}" alt="">
+                        @else
+                           <img class="w-full h-full object-cover" src="{{ asset($product->photo) }}" alt="">
+                        @endif
                     </div>
                     <div class="content  p-4">
                         <h1>{{ $product->name }}</h1>

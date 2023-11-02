@@ -26,6 +26,8 @@ const openModalGoods = () => {
 const closeModalGoods  = () => {
     $('.addgoodmodal').addClass('hidden');
     $('.backdrop').addClass('hidden');
+    $('#thumbnail-input').val("");
+    $('#category-input').val('goods-category');
 }
 
 const openModalGoodsUpdate = () => {
@@ -141,13 +143,14 @@ $('.delete-btn').on('click',function(e){
 
 $('.edit-goods-update-btn').on('click', function(e){
     openModalGoodsUpdate()
-
+    console.log($(this).parent().siblings())
     const productId = $(this).parent().siblings().eq(0).text()
-    const productName = $(this).parent().siblings().eq(1).text()
-    const productPrice = $(this).parent().siblings().eq(2).data('price')
-    const productStock = $(this).parent().siblings().eq(3).text()
-    const productCategoryId = $(this).parent().siblings().eq(4).data('categoryid')
-    const productDescription = $(this).parent().siblings().eq(1).data('description')
+    const productThumbnail = $(this).parent().siblings().eq(1).data('thumbnail')
+    const productName = $(this).parent().siblings().eq(2).text()
+    const productPrice = $(this).parent().siblings().eq(3).data('price')
+    const productStock = $(this).parent().siblings().eq(4).text()
+    const productCategoryId = $(this).parent().siblings().eq(5).data('categoryid')
+    const productDescription = $(this).parent().siblings().eq(2).data('description')
 
 
     let categoryProductSelect = $(".category-select-goods");
@@ -161,6 +164,7 @@ $('.edit-goods-update-btn').on('click', function(e){
     $('#goods-price').val(productPrice)
     $('#goods-stock').val(productStock)
     $('#goods-description').val(productDescription)
+    $('#imgPreviewUpdate').attr('src', productThumbnail)
 })
 
 $('#update-btn-goods').on('click', function(e){
@@ -229,12 +233,12 @@ $('#thumbnail-input').on('change',function(e){
     if (file){
         let reader = new FileReader();
         reader.onload = function(event){
-          console.log(event.target.result);
+
           $('.icons').addClass('hidden')
           $('.img-previews').removeClass('hidden')
           $('#imgPreview').attr('src', event.target.result);
-        
+
         }
         reader.readAsDataURL(file);
       }
-}) 
+})

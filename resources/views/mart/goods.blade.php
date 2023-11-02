@@ -2,7 +2,7 @@
 @section('content')
 <div class="addgoodmodal hidden fixed z-50 w-3/5 h-3/4 bg-white -translate-x-1/2 left-1/2 shadow-lg overflow-hidden rounded-lg">
     <div class="wrappers flex h-full w-full">
-        <div class="modal-input-group relative w-full px-4 py-8">
+        <div class="modal-input-group relative w-full px-4 py-8 overflow-y-auto">
             <div class="flex justify-between pr-5">
                 <p class="font-bold px-6"><span id="user-name-modal">Add New Good</span></p>
                 <button id="closegoodmodal">
@@ -13,7 +13,7 @@
             </div>
             <form class="input mt-4 px-6" action="{{ route('mart.addgoods')}}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <div class="username py-1"> 
+                <div class="username py-1">
                     <label for="username">
                         Goods Name
                 </label>
@@ -53,7 +53,7 @@
                 </div>
                 <div class="w-full">
                     <label for="thumbnail">Thumbnail</label>
-                    <br>    
+                    <br>
                     <div class="input-images flex items-center w-full h-12 bg-gray-100 relative">
                         <div class="img-previews h-12 w-12 hidden">
                             <img src="" alt="" id="imgPreview" class="h-full w-full object-cover">
@@ -62,8 +62,8 @@
                             <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
                             <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z"/>
                         </svg>
-                       <input type="file" name="image" id="thumbnail-input" class="w-3/4 ml-8 rounded-md flex items-center">
-                    
+                       <input id="thumbnail-input" type="file" name="image" id="thumbnail-input" class="w-3/4 ml-8 rounded-md flex items-center">
+
                     </div>
                 </div>
                 <button type="submit" id="add-btn-goods" class="submit-btn bg-[#003034] py-2 text-white px-4 rounded-md mt-4 w-full">
@@ -74,8 +74,8 @@
     </div>
 </div>
 <div class="updategoodsmodal hidden fixed z-50 w-3/5 h-3/4 bg-white -translate-x-1/2 left-1/2 shadow-lg overflow-hidden rounded-lg">
-    <div class="wrappers flex h-full w-full">
-        <div class="modal-input-group relative w-full px-4 py-8">
+    <div class="wrappers flex h-full w-full ">
+        <div class="modal-input-group relative w-full px-4 py-8 overflow-y-auto">
             <div class="flex justify-between pr-5">
                 <p class="font-bold px-6"><span id="user-name-modal">Update Product</span></p>
                 <button id="closemodalgoodsupdate">
@@ -123,6 +123,21 @@
                     </label>
                     <textarea name="description" id="goods-description" class="w-full rounded-md focus:outline-none focus:ring-2 ring-[#003034] bg-gray-100 my-2 p-2" placeholder="Type A Goods Description"></textarea>
                 </div>
+                <div class="w-full">
+                    <label for="thumbnail">Thumbnail</label>
+                    <br>
+                    <div class="input-images flex items-center w-full h-12 bg-gray-100 relative">
+                        <div class="img-previews h-12 w-12 hidden">
+                            <img src="" alt="" id="imgPreviewUpdate" class="h-full w-full object-cover">
+                        </div>
+                        <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-image icons absolute left-3" viewBox="0 0 16 16">
+                            <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                            <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z"/>
+                        </svg>
+                       <input type="file" name="image" id="thumbnail-input" class="w-3/4 ml-8 rounded-md flex items-center">
+
+                    </div>
+                </div>
                 <button id="update-btn-goods" class="bg-[#003034] py-2 text-white px-4 rounded-md mt-4 w-full">
                     Submit
                 </button>
@@ -161,6 +176,7 @@
             <thead>
                 <tr>
                     <th>Id</th>
+                    <th>Thumbnail</th>
                     <th>Name</th>
                     <th>Price</th>
                     <th>Stock</th>
@@ -172,6 +188,11 @@
                 @foreach ( $products  as $key => $product)
                 <tr>
                     <td class="product-id" data-productid="{{ $product->id }}">{{ $key + 1 }}</td>
+                    <td class="product-thumbnail flex justify-center" data-thumbnail="{{ $product->photo }}">
+                        <div class="thumbnail overflow-hidden h-12 w-16">
+                            <img src="{{ asset($product->photo) }}" alt="" class="w-full h-full object-cover">
+                        </div>
+                    </td>
                     <td class="product-td" data-description="{{ $product->desc }}">{{ $product->name }}</td>
                     <td class="price-td" data-price="{{ $product->price }}">{{ format_to_rp($product->price) }}</td>
                     <td d class="product-stock">{{ $product->stock }}</td>

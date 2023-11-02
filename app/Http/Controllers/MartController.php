@@ -27,18 +27,23 @@ class MartController extends Controller
   {
     $imageThumbnail = "";
 
+    $request->validate([
+        'image' => 'image|mimes:jpeg,png,jpg,gif|max:5048',
+    ]);
+
+    $imageName =  $request->name . '.png';
+
     if($request->hasFile('image')){
-      $imageThumbnail = $request->file('image')->move("images/" . now()->format('dmYHis'));
+      $imageThumbnail = $request->file('image')->move('images/' . $imageName);
     }
 
-    $thumbnailPath =  $imageThumbnail->getPathname();
-    
-     
+
+
     $goods = Product::create([
       'name' => $request->name,
       'price' => $request->price,
       'stock' => $request->stock,
-      'photo' => $thumbnailPath,
+      'photo' => "/images/$imageName",
       'desc' => $request->description,
       'category_id' => $request->category_id,
       'stand' => 2,
