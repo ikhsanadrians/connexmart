@@ -195,7 +195,7 @@
                     </td>
                     <td class="product-td" data-description="{{ $product->desc }}">{{ $product->name }}</td>
                     <td class="price-td" data-price="{{ $product->price }}">{{ format_to_rp($product->price) }}</td>
-                    <td d class="product-stock">{{ $product->stock }}</td>
+                    <td class="product-stock">{{ $product->stock }}</td>
                     <td data-categoryid="{{ $product->category->id }}" class="product-category">{{ $product->category->name }}</td>
                     <td>
                         <button id="{{ $product->id }}" data-id="{{ $product->name }}" class="edit-goods-update-btn bg-gradient-to-r from-yellow-600 to-yellow-400 p-2 text-white rounded-md">

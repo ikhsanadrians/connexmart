@@ -14,6 +14,31 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth.sanctum')->group(function () {
+// });
+
+Route::prefix('/user')->group(function () { 
+    Route::get('/', [App\Http\Controllers\ApiUserController::class,'index']);
+    Route::post('/create', [App\Http\Controllers\ApiUserController::class,'store']);
+    Route::get('/{id}', [App\Http\Controllers\ApiUserController::class,'show']);
+    Route::put('/{id}/update',[App\Http\Controllers\ApiUserController::class,'update']);
+    Route::delete('/{id}/delete', [App\Http\Controllers\ApiUserController::class,'destroy']);
+});
+
+Route::prefix('/product')->group(function () { 
+    Route::get('/', [App\Http\Controllers\ApiMartController::class,'index']);
+    Route::post('/create', [App\Http\Controllers\ApiMartController::class,'store']);
+    Route::get('/{id}', [App\Http\Controllers\ApiMartController::class,'show']);
+    Route::put('/{id}/update',[App\Http\Controllers\ApiMartController::class,'update']);
+    Route::delete('/{id}/delete', [App\Http\Controllers\ApiMartController::class,'destroy']);
+});
+
+
+Route::prefix('/bank')->group(function () { 
+    Route::get('/transaction', [App\Http\Controllers\ApiBankController::class,'index']);
+    Route::post('/topupconfirm', [App\Http\Controllers\ApiBankController::class,'topupconfirm']);
+    Route::post('/topupreject', [App\Http\Controllers\ApiBankController::class,'topupreject']);
+    Route::get('/transaction/{id}', [App\Http\Controllers\ApiBankController::class,'show']);
+    Route::get('/wallets', [App\Http\Controllers\ApiBankController::class,'wallets']);
+    Route::get('/wallet/{id}', [App\Http\Controllers\ApiBankController::class,'walletshow']);
 });
