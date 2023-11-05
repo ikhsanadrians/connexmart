@@ -11,11 +11,21 @@ class ApiBankController extends Controller
 {
     public function index(){
         $transactions = Transaction::all();
-        
+
         return response()->json([
             "message" => "Success, Get Data!",
             "data" => $transactions
         ],200);
+    }
+
+    public function topup(){
+        $transactions = TopUp::where('status','unconfirmed')->get();
+
+        return response()->json([
+            "message" => "Success! Get Data",
+            "data" => $transactions
+        ]);
+
     }
 
     public function topupconfirm(Request $request){
@@ -44,7 +54,7 @@ class ApiBankController extends Controller
 
     public function topupreject(Request $request){
         $topUp = TopUp::where('unique_code',$request->unique_code);
-        
+
         if(!$topUp) return response()->json([
             "message" => "Top Up Not Found!"
         ],404);
@@ -86,13 +96,13 @@ class ApiBankController extends Controller
 
     public function walletshow(int $id){
         $wallet = Wallet::find($id);
- 
+
         if(!$wallet){
           return response()->json([
              "message"=> "Error, Data Not Found!"
           ],404);
         }
- 
+
         return response()->json([
            "message"=> "Success, Get Data!",
            "data" => $wallet

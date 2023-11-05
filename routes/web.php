@@ -83,7 +83,7 @@ Route::prefix('mart')->group(function () {
         Route::get('/goodscategory', [MartController::class, 'goodscategory'])->name('mart.goods.category');
         Route::get('/goods', [MartController::class, 'goodsindex'])->name('mart.goods');
         Route::post('/goods', [MartController::class, 'goodpost'])->name('mart.addgoods');
-        Route::put('/goods', [MartController::class, 'goodsupdate'])->name('mart.updategoods');
+        Route::put('/goods/update', [MartController::class, 'goodsupdate'])->name('mart.updategoods');
         Route::delete('/goods', [MartController::class, 'goodsdelete'])->name('mart.deletegoods');
         Route::get('/entrytransaction', [MartController::class, 'entrytransaction'])->name('mart.entrytransaction');
     });

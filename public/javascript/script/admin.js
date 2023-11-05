@@ -143,15 +143,15 @@ $('.delete-btn').on('click',function(e){
 
 $('.edit-goods-update-btn').on('click', function(e){
     openModalGoodsUpdate()
-    console.log($(this).parent().siblings())
-    const productId = $(this).parent().siblings().eq(0).text()
-    const productThumbnail = $(this).parent().siblings().eq(1).data('thumbnail')
-    const productName = $(this).parent().siblings().eq(2).text()
-    const productPrice = $(this).parent().siblings().eq(3).data('price')
-    const productStock = $(this).parent().siblings().eq(4).text()
-    const productCategoryId = $(this).parent().siblings().eq(5).data('categoryid')
-    const productDescription = $(this).parent().siblings().eq(2).data('description')
 
+    const productId = $(this).parent().parent().siblings().eq(0).data('productid')
+    const productThumbnail = $(this).parent().parent().siblings().eq(1).data('thumbnail')
+    const productName = $(this).parent().parent().siblings().eq(2).text()
+    const productPrice = $(this).parent().parent().siblings().eq(3).data('price')
+    const productStock = $(this).parent().parent().siblings().eq(4).text()
+    const productCategoryId = $(this).parent().parent().siblings().eq(5).data('categoryid')
+    const productDescription = $(this).parent().parent().siblings().eq(2).data('description')
+    const urlProductThumbnail = "http://127.0.0.1:8000/" + productThumbnail.replace(/\/mart\//, '/');
 
     let categoryProductSelect = $(".category-select-goods");
 
@@ -163,70 +163,19 @@ $('.edit-goods-update-btn').on('click', function(e){
     $('#goods-input').val(productName)
     $('#goods-price').val(productPrice)
     $('#goods-stock').val(productStock)
+    $('#product_id').val(productId)
     $('#goods-description').val(productDescription)
-    $('#imgPreviewUpdate').attr('src', productThumbnail)
+    $('#imgPreviewUpdate').attr('src', urlProductThumbnail)
 })
 
-$('#update-btn-goods').on('click', function(e){
+$('#update-forms').on('submit', function(){
+     $('#product_id').val($('#product_id').val())
+     console.log('test')
 
-    e.preventDefault();
-    const currentUrl = window.location.pathname
-
-    const productName = $('#goods-input').val()
-    const productPrice = $('#goods-price').val()
-    const productStock = $('#goods-stock').val()
-    const productDescription = $('#goods-description').val()
-    const productCategoryId = $('#category-input-update').val();
-
-    $.ajax({
-        method: 'put',
-        url : currentUrl,
-        dataType: 'json',
-        data: {
-            "product_id" : $('.product-id').data('productid'),
-            "product_name" : productName,
-            "product_price" : productPrice,
-            "product_description" : productDescription,
-            "product_stock" : productStock,
-            "product_categoryid" : productCategoryId,
-            _token: $('meta[name="csrf-token"]').attr('content')
-        },
-        success:function(data){
-            closeModalGoodsUpdate()
-            location.reload()
-        },
-        error: function(data){
-             console.log(data)
-        }
-
-   })
-})
+     return true
+});
 
 
-$('.delete-btn-goods-update').on('click',function(e){
-    if( confirm('Apakah Yakin Ingin Menghapus Product Ini?')){
-        e.preventDefault();
-        const currentUrl = window.location.pathname
-        const idToDelete = $(this).parent().siblings().eq(0).text();
-
-        $.ajax({
-            method: 'delete',
-            url : currentUrl,
-            dataType: 'json',
-            data: {
-                "id_to_delete" : idToDelete,
-                _token: $('meta[name="csrf-token"]').attr('content')
-            },
-            success:function(data){
-                location.reload()
-                // console.log(data)
-            },
-            error: function(data){
-                 console.log(data)
-            }
-    })
-    }
-})
 
 $('#thumbnail-input').on('change',function(e){
     const file = this.files[0];

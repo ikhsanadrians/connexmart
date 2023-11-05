@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class MartController extends Controller
 {
@@ -32,8 +33,8 @@ class MartController extends Controller
     }
 
     $thumbnailPath =  $imageThumbnail->getPathname();
-    
-     
+
+
     $goods = Product::create([
       'name' => $request->name,
       'price' => $request->price,
@@ -52,44 +53,55 @@ class MartController extends Controller
 
   public function goodsupdate(Request $request)
   {
-    if ($request->ajax()) {
+
+      $imageThumbnail = "";
       $goodsToUpdate = Product::find($request->product_id);
 
-      $goodsToUpdate->update([
-        "name" => $request->product_name,
-        "price" => $request->product_price,
-        "stock" => $request->product_stock,
-        "photo" => "photo",
-        "desc" => $request->product_description,
-        "category_id" => $request->product_categoryid,
-        "stand" => 2
-      ]);
+      if ($request->hasFile('image')) {
+          $imageThumbnail = $request->file('image')->move("images/", $request->file('image')->getClientOriginalName() . now()->format('dmYHis') . $request->file('image')->getClientOriginalExtension());
+
+          if (file_exists(public_path($goodsToUpdate->photo))) {
+              if (!unlink(public_path($goodsToUpdate->photo))) {
+                  Storage::delete($goodsToUpdate->photo);
+              } else {
+                  Storage::delete($goodsToUpdate->photo);
+              }
+          }
+      }
+
+      $updateData = [
+          "name" => $request->name,
+          "price" => $request->price,
+          "stock" => $request->stock,
+          "desc" => $request->description,
+          "category_id" => $request->category_id,
+          "stand" => 2
+      ];
+
+
+      if (!empty($imageThumbnail)) {
+          $updateData["photo"] = $imageThumbnail->getPathname();
+      }
+
+      $goodsToUpdate->update($updateData);
 
       alert()->success("Success", "Success Update Product");
 
-      return response()->json([
-        "message" => "Success Update Data!",
-        "data" => $goodsToUpdate
-      ]);
-
-    }
+      return redirect()->back();
   }
 
   public function goodsdelete(Request $request)
   {
-    if ($request->ajax()) {
-      $deletedProduct = Product::find($request->id_to_delete);
+
+      $deletedProduct = Product::find($request->product_id);
 
       $deletedProduct->delete();
 
       alert()->success("Success", "Success Delete Product");
 
-      return response()->json([
-        "message" => "Success Delete Data!",
-        "data" => $deletedProduct
-      ]);
+      return redirect()->back();
 
-    }
+
   }
 
   public function addcategory()
