@@ -28,13 +28,13 @@
                         <div class="user-id">
                             <label for="">Email Or Username</label>
                             <input id="user-id"
-                                class="w-full mt-2 px-4 py-2 bg-gray-100 rounded-md focus:outline-none focus:border-[#003034] focus:border-2"
+                                class="w-full mt-2 px-4 py-3 bg-gray-100 rounded-md focus:outline-none focus:border-[#003034] focus:border-[1.2px]"
                                 type="text" placeholder="Enter Your Username/Email">
                         </div>
                         <div class="user-password mt-4">
                             <label for="">Password</label>
                             <input type="password" id="user-password"
-                                class="w-full mt-2 px-4 py-2 bg-gray-100 rounded-md focus:outline-none focus:border-[#003034] focus:border-2"
+                                class="w-full mt-2 px-4 py-3 bg-gray-100 rounded-md focus:outline-none focus:border-[#003034] focus:border-[1.2px]"
                                 type="text" placeholder="Enter Your Password">
                         </div>
                         <div class="user-remember flex items-center gap-2 mt-3">
@@ -108,7 +108,7 @@
     </div>
     <div class="grid grid-cols-1 lg:mx-0 mx-4 lg:grid-cols-2 gap-4">
         <div
-            class="cnx-pay  bg-white  h-fit lg:h-3/4 relative  font-semibold text-xl mt-6 rounded-md border-[1.5px] border-gray-200">
+            class="cnx-pay  bg-white  h-fit lg:h-3/4 relative  font-semibold text-xl mt-6 rounded-md shadow-sm">
             @if (Auth::user())
                 <div class="balance-mobile flex justify-between px-4">
                     <div class="balance py-4">
@@ -208,11 +208,11 @@
 
         </div>
     </div>
-    <div class="products-list-card bg-white p-6 rounded-lg border-[1.5px] border-gray-200">
+    <div class="products-list-card rounded-lg">
         <h1 class="font-semibold text-xl">Products</h1>
         <div class="product-list grid md:grid-cols-2 grid-cols-1 lg:grid-cols-4 gap-4 mt-3">
             @foreach ($products as $product)
-                <div class="product-card border-gray-200 overflow-hidden h-fit rounded-md shadow-md border-[1.5px] ">
+                <div class="product-card border-gray-200 bg-white overflow-hidden h-fit rounded-md shadow-md border-[1.5px] ">
                     <div class="content-img w-full h-[170px] overflow-hidden">
                         @if($product->photo == "")
                            <img class="w-full h-full object-cover" src="{{ asset('images/static/martgroup.png') }}" alt="">
