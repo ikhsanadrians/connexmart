@@ -8,7 +8,7 @@
 }
 
 body {
-    @apply bg-slate-100
+    @apply bg-[#ffffff]
 }
 
 
@@ -91,4 +91,14 @@ th {
     100% {
       transform: translate(24px, 0);
     }
+  }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+         -webkit-appearance: none;
+          margin: 0;
+  }
+
+  input[type=number] {
+      -moz-appearance: textfield;
   }

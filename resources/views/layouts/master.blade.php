@@ -21,6 +21,9 @@
     <script type="module" src="{{ asset('javascript/script/auth.js') }}"></script>
     <script type="module" src="{{ asset('javascript/script/cart.js') }}"></script>
     <script type="module" src="{{ asset('javascript/script/topup.js')}}"></script>
+    <script type="module" src="{{ asset('javascript/script/detail.js')}}"></script>
+
+    @include('components.footer')
 </body>
 
 </html>

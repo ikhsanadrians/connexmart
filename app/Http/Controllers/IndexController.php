@@ -38,8 +38,10 @@ class IndexController extends Controller
     }
 
     public function showproduct(string $slug){
-        $product = Product::find($slug);
-        return view("detailproduct",compact("product"));
+        $product = Product::where('slug', $slug)->first();
+        $otherProducts = Product::paginate(5);
+
+        return view("detailproduct",compact("product","otherProducts"));
     }
 
 

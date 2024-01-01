@@ -17,9 +17,6 @@ class AdminController extends Controller
         return view("admin.index", compact("users","allusers"));
     }
 
-    public function auth(){
-        return view("admin.login");
-    }
 
     public function auth_proceed(Request $request){
         $credentials = [
@@ -32,6 +29,9 @@ class AdminController extends Controller
         if($checkRoles->role_id != 1) return redirect()->back();
 
         if(Auth::attempt($credentials)) return redirect()->route('admin.index');
+
+
+
 
         return redirect()->back();
     }
@@ -58,13 +58,13 @@ class AdminController extends Controller
 
     }
 
-    public function userupdate(Request $request){
+     public function userupdate(Request $request){
         if($request->ajax()){
            $userToUpdate = User::find($request->user_id);
 
            $userToUpdate->update([
                "name" => $request->username,
-               "role_id => $request->role"
+               "role_id" => $request->role
            ]);
 
            if(!$userToUpdate) return response()->json([
@@ -87,7 +87,6 @@ class AdminController extends Controller
            if(!$userToDelete) return response()->json([
              "message" => "cannot delete data"
            ]);
-
            return response()->json([
              "message" => "success",
              "data" => $userToDelete
