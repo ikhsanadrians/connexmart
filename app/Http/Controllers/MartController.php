@@ -17,6 +17,7 @@ class MartController extends Controller
     return view('mart.index', compact('products'));
   }
 
+
   public function goodsindex()
   {
     $products = Product::all();

@@ -91,7 +91,7 @@ class DatabaseSeeder extends Seeder
             "name" => "Lemon Ice Tea",
             "price" =>  5000,
             "stock" => 56,
-            "photo" => "test",
+            "photo" => "",
             "desc" => "test",
             "category_id" => 3,
             "stand" => 2
@@ -101,7 +101,7 @@ class DatabaseSeeder extends Seeder
             "name" => "Es Ranco Elixir",
             "price" =>  9000,
             "stock" => 36,
-            "photo" => "test",
+            "photo" => "",
             "desc" => "test",
             "category_id" => 3,
             "stand" => 2
@@ -112,7 +112,7 @@ class DatabaseSeeder extends Seeder
             "name" => "Ransum Khas Ranco",
             "price" =>  15000,
             "stock" => 26,
-            "photo" => "test",
+            "photo" => "",
             "desc" => "test",
             "category_id" => 1,
             "stand" => 2

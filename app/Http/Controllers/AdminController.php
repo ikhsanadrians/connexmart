@@ -17,6 +17,10 @@ class AdminController extends Controller
         return view("admin.index", compact("users","allusers"));
     }
 
+    public function auth(){
+        return view('admin.login');
+    }
+
 
     public function auth_proceed(Request $request){
         $credentials = [
