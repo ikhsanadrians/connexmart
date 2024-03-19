@@ -145,8 +145,13 @@
 
                 </div>
             </div>
+            
+            
+            @if (!Auth::check() || Auth::user()->role_id !== 4)
+            <div class="container-right w-1/3 bg-white shadow-sm rounded-lg p-4 sticky top-24 h-full"></div>
+            @else
             <div
-                class="container-right w-1/3 bg-white border-[1.2px] border-slate-200 shadow-sm rounded-lg p-4 sticky top-24 h-full">
+            class="container-right w-1/3 bg-white border-[1.2px] border-slate-200 shadow-sm rounded-lg p-4 sticky top-24 h-full">
                 <div class="add-to-cart font-semibold">
                     Set Quantity
                 </div>
@@ -172,8 +177,8 @@
                     <button id="add-to-cart" data-productid="{{ $product->id }}" class="bg-[#003034] text-white py-2 px-4 text-sm w-full rounded-md font-semibold">Add To
                         Cart</button>
                 </div>
-
             </div>
+            @endif
         </div>
         <div class="container-other-products w-full h-full mt-6">
             <div class="title text-xl font-semibold">
