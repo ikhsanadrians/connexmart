@@ -8,17 +8,11 @@
                 <img src="{{ asset('images/static/connexpay.png') }}" alt="connexpay" class="h-10">
                 @endif
             </a>
-            <p>
-                @if(Auth::user()->role_id == 1 )
-                   Admin
-                @elseif(Auth::user()->role_id == 2)
-                   Bank
-                @endif
-            </p>
+            
         </div>
         <div class="flex">
             <div class="header-menu flex items-center gap-2 mx-4">
-                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#003034"
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#303fe2"
                     class="bi bi-person-circle" viewBox="0 0 16 16">
                     <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
                     <path fill-rule="evenodd"
@@ -27,8 +21,5 @@
                 <p>{{ Auth::user()->name }}</p>
             </div>
         </div>
-
-
-
     </div>
 </header>
