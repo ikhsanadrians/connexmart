@@ -19,10 +19,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 
+
+
+Route::get('/login',[IndexController::class, 'login'])->name('login');
+
 Route::middleware('user')->group(function(){  
     Route::get('/', [IndexController::class, 'index'])->name('home');
     Route::get('/product/{slug}',[IndexController::class,'showproduct'])->name('show.product');
-    Route::post('/', [IndexController::class, 'auth'])->name('auth');
     Route::get('/profile', [IndexController::class, 'profile'])->name('profile');
 });
 

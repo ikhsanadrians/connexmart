@@ -14,7 +14,12 @@ class IndexController extends Controller
        return view('index',compact('products'));
     }
 
+
+    public function login(){
+        return view('login');
+    }
     public function auth(Request $request){
+    
          if($request->ajax()){
 
             $data = [
