@@ -139,5 +139,6 @@ class MartController extends Controller
 
     return redirect()->route('mart.auth');
   }
+  
 
 }
