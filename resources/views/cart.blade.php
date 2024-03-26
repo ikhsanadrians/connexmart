@@ -71,7 +71,7 @@
                             <div class="action absolute right-4 bottom-4">
                                 <div class="flex items-center gap-2">
                                     <div id={{ $cart->id }} class="btn-delete-product group">
-                                        <svg class="group-hover:fill-red-500" xmlns="http://www.w3.org/2000/svg"
+                                        <svg class="group-hover:fill-red-500 transition cursor-pointer" xmlns="http://www.w3.org/2000/svg"
                                             width="20" height="20" fill="currentColor" class="bi bi-trash3"
                                             viewBox="0 0 16 16">
                                             <path

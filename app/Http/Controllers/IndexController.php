@@ -11,7 +11,9 @@ use Illuminate\Support\Facades\File;
 class IndexController extends Controller
 {
     public function index(){           
-        return view('index');
+        $products = Product::get();
+
+        return view('index', compact('products'));
     }
 
 
