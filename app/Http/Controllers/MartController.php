@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 class MartController extends Controller
@@ -14,7 +15,9 @@ class MartController extends Controller
   public function index()
   {
     $products = Product::all();
-    return view('mart.index', compact('products'));
+    $categories = Category::all();
+
+    return view('mart.index', compact('products', 'categories'));
   }
 
 
@@ -22,6 +25,7 @@ class MartController extends Controller
   {
     $products = Product::all();
     $productcategories = Category::all();
+
     return view('mart.goods', compact('products', 'productcategories'));
   }
 
@@ -30,7 +34,7 @@ class MartController extends Controller
     $imageThumbnail = "";
 
     if($request->hasFile('image')){
-      $imageThumbnail = $request->file('image')->move("images/", $request->file('image')->getClientOriginalName() . now()->format('dmYHis') . $request->file('image')->getClientOriginalExtension());
+      $imageThumbnail = $request->file('image')->move("images/", $request->file('image')->getClientOriginalName());
     }
 
     $thumbnailPath =  $imageThumbnail->getPathname();
@@ -59,7 +63,7 @@ class MartController extends Controller
       $goodsToUpdate = Product::find($request->product_id);
 
       if ($request->hasFile('image')) {
-          $imageThumbnail = $request->file('image')->move("images/", $request->file('image')->getClientOriginalName() . now()->format('dmYHis') . $request->file('image')->getClientOriginalExtension());
+          $imageThumbnail = $request->file('image')->move("images/", $request->file('image')->getClientOriginalName());
 
           if (file_exists(public_path($goodsToUpdate->photo))) {
               if (!unlink(public_path($goodsToUpdate->photo))) {

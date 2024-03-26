@@ -204,17 +204,17 @@
     <div class="products-list-card rounded-lg">
         <h1 class="font-semibold text-xl">Products</h1>
         <div class="product-list grid md:grid-cols-2 grid-cols-1 lg:grid-cols-4 gap-4 mt-3">
-            @foreach ($products as $product)
-                <a href="{{ route('show.product',$product->slug) }}"
-                    class="product-card border-gray-200 bg-white overflow-hidden h-fit rounded-md shadow-md border-[1.5px] ">
-                    <div class="content-img w-full h-[170px] overflow-hidden">
-                        @if ($product->photo == '')
-                            <img class="w-full h-full object-cover" src="{{ asset('images/static/martgroup.png') }}"
-                                alt="">
-                        @else
-                            <img class="w-full h-full object-cover" src="{{ asset($product->photo) }}" alt="">
-                        @endif
-                    </div>
+                @foreach ($products as $product)
+                    <a href="{{ route('show.product',$product->slug) }}"
+                        class="product-card border-gray-200 bg-white overflow-hidden h-fit rounded-md shadow-md border-[1.5px] ">
+                        <div class="content-img w-full h-[170px] overflow-hidden">
+                            @if (!empty($product->photo) || File::exists(public_path($product->photo)))
+                                <img class="w-full h-full object-cover" src="{{ asset('images/default/mart.png') }}"
+                                    alt="">
+                            @else
+                                <img class="w-full h-full object-cover" src="{{ asset($product->photo) }}" alt="">
+                            @endif
+                        </div>
                     <div class="content  p-4">
                         @if (!Auth::check() || Auth::user()->role_id !== 4)
                         <h1>{{ $product->name }}</h1>

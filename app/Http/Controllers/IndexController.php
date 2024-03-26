@@ -6,12 +6,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
 use App\Models\Transaction;
+use Illuminate\Support\Facades\File;
 
 class IndexController extends Controller
 {
-    public function index(){
-       $products  = Product::all();
-       return view('index',compact('products'));
+    public function index(){           
+        return view('index');
     }
 
 
@@ -52,7 +52,6 @@ class IndexController extends Controller
     public function showproduct(string $slug){
         $product = Product::where('slug', $slug)->first();
         $otherProducts = Product::paginate(5);
-
         return view("detailproduct",compact("product","otherProducts"));
     }
 

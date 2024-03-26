@@ -64,11 +64,13 @@ Route::prefix('admin')->group(function () {
         Route::get('/entrytransaction', [AdminController::class, 'entrytransaction'])->name('entry.index');
         Route::get('/settings', [AdminController::class, 'settings'])->name('setting.index');
         Route::get('/notifications', [AdminController::class, 'notifications'])->name('notification.index');
+        Route::get('/logout', [AdminController::class, 'adminlogout'])->name('admin.logout');
     });
 
-    Route::get('/logout', [AdminController::class, 'adminlogout'])->name('admin.logout');
-    Route::get('/login', [AdminController::class, 'auth'])->name('admin.auth');
-    Route::post('/login', [AdminController::class, 'auth_proceed'])->name('admin.auth.proceed');
+    Route::middleware('loggedin')->group(function() {
+        Route::get('/login', [AdminController::class, 'auth'])->name('admin.auth');
+        Route::post('/login', [AdminController::class, 'auth_proceed'])->name('admin.auth.proceed');
+    });
 });
 
 Route::prefix('bank')->group(function () {
@@ -80,11 +82,13 @@ Route::prefix('bank')->group(function () {
         Route::patch('/topup', [BankController::class, 'topupreject'])->name('bank.topupreject');
         Route::get('/client', [BankController::class, 'clientindex'])->name('bank.client');
         Route::get('/transaction', [BankController::class, 'transaction'])->name('bank.transaction');
+        Route::get('/logout', [BankController::class, 'banklogout'])->name('bank.logout');
     });
 
-    Route::get('/login', [BankController::class, 'auth'])->name('bank.auth');
-    Route::post('/login', [BankController::class, 'auth_proceed'])->name('bank.auth.proceed');
-    Route::get('/logout', [BankController::class, 'banklogout'])->name('bank.logout');
+    Route::middleware('loggedin')->group(function() {
+        Route::get('/login', [BankController::class, 'auth'])->name('bank.auth');
+        Route::post('/login', [BankController::class, 'auth_proceed'])->name('bank.auth.proceed');
+    });
 });
 
 
@@ -98,9 +102,11 @@ Route::prefix('mart')->group(function () {
         Route::put('/goods/update', [MartController::class, 'goodsupdate'])->name('mart.updategoods');
         Route::delete('/goods', [MartController::class, 'goodsdelete'])->name('mart.deletegoods');
         Route::get('/entrytransaction', [MartController::class, 'entrytransaction'])->name('mart.entrytransaction');
+        Route::get('/logout', [MartController::class, 'martlogout'])->name('mart.logout');
     });
 
-    Route::get('/login', [MartController::class, 'auth'])->name('mart.auth');
-    Route::post('/login', [MartController::class, 'auth_proceed'])->name('mart.auth.proceed');
-    Route::get('/logout', [MartController::class, 'martlogout'])->name('mart.logout');
+    Route::middleware('loggedin')->group(function() {
+        Route::get('/login', [MartController::class, 'auth'])->name('mart.auth');
+        Route::post('/login', [MartController::class, 'auth_proceed'])->name('mart.auth.proceed');
+    });
 });

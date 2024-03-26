@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text("photo");
             $table->text("desc");
             $table->softDeletes();
-            $table->foreignId("category_id")->constrained()->onDelete('cascade');
+            $table->foreignId("category_id")->constrained();
             $table->string("stand",2);
             $table->timestamps();
         });
