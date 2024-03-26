@@ -4,11 +4,11 @@
     <div class="card p-8 rounded-md bg-white shadow-md">
         <div class="card-top flex justify-between items-center">
             <div class="icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#003034" class="bi bi-people-fill" viewBox="0 0 16 16">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#303fe2" class="bi bi-people-fill" viewBox="0 0 16 16">
                   <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7Zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216ZM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/>
                 </svg>
             </div>
-            <div class="notif flex items-center gap-1 bg-[#003034] text-white px-3 py-1 text-xs rounded-2xl">
+            <div class="notif flex items-center gap-1 bg-[#303fe2] text-white px-3 py-1 text-xs rounded-2xl">
                 32%
                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-chevron-up" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
@@ -23,11 +23,11 @@
      <div class="card p-8 rounded-md bg-white shadow-md">
         <div class="card-top flex justify-between items-center">
             <div class="icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#003034" class="bi bi-bar-chart-steps" viewBox="0 0 16 16">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#303fe2" class="bi bi-bar-chart-steps" viewBox="0 0 16 16">
                     <path d="M.5 0a.5.5 0 0 1 .5.5v15a.5.5 0 0 1-1 0V.5A.5.5 0 0 1 .5 0zM2 1.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-4a.5.5 0 0 1-.5-.5v-1zm2 4a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5v-1zm2 4a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-6a.5.5 0 0 1-.5-.5v-1zm2 4a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5v-1z"/>
                   </svg>
             </div>
-            <div class="notif flex items-center gap-1 bg-[#003034] text-white px-3 py-1 text-xs rounded-2xl">
+            <div class="notif flex items-center gap-1 bg-[#303fe2] text-white px-3 py-1 text-xs rounded-2xl">
                 12%
                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-chevron-up" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
@@ -42,11 +42,11 @@
      <div class="card p-8 rounded-md bg-white shadow-md">
         <div class="card-top flex justify-between items-center">
             <div class="icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#003034" class="bi bi-box" viewBox="0 0 16 16">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#303fe2" class="bi bi-box" viewBox="0 0 16 16">
                     <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5 8 5.961 14.154 3.5 8.186 1.113zM15 4.239l-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z"/>
                   </svg>
             </div>
-            <div class="notif flex items-center gap-1 bg-[#003034] text-white px-3 py-1 text-xs rounded-2xl">
+            <div class="notif flex items-center gap-1 bg-[#303fe2] text-white px-3 py-1 text-xs rounded-2xl">
                 54%
                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-chevron-up" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
@@ -60,7 +60,7 @@
      </div>
   </div>
   <div class="grid grid-cols-2 gap-4 mt-8">
-    <div class="notification bg-gradient-to-r shadow-md p-6 from-[#003034] to-gray-800 h-full  rounded-md">
+    <div class="notification bg-gradient-to-r shadow-md p-6 from-[#303fe2] to-blue-800 h-full  rounded-md">
         <div class="wrappers flex gap-8">
             <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" fill="white" class="bi bi-bell-fill" viewBox="0 0 16 16">
                 <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z"/>
@@ -84,7 +84,7 @@
 
         </div>
     </div>
-    <div class="report relative bg-gradient-to-r p-6 shadow-md from-[#003034] to-gray-800 h-full rounded-md">
+    <div class="report relative bg-gradient-to-r p-6 shadow-md from-[#303fe2] to-blue-800 h-full rounded-md">
         <div class="wrappers flex gap-8">
             <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" fill="white" class="bi bi-file-earmark-pdf-fill" viewBox="0 0 16 16">
                 <path d="M5.523 12.424c.14-.082.293-.162.459-.238a7.878 7.878 0 0 1-.45.606c-.28.337-.498.516-.635.572a.266.266 0 0 1-.035.012.282.282 0 0 1-.026-.044c-.056-.11-.054-.216.04-.36.106-.165.319-.354.647-.548zm2.455-1.647c-.119.025-.237.05-.356.078a21.148 21.148 0 0 0 .5-1.05 12.045 12.045 0 0 0 .51.858c-.217.032-.436.07-.654.114zm2.525.939a3.881 3.881 0 0 1-.435-.41c.228.005.434.022.612.054.317.057.466.147.518.209a.095.095 0 0 1 .026.064.436.436 0 0 1-.06.2.307.307 0 0 1-.094.124.107.107 0 0 1-.069.015c-.09-.003-.258-.066-.498-.256zM8.278 6.97c-.04.244-.108.524-.2.829a4.86 4.86 0 0 1-.089-.346c-.076-.353-.087-.63-.046-.822.038-.177.11-.248.196-.283a.517.517 0 0 1 .145-.04c.013.03.028.092.032.198.005.122-.007.277-.038.465z"/>

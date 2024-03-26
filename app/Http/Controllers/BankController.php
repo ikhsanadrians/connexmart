@@ -12,14 +12,17 @@ use Illuminate\Support\Facades\Auth;
 class BankController extends Controller
 {
     public function index(){
+        
         $topups = TopUp::latest()->paginate(5);
         return view("bank.index",compact('topups'));
     }
 
     public function topUp(){
         $topups = TopUp::all();
-        return view('bank.topup', compact('topups'));
+        $users = User::all();
+        return view('bank.topup', compact('topups', 'users'));  
     }
+    
 
     public function topupconfirm(Request $request){
         $topUp = TopUp::where('unique_code',$request->unique_code)->first();
