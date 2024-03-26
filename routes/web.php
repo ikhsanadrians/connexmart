@@ -19,22 +19,31 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::middleware('user')->group(function(){  
+
+
+Route::get('/login',[IndexController::class, 'login'])->name('login');
+Route::post('/login',[IndexController::class, 'auth'])->name('auth');
+
+
+
+Route::middleware('user')->group(function(){
     Route::get('/', [IndexController::class, 'index'])->name('home');
     Route::get('/product/{slug}',[IndexController::class,'showproduct'])->name('show.product');
-    Route::post('/', [IndexController::class, 'auth'])->name('auth');
     Route::get('/profile', [IndexController::class, 'profile'])->name('profile');
+    Route::get('/wishlist', [IndexController::class, 'wishlist'])->name('wishlist');
+    Route::prefix('cart')->group(function () {
+        Route::get('/', [TransactionController::class, 'index'])->name('cart.index');
+        Route::post('/', [TransactionController::class, 'sentToCart'])->name('cart.proceed');
+        Route::delete('/',[TransactionController::class,'cart_delete'])->name('cart.product.delete');
+        Route::put('/pay', [TransactionController::class, 'payCart'])->name('cart.pay');
+        Route::put('/quantityupdate', [TransactionController::class, 'updateQuantity'])->name('cart.quantity.update');
+        Route::get('/receipt', [TransactionController::class, 'cart_receipt'])->name('cart.receipt');
+        Route::put('/receipt/take', [TransactionController::class, 'cart_take'])->name('cart.take');
+    });
+
 });
 
-Route::prefix('cart')->group(function () {
-    Route::get('/', [TransactionController::class, 'index'])->name('cart.index');
-    Route::post('/', [TransactionController::class, 'sentToCart'])->name('cart.proceed');
-    Route::delete('/',[TransactionController::class,'cart_delete'])->name('cart.product.delete');
-    Route::put('/pay', [TransactionController::class, 'payCart'])->name('cart.pay');
-    Route::put('/quantityupdate', [TransactionController::class, 'updateQuantity'])->name('cart.quantity.update');
-    Route::get('/receipt', [TransactionController::class, 'cart_receipt'])->name('cart.receipt');
-    Route::put('/receipt/take', [TransactionController::class, 'cart_take'])->name('cart.take');
-});
+
 
 Route::prefix('topup')->group(function () {
     Route::get('/', [TransactionController::class, 'topUp'])->name('topup.index');

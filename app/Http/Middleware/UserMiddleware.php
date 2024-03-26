@@ -18,9 +18,9 @@ class UserMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-    //   if(!Auth::check()){
-    //         return redirect()->back();
-    //     }
+        if(!Auth::check()){
+            return redirect()->route('login');
+        }
 
     //     if(Auth::user()->role_id != 4){
     //         if(Auth::user()->role_id == 1){
