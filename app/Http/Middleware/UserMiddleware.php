@@ -22,15 +22,15 @@ class UserMiddleware
             return redirect()->route('login');
         }
 
-        if(Auth::user()->role_id != 4){
-            if(Auth::user()->role_id == 1){
-                return redirect()->route('admin.index');
-            } else if (Auth::user()->role_id == 2){
-                return redirect()->route('bank.index');
-            } else if (Auth::user()->role_id == 3){
-                return redirect()->route('mart.index');
-            }
-        }
+    //     if(Auth::user()->role_id != 4){
+    //         if(Auth::user()->role_id == 1){
+    //             return redirect()->route('admin.index');
+    //         } else if (Auth::user()->role_id == 2){
+    //             return redirect()->route('bank.index');
+    //         } else if (Auth::user()->role_id == 3){
+    //             return redirect()->route('mart.index');
+    //         }
+    //     }  
 
         return $next($request);
     }
