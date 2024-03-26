@@ -15,30 +15,37 @@ class IndexController extends Controller
     }
 
 
+    public function wishlist(){
+      return view('wishlist');
+    }
+
+
     public function login(){
+        if(Auth::check()) return redirect()->route("home");
+
         return view('login');
     }
+
     public function auth(Request $request){
-    
-         if($request->ajax()){
+           if($request->ajax()){
 
             $data = [
-               "name" => $request->username,
-               "password" => $request->password
-            ];
+                "name" => $request->username,
+                "password" => $request->password
+             ];
 
-            $attempt = Auth::attempt($data);
+             $attempt = Auth::attempt($data);
 
-            if(!$attempt) return response()->json([
-                "message" => "auth-err",
-            ]);
+             if(!$attempt) return response()->json([
+                "status" => "unauthenticated",
+             ]);
 
-            return response()->json([
-                "message" => "auth-succ"
-            ]);
+             return response()->json([
+                "status" => "success"
+             ]);
 
+           }
 
-         }
 
     }
 
