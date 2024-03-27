@@ -90,6 +90,7 @@ class TransactionController extends Controller
                 ->where('status', 'not_paid')
                 ->first();
 
+
             if ($sameTransaction) {
                 $sumQuantity = $sameTransaction->quantity += $request->quantity;
                 $sumPrice = $sumQuantity * $product->price;

@@ -1,7 +1,6 @@
 $(document).ready(function () {
     const currentUrl = window.location.pathname
 
-
     $("#showpass").on("click", function () {
         const passInputType = $("#password-input").attr('type');
         passInputType === "password" ? showPass() : hidePass();
@@ -10,6 +9,15 @@ $(document).ready(function () {
     $("#login-btn").on("click", function () {
         checkAuth()
     })
+
+    $(document).on("keypress", function(e){
+        const checkUserInput = $("#username-input").val()
+        const checkPassInput = $("#password-input").val()
+
+         if(e.keyCode == 13 && checkPassInput && checkUserInput){
+            checkAuth() 
+         }
+     })
 
     $("#password-input").on("keyup", function () {
         checkInputValue()
@@ -54,6 +62,13 @@ $(document).ready(function () {
         }, 5000)
     }
 
+    function showAlertSuccess(){
+        $("#modal-alert-success").removeClass("hidden-items");
+        setTimeout(() => {
+            $("#modal-alert-success").addClass("hidden-items");
+        }, 5000)
+    }
+
     function clearForm() {
         $("#username-input").val("")
         $("#password-input").val("")
@@ -81,6 +96,8 @@ $(document).ready(function () {
                     clearForm()
                     disableButton()
                 } else {
+                    showAlertSuccess()
+                    clearForm()
                     window.location.replace("/");
                 }
 
