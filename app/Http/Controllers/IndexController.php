@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\File;
 
 class IndexController extends Controller
 {
-    public function index(){           
+    public function index(){
         $products = Product::get();
         return view('index', compact('products'));
     }
@@ -39,7 +39,9 @@ class IndexController extends Controller
                 "password" => $request->password
              ];
 
-             $attempt = Auth::attempt($data);
+             $isUserRemember = $request->isUserRemember;
+
+             $attempt = Auth::attempt($data, $isUserRemember);
 
              if(!$attempt) return response()->json([
                 "status" => "unauthenticated",

@@ -1,12 +1,20 @@
-<header class="bg-slate-50 shadow-lg sticky top-0 z-50">
-    <div class="container mx-auto w-full lg:px-12 py-4 px-4 lg:flex flex-none items-center  justify-between">
+<header class="bg-slate-50 shadow-lg sticky top-0 z-30">
+    <div class="container mx-auto w-full lg:px-12 py-4 px-2 lg:flex flex-none items-center  justify-between">
         <div class="titleiconsearch flex items-center">
-            <div class="icon pr-4 flex-none">
-                <a href="/" class="header-title flex items-center gap-2 w-full h-full">
-                    <img src="{{ asset('images/static/tenizenmart.png') }}" alt="connexmart" class="h-12">
-                    <p class="font-semibold text-lg text-[#303fe2] lg:block hidden">Tenizen Mart</p>
+            @if (Route::is('home'))
+                <div class="icon pr-4 flex-none">
+                    <a href="/" class="header-title flex items-center gap-2 w-full h-full">
+                        <img src="{{ asset('images/static/tenizenmart.png') }}" alt="connexmart" class="h-12">
+                        <p class="font-semibold text-lg text-[#303fe2] lg:block hidden">Tenizen Mart</p>
+                    </a>
+                </div>
+            @else
+                <a href="{{ route('home') }}" class="pr-2">
+                    <span class="material-symbols-rounded text-[28px] mt-2 text-zinc-500">
+                        arrow_back
+                    </span>
                 </a>
-            </div>
+            @endif
             <div class="search relative basis-full">
                 <div class="flex items-center w-full">
                     <svg class="absolute left-3" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -16,13 +24,20 @@
                     </svg>
                     <input
                         class="py-2 pl-9 pr-4 lg:w-72 w-full bg-transparent focus:bg-zinc-200 bg-zinc-100 focus:outline-none focus:border-[1.5px]border-gray-300 border-[1.5px] rounded-lg"
-                        type="text" placeholder="Find In TenizenMart">
+                        type="text" placeholder="Cari Makanan atau Barang">
 
                 </div>
             </div>
-            <span class="material-symbols-rounded text-[#303fe2] ml-2 text-[32px] lg:hidden block">
-                notifications
-            </span>
+            @if (Route::is('show.product'))
+                <span class="material-symbols-rounded text-[#303fe2] ml-2 text-[32px] lg:hidden block">
+                    shopping_cart
+                </span>
+            @else
+                <span class="material-symbols-rounded text-[#303fe2] ml-2 text-[32px] lg:hidden block">
+                    notifications
+                </span>
+            @endif
+
         </div>
 
         <div class="header-charts flex items-center gap-6">

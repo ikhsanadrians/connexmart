@@ -1,6 +1,7 @@
 @extends('layouts.admin')
 @section('content')
-    <div class="addgoodmodal hidden fixed z-50 w-3/5 h-3/4 bg-white -translate-x-1/2 left-1/2 shadow-lg overflow-hidden rounded-lg">
+    <div
+        class="addgoodmodal hidden fixed z-50 w-3/5 h-3/4 bg-white -translate-x-1/2 left-1/2 shadow-lg overflow-hidden rounded-lg">
         <div class="wrappers flex h-full w-full">
             <div class="modal-input-group relative w-full px-4 py-8 overflow-y-auto">
                 <div class="flex justify-between pr-5">
@@ -91,7 +92,8 @@
             </div>
         </div>
     </div>
-    <div class="updategoodsmodal hidden fixed z-50 w-3/5 h-3/4 bg-white -translate-x-1/2 left-1/2 shadow-lg overflow-hidden rounded-lg">
+    <div
+        class="updategoodsmodal hidden fixed z-50 w-3/5 h-3/4 bg-white -translate-x-1/2 left-1/2 shadow-lg overflow-hidden rounded-lg">
         <div class="wrappers flex h-full w-full ">
             <div class="modal-input-group relative w-full px-4 py-8 overflow-y-auto">
                 <div class="flex justify-between pr-5">
@@ -104,7 +106,8 @@
                         </svg>
                     </button>
                 </div>
-                <form id="update-forms" action="{{ route('mart.updategoods') }}" method="POST" class="input mt-4 px-6" enctype="multipart/form-data">
+                <form id="update-forms" action="{{ route('mart.updategoods') }}" method="POST" class="input mt-4 px-6"
+                    enctype="multipart/form-data">
                     @csrf
                     @method('put')
                     <div class="username py-1">
@@ -162,8 +165,8 @@
                         <br>
                         <div class="input-images flex items-center w-full h-12 bg-gray-100 relative">
                             <div class="img-previews h-12 w-12">
-                                <img src="http://127.0.0.1:8000/images/IMG_20230704_171327.jpg05112023001940jpg" alt="" id="imgPreviewUpdate"
-                                    class="h-full w-full object-cover">
+                                <img src="http://127.0.0.1:8000/images/IMG_20230704_171327.jpg05112023001940jpg"
+                                    alt="" id="imgPreviewUpdate" class="h-full w-full object-cover">
                             </div>
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                 class="bi bi-image icons absolute left-3" viewBox="0 0 16 16">
@@ -176,7 +179,8 @@
 
                         </div>
                     </div>
-                    <button type="submit" id="update-btn-goods" class="bg-[#003034] py-2 text-white px-4 rounded-md mt-4 w-full">
+                    <button type="submit" id="update-btn-goods"
+                        class="bg-[#003034] py-2 text-white px-4 rounded-md mt-4 w-full">
                         Submit
                     </button>
                 </form>
@@ -185,7 +189,8 @@
     </div>
     <div class="headers flex justify-between">
         <h1 class="text-2xl font-bold">Add Goods</h1>
-        <button id="opengoodsmodal" class="add-user bg-[#003034] text-white px-3 py-2 hover:bg-slate-300 hover:text-[#003034] transition cursor-pointer rounded-lg flex items-center gap-2">
+        <button id="opengoodsmodal"
+            class="add-user bg-[#003034] text-white px-3 py-2 hover:bg-slate-300 hover:text-[#003034] transition cursor-pointer rounded-lg flex items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                 class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
                 <path
@@ -207,7 +212,8 @@
             </svg>
             <input type="text" placeholder="Search Goods" class="pl-8 pr-4 py-2 rounded-md focus:outline-none">
         </div>
-        <div class="filter bg-[#003034] text-white mt-2 p-[11px] rounded-md hover:bg-slate-300 hover:text-[#003034] rounded transition cursor-pointer">
+        <div
+            class="filter bg-[#003034] text-white mt-2 p-[11px] rounded-md hover:bg-slate-300 hover:text-[#003034] rounded transition cursor-pointer">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                 class="bi bi-funnel-fill" viewBox="0 0 16 16">
                 <path
@@ -232,13 +238,15 @@
                 @foreach ($products as $key => $product)
                     <tr>
                         <td class="product-id" data-productid="{{ $product->id }}">{{ $key + 1 }}</td>
-                        <td class="product-thumbnail flex justify-center border-none" data-thumbnail="{{ $product->photo }}">
+                        <td class="product-thumbnail flex justify-center border-none"
+                            data-thumbnail="{{ $product->photo }}">
                             <div class="thumbnail overflow-hidden h-12 w-16">
                                 @if (!empty($product->photo) || File::exists(public_path($product->photo)))
                                     <img class="w-full h-full object-cover" src="{{ asset('images/default/mart.png') }}"
                                         alt="">
                                 @else
-                                    <img class="w-full h-full object-cover" src="{{ asset($product->photo) }}" alt="">
+                                    <img class="w-full h-full object-cover" src="{{ asset($product->photo) }}"
+                                        alt="">
                                 @endif
                             </div>
                         </td>

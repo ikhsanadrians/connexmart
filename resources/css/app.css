@@ -7,10 +7,23 @@
     font-family: 'Poppins', sans-serif;
 }
 
+.preload * {
+    transition: none !important;
+    animation-duration: 0.001s !important;
+  }
+
 body {
     @apply bg-[#ffffff]
 }
 
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
 
 .selected-topup {
     @apply bg-[#003034] text-white
@@ -102,3 +115,40 @@ th {
   input[type=number] {
       -moz-appearance: textfield;
   }
+
+
+.hide-animation {
+    display: none;
+    animation: none;
+}
+
+.hidden-items {
+    display: block;
+    transform: translateY(0);
+    animation: slideDown 0.5s ease forwards;
+}
+
+.visible-items {
+    display: block;
+    transform: translateY(-100%);
+    animation: slideUp 0.5s ease forwards;
+}
+
+@keyframes slideUp {
+    0% {
+        transform: translateY(100%);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideDown {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(100%);
+        display: none; /* Hide the element at the end of the animation */
+    }
+}

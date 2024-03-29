@@ -114,22 +114,36 @@
                 <div class="balance-mobile flex justify-between">
                     <div class="balance py-4">
                         <div class="title flex items-center gap-1 font-bold lg:text-base text-sm">
-                            <img src="{{ asset('images/static/connexpay.png') }}" alt="cnx-pay"
-                                class="h-5 lg:h-8 brightness-0 invert-[1]">
+                            <img src="{{ asset('images/static/tenbank2.png') }}" alt="cnx-pay"
+                                class="h-7 lg:h-8 brightness-0 invert-[1]">
                         </div>
                         @foreach (Auth::user()->wallet as $user_wallet)
-                            <h1 class="balance text-2xl lg:text-4xl mt-4 font-semibold text-white">
+                            <h1 class="balance text-xl lg:text-4xl mt-4 font-semibold text-white">
                                 {{ format_to_rp($user_wallet->credit) }}
                             </h1>
                         @endforeach
-                        <p class="text-md font-normal text-white mt-2">56.700 Poin</p>
+                        <p class="text-md font-normal text-white mt-2 flex items-center gap-1 text-sm">
+                            56.700 Poin
+                        </p>
                     </div>
-                    <div class="action-mobile flex items-center gap-1 px-3 text-sm justify-center lg:hidden">
-                        <a href="{{ route('topup.index') }}" class="top-up bg-blue-500 py-2 px-3 text-white rounded-lg">
-                            Top Up
+                    <div class="action-mobile flex items-center gap-1 text-sm justify-center lg:hidden">
+                        <a href="{{ route('topup.index') }}"
+                            class="top-up bg-white py-2 px-3 text-blue-500 rounded-2xl flex-col flex justify-center items-center">
+                            <span class="material-symbols-rounded">
+                                arrow_upward
+                            </span>
+                            <p class="text-xs">
+                                Top Up
+                            </p>
                         </a>
-                        <div class="transfer bg-blue-500 py-2 px-3 text-white rounded-lg">
-                            Transfer
+                        <div
+                            class="transfer bg-white py-2 px-3 text-blue-500 rounded-2xl flex-col flex justify-center items-center">
+                            <span class="material-symbols-rounded">
+                                add
+                            </span>
+                            <p class="text-xs">
+                                Transfer
+                            </p>
                         </div>
                     </div>
 
@@ -189,69 +203,111 @@
                 <div class="title text-white p-4 relative w-full h-full">
                     Login To Get Your Balance
                     <p class="font-normal text-slate-100">To Get Your ConnexPay Account You Need Login!</p>
-                    <svg class="absolute bottom-4 right-0" xmlns="http://www.w3.org/2000/svg" width="46" height="46" fill="currentColor" class="bi bi-wallet2" viewBox="0 0 16 16">
-                        <path d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499L12.136.326zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5z"/>
-                      </svg>
+                    <svg class="absolute bottom-4 right-0" xmlns="http://www.w3.org/2000/svg" width="46"
+                        height="46" fill="currentColor" class="bi bi-wallet2" viewBox="0 0 16 16">
+                        <path
+                            d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499L12.136.326zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5z" />
+                    </svg>
                 </div>
             @endif
-
-
         </div>
-        <div class="w-full mt-6 overflow-hidden rounded-md h-full">
-            <img class="w-full h-full" src="https://www.static-src.com/siva/asset/12_2023/Ranch-des-blm-5desKolaboarasi-800x400.jpg?w=392" alt="">
+        <div class="w-full mt-6 overflow-hidden rounded-md h-full lg:block hidden">
+            <img class="w-full h-full"
+                src="https://www.static-src.com/siva/asset/12_2023/Ranch-des-blm-5desKolaboarasi-800x400.jpg?w=392"
+                alt="">
         </div>
     </div>
-    <div class="products-list-card rounded-lg">
-        <h1 class="font-semibold text-xl">Products</h1>
-        <div class="product-list grid md:grid-cols-2 grid-cols-1 lg:grid-cols-4 gap-4 mt-3">
-                @foreach ($products as $product)
-                    <a href="{{ route('show.product',$product->slug) }}"
-                        class="product-card border-gray-200 bg-white overflow-hidden h-fit rounded-md shadow-md border-[1.5px] ">
-                        <div class="content-img w-full h-[170px] overflow-hidden">
-                            @if (!empty($product->photo) || File::exists(public_path($product->photo)))
-                                <img class="w-full h-full object-cover" src="{{ asset('images/default/mart.png') }}"
-                                    alt="">
-                            @else
-                                <img class="w-full h-full object-cover" src="{{ asset($product->photo) }}" alt="">
-                            @endif
-                        </div>
+    <div class="products-list-card rounded-lg mt-4">
+        <div class="product-category-list lg:px-0 px-4 lg:pt-8 pt-4 pb-3 flex overflow-x-scroll no-scrollbar white">
+            <div class="list-wrapper flex flex-nowrap gap-3">
+                <div
+                    class="category border-[2px] border-[#303fe2] ring-2 w-28 rounded-2xl flex items-center justify-center flex-col gap-2 py-3 px-1">
+                    <span
+                        class="material-symbols-rounded text-transparent bg-clip-text bg-gradient-to-r from-[#303fe2] to-cyan-600 text-[30px]">
+                        thumb_up
+                    </span>
+                    <p class="text-xs text-gray-500 text-center">Untuk Kamu</p>
+                </div>
+                <div
+                    class="category border-[1.5px] border-gray-200 w-28 rounded-2xl flex items-center justify-center flex-col gap-2 py-3 px-1">
+                    <span
+                        class="material-symbols-rounded text-transparent bg-clip-text bg-gradient-to-r from-[#303fe2] to-cyan-600 text-[30px]">
+                        icecream
+                    </span>
+                    <p class="text-xs text-gray-500 text-center">Es Krim</p>
+                </div>
+                <div
+                    class="category border-[1.5px]  border-gray-200 w-28 rounded-2xl flex items-center justify-center flex-col gap-2 py-3 px-1">
+                    <span
+                        class="material-symbols-rounded text-transparent bg-clip-text bg-gradient-to-r from-[#303fe2] to-cyan-600 text-[30px]">
+                        bakery_dining
+                    </span>
+                    <p class="text-xs text-gray-500 text-center">Snack</p>
+                </div>
+                <div
+                    class="category border-[1.5px] border-gray-200 w-28 rounded-2xl flex items-center justify-center flex-col gap-2 py-3 px-1">
+                    <span
+                        class="material-symbols-rounded text-transparent bg-clip-text bg-gradient-to-r from-[#303fe2] to-cyan-600 text-[30px]">
+                        local_cafe
+                    </span>
+                    <p class="text-xs text-gray-500 text-center">Minuman</p>
+                </div>
+                <div
+                    class="category border-[1.5px] border-gray-200 w-28 rounded-2xl flex items-center justify-center flex-col gap-2 py-3 px-1">
+                    <span
+                        class="material-symbols-rounded text-transparent bg-clip-text bg-gradient-to-r from-[#303fe2] to-cyan-600 text-[30px]">
+                        lunch_dining
+                    </span>
+                    <p class="text-xs text-gray-500 text-center">Makanan</p>
+                </div>
+                <div
+                    class="category border-[1.5px] border-gray-200 w-28 rounded-2xl flex items-center justify-center flex-col gap-2 py-3 px-1">
+                    <span
+                        class="material-symbols-rounded text-transparent bg-clip-text bg-gradient-to-r from-[#303fe2] to-cyan-600 text-[30px]">
+                        stylus_note
+                    </span>
+                    <p class="text-xs text-gray-500 text-center">Makanan</p>
+                </div>
+
+            </div>
+
+
+        </div>
+        <h1 class="font-semibold text-lg lg:text-xl lg:px-0 px-4 lg:pt-8 pt-4">Semua Produk</h1>
+        <div class="product-list grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 mt-3 lg:px-0 px-4">
+            @foreach ($products as $product)
+                <a href="{{ route('show.product', $product->slug) }}"
+                    class="product-card border-gray-200 bg-white overflow-hidden h-fit rounded-md shadow-md border-[1.5px] ">
+                    <div class="content-img w-full h-[170px] overflow-hidden">
+                        @if (!empty($product->photo) || File::exists(public_path($product->photo)))
+                            <img class="w-full h-full object-cover" src="{{ asset('images/default/mart.png') }}"
+                                alt="">
+                        @else
+                            <img class="w-full h-full object-cover" src="{{ asset($product->photo) }}" alt="">
+                        @endif
+                    </div>
                     <div class="content  p-4">
                         @if (!Auth::check() || Auth::user()->role_id !== 4)
-                        <h1>{{ $product->name }}</h1>
-                        <p class="font-semibold text-black">{{ format_to_rp($product->price) }}</p>
+                            <h1 class="lg:text-base text-sm">{{ $product->name }}</h1>
+                            <p class="font-semibold text-black">{{ format_to_rp($product->price) }}</p>
                         @else
-                        <h1>{{ $product->name }}</h1>
-                        <p class="font-semibold text-black">{{ format_to_rp($product->price) }}</p>
-                        <div class="product-action flex items-center justify-between h-full gap-2">
-                            <div class="wishlist-button mt-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="red"
-                                class="bi bi-heart" viewBox="0 0 16 16">
-                                <path
-                                        d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
-                                </svg>
-                            </div>
-                            <div class="action-right">
-                                <form class=" flex items-center gap-2">
-                                    <input name="quantity" id="quantity-{{ $product->id }}"
-                                        class="w-14 py-1 px-2 mt-2 bg-gray-100 shadow-lg border-2" type="number"
-                                        min="1" value="1">
-                                    <input type="hidden" id="product_id" name="product_id"
-                                        value="{{ $product->id }}">
-                                    <button
-                                        data-islogined="@php if(Auth::user()) echo "logined"; else echo "not-logined"; @endphp"
-                                        id="{{ $product->id }}" type="button"
-                                        class="add-to-cart flex items-center bg-[#003034] text-white py-2 px-4 text-sm mt-2 rounded-md">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                            fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
-                                            <path fill-rule="evenodd"
-                                                d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
+                            <h1 class="lg:text-base text-sm">{{ $product->name }}</h1>
+                            <p class="font-semibold text-black">{{ format_to_rp($product->price) }}</p>
+                            <div class="product-action w-full h-full gap-2 mt-3">
+                                <div class="action-right lg:text-base text-xs flex items-center gap-1 text-zinc-500">
+                                    <div class="rating flex items-center gap-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15"
+                                            fill="currentColor" class="bi bi-star-fill fill-yellow-500 -mt-[1.2px]"
+                                            viewBox="0 0 16 16">
+                                            <path
+                                                d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" />
                                         </svg>
-                                        Add To Cart
-                                    </button>
-                                </form>
-                                
+                                        4.5
+                                    </div>
+                                    •
+                                    <p>Terjual 14</p>
+                                </div>
                             </div>
-                        </div>
                         @endif
                     </div>
                 </a>

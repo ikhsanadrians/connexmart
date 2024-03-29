@@ -6,7 +6,7 @@ const priceElements = document.querySelectorAll('.price-products');
 
 // Fungsi untuk menghitung jumlah semua nilai input
 
-$(document).ready(function() {
+$(document).ready(function () {
     initializeTotals();
     updateTotals();
 });
@@ -47,22 +47,22 @@ function updateTotals() {
     localStorage.setItem('total_prices', totalPrice);
     $('#total_prices').text(rupiah(totalPrice));
     $('#product-price-top').text(rupiah(totalPrice));
-    $('#product-price-top').attr('data-prices',totalPrice);
+    $('#product-price-top').attr('data-prices', totalPrice);
 }
 
 
 
-function openModal(){
+function openModal() {
     $('.success-addproduct').removeClass('hidden')
     $('.backdrop').removeClass('hidden')
 }
 
-function showLoginCard(){
+function showLoginCard() {
     $('.login').removeClass('hidden')
     $('.backdrop').removeClass('hidden')
 }
 
-function hideLoginCard(){
+function hideLoginCard() {
     $('.login').addClass('hidden')
     $('.backdrop').toggleClass('hidden')
     $('.login-error').addClass('hidden')
@@ -71,55 +71,55 @@ function hideLoginCard(){
 }
 
 
-function openModalBalanceNotEnough(){
+function openModalBalanceNotEnough() {
     $('.balance-not-enough').removeClass('hidden')
     $('.backdrop').removeClass('hidden')
 }
 
-function closeModalBalanceNotEnough(){
+function closeModalBalanceNotEnough() {
     $('.balance-not-enough').addClass('hidden')
     $('.backdrop').addClass('hidden')
 }
 
 
-function closeModal(){
+function closeModal() {
     $('.success-addproduct').addClass('hidden')
     $('.backdrop').addClass('hidden')
 }
 
-$('#close-btn-successaddproduct').on('click',function(){
+$('#close-btn-successaddproduct').on('click', function () {
     closeModal()
 })
 
-$('#close-btn-balancenotenough').on('click',function(){
+$('#close-btn-balancenotenough').on('click', function () {
     closeModalBalanceNotEnough()
 })
 
 
 
 quantities.forEach(element => {
-    element.addEventListener('change', function(e) {
+    element.addEventListener('change', function (e) {
         // e.target.value = quantity
         // Memperbarui tampilan quantityAll
         updateTotals();
         $.ajax({
             method: 'put',
-            url : '/cart/quantityupdate',
+            url: '/cart/quantityupdate',
             dataType: 'json',
             data: {
-                "transaction_id" : e.target.getAttribute('data-transaction'),
-                "quantity" : e.target.value,
+                "transaction_id": e.target.getAttribute('data-transaction'),
+                "quantity": e.target.value,
                 _token: $('meta[name="csrf-token"]').attr('content')
             },
-            success:function(data){
+            success: function (data) {
                 updateTotals();
 
                 console.log(data)
             },
-            error: function(data){
-                 console.log(data)
-        }
-    })
+            error: function (data) {
+                console.log(data)
+            }
+        })
 
 
     });
@@ -127,25 +127,25 @@ quantities.forEach(element => {
 
 //delete product in cart logic
 
-$('.btn-delete-product').on('click',function(e){
+$('.btn-delete-product').on('click', function (e) {
     const currentUrl = "/cart"
     const product = $(this);
-    const currentBtnId =  e.currentTarget.id
+    const currentBtnId = e.currentTarget.id
 
     $.ajax({
         method: 'delete',
-        url : currentUrl,
+        url: currentUrl,
         dataType: 'json',
         data: {
-            "product_id" : currentBtnId,
+            "product_id": currentBtnId,
             _token: $('meta[name="csrf-token"]').attr('content')
         },
-        success:function(data){
+        success: function (data) {
             product.parent().parent().parent().remove()
             location.reload()
         },
-        error: function(data){
-             console.log(data)
+        error: function (data) {
+            console.log(data)
         }
     })
 
@@ -154,8 +154,8 @@ $('.btn-delete-product').on('click',function(e){
 
 
 //addToCart Logic
-$('.add-to-cart').on('click',function(e){
-    if($(this).attr('data-islogined') == "logined"){
+$('.add-to-cart').on('click', function (e) {
+    if ($(this).attr('data-islogined') == "logined") {
         e.preventDefault()
         const currentUrl = '/cart'
 
@@ -167,20 +167,20 @@ $('.add-to-cart').on('click',function(e){
 
         $.ajax({
             method: 'post',
-            url : currentUrl,
+            url: currentUrl,
             dataType: 'json',
             data: {
-                "product_id" : productId,
-                "quantity" : productQuantity,
+                "product_id": productId,
+                "quantity": productQuantity,
                 _token: $('meta[name="csrf-token"]').attr('content')
             },
-            success:function(data){
-               $('#quantity').val(1);
+            success: function (data) {
+                $('#quantity').val(1);
             },
-            error: function(data){
-                 return
+            error: function (data) {
+                return
             }
-    })
+        })
     } else {
         showLoginCard()
     }
@@ -189,26 +189,48 @@ $('.add-to-cart').on('click',function(e){
 
 
 //payCart Logic
-$('#btn-pay').on('click',function(e){
+$('#btn-pay').on('click', function (e) {
 
     const currentUrl = '/cart/pay'
 
     e.preventDefault()
     $.ajax({
         method: 'put',
-        url : currentUrl,
+        url: currentUrl,
         dataType: 'json',
         data: {
-            total_prices: $('#product-price-top').attr('data-prices') ,
+            total_prices: $('#product-price-top').attr('data-prices'),
             _token: $('meta[name="csrf-token"]').attr('content')
         },
         success: function (data) {
             window.location.replace("/cart/receipt");
         },
-        error: function (data){
+        error: function (data) {
             openModalBalanceNotEnough();
         }
-     })
+    })
 
 
+})
+
+
+//mobile cart logic
+
+function openQuantityEditor() {
+    $("#chosee-quantity").removeClass("hidden-items")
+    $("#chosee-quantity").addClass("visible-items")
+    $(".backdrop").removeClass("hidden")
+}
+
+function closeQuantityEditor() {
+    $("#chosee-quantity").removeClass("visible-items").addClass("hidden-items")
+    $(".backdrop").addClass("hidden");
+}
+
+$("#open_cart").on("click", function () {
+    openQuantityEditor()
+})
+
+$("#closeqtyeditor").on("click", function () {
+    closeQuantityEditor()
 })

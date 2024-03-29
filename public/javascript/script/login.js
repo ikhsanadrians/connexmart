@@ -10,14 +10,14 @@ $(document).ready(function () {
         checkAuth()
     })
 
-    $(document).on("keypress", function(e){
+    $(document).on("keypress", function (e) {
         const checkUserInput = $("#username-input").val()
         const checkPassInput = $("#password-input").val()
 
-         if(e.keyCode == 13 && checkPassInput && checkUserInput){
-            checkAuth() 
-         }
-     })
+        if (e.keyCode == 13 && checkPassInput && checkUserInput) {
+            checkAuth()
+        }
+    })
 
     $("#password-input").on("keyup", function () {
         checkInputValue()
@@ -62,7 +62,7 @@ $(document).ready(function () {
         }, 5000)
     }
 
-    function showAlertSuccess(){
+    function showAlertSuccess() {
         $("#modal-alert-success").removeClass("hidden-items");
         setTimeout(() => {
             $("#modal-alert-success").addClass("hidden-items");
@@ -76,6 +76,8 @@ $(document).ready(function () {
 
     function checkAuth() {
 
+        const isRemember = $("#remember").is(":checked")
+
         $("#form-wrappers").addClass("hidden-items")
         $("#loader").removeClass("hidden-items")
         $.ajax({
@@ -85,7 +87,8 @@ $(document).ready(function () {
             data: {
                 _token: $('meta[name="csrf-token"]').attr('content'),
                 "username": $('#username-input').val(),
-                "password": $('#password-input').val()
+                "password": $('#password-input').val(),
+                "isUserRemember": isRemember
             },
             success: function (data) {
                 $("#form-wrappers").removeClass("hidden-items")
