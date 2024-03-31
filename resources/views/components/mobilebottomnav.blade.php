@@ -2,7 +2,8 @@
     class="mobilebtmnav lg:hidden block w-full sticky bottom-0 h-[67px] bg-white border-[1px] border-zinc-200 shadow-lg">
     @if (Route::is('show.product'))
         <div class="container mx-auto flex gap-2 items-center h-full justify-between px-3 py-2">
-            <div id="open_cart" class="add-cart p-4 h-full w-fit rounded-3xl bg-[#303fe2]/5 flex items-center">
+            <div id="open_cart"
+                class="cursor pointer add-cart p-4 h-full w-fit rounded-3xl bg-[#303fe2]/5 flex items-center">
                 <span class="material-symbols-rounded text-[#303fe2]">
                     shopping_cart
                 </span>

@@ -223,15 +223,16 @@
                 <div
                     class="container-right w-1/3 lg:block hidden bg-white border-[1.2px] border-slate-200 shadow-sm rounded-lg p-4 sticky top-24 h-full">
                     <div class="add-to-cart font-semibold">
-                        Set Quantity
+                        Atur Jumlah
                     </div>
                     <div class="quanties-setings mt-2 flex items-center gap-3">
                         <div class="input-quantity flex border-slate-300 border-[1.3px] w-fit px-2 py-1 rounded-md">
                             <button id="decrease">
                                 -
                             </button>
-                            <input type="number" value="1" class="w-12 text-center focus:outline-none px-1"
-                                min="1" id="value_quantity" max="{{ $product->stock }}"
+                            <input type="number" value="1"
+                                class="input-of-quantity w-12 text-center focus:outline-none px-1" min="1"
+                                id="value_quantity" max="{{ $product->stock }}"
                                 data-currentstock="{{ $product->stock }}">
                             <button id="increase">
                                 +
@@ -241,12 +242,13 @@
                     </div>
                     <div class="subtotal mt-4 flex justify-between items-center">
                         <p class="text-sm text-gray-500">Subtotal</p>
-                        <h1 class="font-semibold" id="product_price">{{ format_to_rp($product->price) }}</h1>
+                        <h1 class="font-semibold" id="product_price_subtotals">{{ format_to_rp($product->price) }}</h1>
                     </div>
-                    <div class="button-add-to-cart mt-4">
-                        <button id="add-to-cart" data-productid="{{ $product->id }}"
-                            class="bg-[#003034] text-white py-2 px-4 text-sm w-full rounded-md font-semibold">Add To
-                            Cart</button>
+                    <div class="add-to-cart mt-4">
+                        <button data-name="{{ $product->name }}" id="{{ $product->id }}"
+                            class="bg-gradient-to-r from-[#303fe2] to-blue-500 text-white py-3 px-4 text-sm w-full rounded-xl font-semibold">
+                            Tambah Ke Keranjang
+                        </button>
                     </div>
                 </div>
             @endif

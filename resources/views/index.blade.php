@@ -55,55 +55,6 @@
         </div>
 
     </div>
-    <div
-        class="success-addproduct hidden fixed z-50 w-3/5 h-3/4 bg-gray-50 -translate-x-1/2 left-1/2 shadow-lg overflow-hidden rounded-lg">
-        <div class="wrappers p-6">
-            <div id="close-btn-successaddproduct" class="close group absolute top-7 right-6">
-                <svg class="group-hover:fill-red-500" xmlns="http://www.w3.org/2000/svg" width="25" height="25"
-                    fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                    <path
-                        d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z" />
-                </svg>
-            </div>
-            <h1 class="text-xl font-semibold">Added Successfully!</h1>
-            <div
-                class="products p-3 flex items-center gap-5 mt-4 w-full shadow-md bg-white shadow-slate-300 rounded-md overflow-hidden">
-                <div class="thumbnail h-14 overflow-hidden">
-                    <img src="{{ asset('images/static/martgroup.png') }}" alt="test" class="h-full w-full object-cover">
-                </div>
-                <div class="product-name flex items-center justify-between w-full pr-4">
-                    <p class="text-gray-600" id="success-product-name"></p>
-                    <a href="{{ route('cart.index') }}" class="see-cart bg-[#003034] text-white py-2 px-4 rounded-md">
-                        See Cart
-                    </a>
-                </div>
-            </div>
-            <h1 class="text-xl font-semibold mt-5">You May Also Like</h1>
-            <div class="grid grid-cols-4 mt-6 gap-3">
-                @foreach ($products as $product)
-                    <div class="product-card border-gray-200 overflow-hidden rounded-md shadow-md border-[1.5px] ">
-                        <div class="content-img">
-                            <img src="{{ asset('images/static/martgroup.png') }}" alt="">
-                        </div>
-                        <div class="content  p-4">
-                            <h1>{{ $product->name }}</h1>
-                            <p class="font-semibold text-black">{{ format_to_rp($product->price) }}</p>
-
-                            <div class="product-action flex items-center justify-between h-full gap-2">
-                                <div class="wishlist-button mt-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="red"
-                                        class="bi bi-heart" viewBox="0 0 16 16">
-                                        <path
-                                            d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-        </div>
-    </div>
     <div class="carouse w-full h-96 rounded-lg shadow-sm overflow-hidden hidden lg:block">
         <img class="w-full h-full object-cover" src="{{ asset('images/static/caroselrevisi.png') }}" alt="carousel">
     </div>

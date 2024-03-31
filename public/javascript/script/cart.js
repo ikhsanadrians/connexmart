@@ -53,7 +53,7 @@ function updateTotals() {
 
 
 function openModal() {
-    $('.success-addproduct').removeClass('hidden')
+    $('.success-addproduct').removeClass('hidden-items')
     $('.backdrop').removeClass('hidden')
 }
 
@@ -113,7 +113,6 @@ quantities.forEach(element => {
             },
             success: function (data) {
                 updateTotals();
-
                 console.log(data)
             },
             error: function (data) {
@@ -153,39 +152,71 @@ $('.btn-delete-product').on('click', function (e) {
 })
 
 
-//addToCart Logic
+
 $('.add-to-cart').on('click', function (e) {
-    if ($(this).attr('data-islogined') == "logined") {
-        e.preventDefault()
-        const currentUrl = '/cart'
+    const currentUrl = '/cart'
+    const parentContainer = $(this).closest('.container')
+    let productQuantity = parentContainer.find('.input-of-quantity').val()
+    let productId = $(this).children().attr('id')
+    let productName = $(this).children().attr('data-name')
+    let productTotalPrice = parentContainer.find('.subtotal').children().eq(1).text()
 
-        let productName = $(this).closest('.product-card').find('h1').text();
-        $('#success-product-name').text(productName)
-        openModal()
-        let productId = $(this).attr('id')
-        let productQuantity = $(this).siblings().eq(0).val()
+    console.log(productTotalPrice)
+    $.ajax({
+        method: 'post',
+        url: currentUrl,
+        dataType: 'json',
+        data: {
+            "product_id": productId,
+            "quantity": productQuantity,
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function (data) {
+            openModal()
+            $("#dekstop-quantity-product").text(productQuantity)
+            $("#dekstop-total-price").text(productTotalPrice)
+        },
+        error: function (error) {
+            console.log(error)
+        }
 
-        $.ajax({
-            method: 'post',
-            url: currentUrl,
-            dataType: 'json',
-            data: {
-                "product_id": productId,
-                "quantity": productQuantity,
-                _token: $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function (data) {
-                $('#quantity').val(1);
-            },
-            error: function (data) {
-                return
-            }
-        })
-    } else {
-        showLoginCard()
-    }
+    })
 
-});
+})
+
+//addToCart Logic
+// $('.add-to-cart').on('click', function (e) {
+//     if ($(this).attr('data-islogined') == "logined") {
+//         e.preventDefault()
+//         const currentUrl = '/cart'
+
+//         let productName = $(this).closest('.product-card').find('h1').text();
+//         $('#success-product-name').text(productName)
+//         openModal()
+//         let productId = $(this).attr('id')
+//         let productQuantity = $(this).siblings().eq(0).val()
+
+//         $.ajax({
+//             method: 'post',
+//             url: currentUrl,
+//             dataType: 'json',
+//             data: {
+//                 "product_id": productId,
+//                 "quantity": productQuantity,
+//                 _token: $('meta[name="csrf-token"]').attr('content')
+//             },
+//             success: function (data) {
+//                 $('#quantity').val(1);
+//             },
+//             error: function (data) {
+//                 return
+//             }
+//         })
+//     } else {
+//         showLoginCard()
+//     }
+
+// });
 
 
 //payCart Logic
@@ -222,15 +253,72 @@ function openQuantityEditor() {
     $(".backdrop").removeClass("hidden")
 }
 
-function closeQuantityEditor() {
-    $("#chosee-quantity").removeClass("visible-items").addClass("hidden-items")
-    $(".backdrop").addClass("hidden");
+function openSuccessAddToCart() {
+    $("#success-addtocart").removeClass("hidden-items")
+    $("#success-addtocart").addClass("visible-items")
 }
+
+function closeQuantityEditor(backdropOption) {
+    $("#chosee-quantity").removeClass("visible-items").addClass("hidden-items")
+
+    if (backdropOption) {
+        $(".backdrop").addClass("hidden");
+    }
+}
+
+function closeSuccessAddToCart() {
+    $("#success-addtocart").removeClass("visible-items")
+    $("#success-addtocart").addClass("hidden-items")
+    $(".backdrop").addClass("hidden")
+}
+
 
 $("#open_cart").on("click", function () {
     openQuantityEditor()
 })
 
+
 $("#closeqtyeditor").on("click", function () {
-    closeQuantityEditor()
+    closeQuantityEditor(true)
+})
+
+function showQtyModalLoader(option) {
+    if (option) {
+        $("#loader-choseeqty").removeClass("!hidden")
+    } else {
+        $("#loader-choseeqty").addClass("!hidden")
+    }
+}
+
+$("#closesuccessmodal").on("click", function (e) {
+    closeSuccessAddToCart()
+})
+
+
+
+$(".mobile-add-to-cart").on("click", function (e) {
+    const currentUrl = '/cart'
+    const productId = $(this).attr('id')
+    let productQuantity = $(this).siblings().eq(3).children().eq(1).children().children().eq(1).val()
+    showQtyModalLoader(true)
+    $.ajax({
+        method: 'post',
+        url: currentUrl,
+        dataType: 'json',
+        data: {
+            "product_id": productId,
+            "quantity": productQuantity,
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function (data) {
+            showQtyModalLoader(false)
+            closeQuantityEditor(false)
+            openSuccessAddToCart()
+        },
+        error: function () {
+            return
+        }
+
+    })
+
 })

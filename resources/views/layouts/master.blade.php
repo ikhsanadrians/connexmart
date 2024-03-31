@@ -28,6 +28,8 @@
     @include('components.mobilebottomnav')
     @if (Route::is('show.product'))
         @include('components.chooseqtymodal')
+        @include('components.successaddtocart')
+        @include('components.dekstopsuccessaddtocart')
     @endif
 </body>
 

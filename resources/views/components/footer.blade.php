@@ -8,7 +8,8 @@
             </div>
             <div class="address pl-1 mt-2">
                 <p class="font-semibold">SMKN 10 Jakarta</p>
-                <p class="w-full lg:w-72 text-slate-600">Jl. Mayjen Sutoyo, RT.7/RW.7, Cawang, Kec. Kramat jati, Kota
+                <p class="w-full lg:w-72 text-slate-600 lg:text-base text-sm">Jl. Mayjen Sutoyo, RT.7/RW.7, Cawang, Kec.
+                    Kramat jati, Kota
                     Jakarta
                     Timur, Daerah Khusus Ibukota Jakarta</p>
             </div>
@@ -96,7 +97,7 @@
     </div>
     <div class="bottom-footer bg-gradient-to-r from-[#303fe2] to-blue-500 w-full py-6 text-white lg:px-20 px-4">
         <div class="container mx-auto text-sm font-medium">
-            <p class="flex items-center gap-1"> &copy {{ date('Y') }} Build By <span
+            <p class="flex items-center gap-1"> &copy {{ date('Y') }}<span
                     class="flex items-center gap-1">TenizenCode</span> x <span class="flex items-center gap-1">
                     <img src="{{ asset('images/static/cnxgroup.png') }}" class="h-4 invert-[1] brightness-0">
                     Connexsoft
