@@ -12,7 +12,7 @@
     @vite('resources/css/app.css')
 </head>
 
-<body class="preload">
+<body class="preload bg-[#f1f3f2]/30">
     @include('components.header')
     <main class="container mx-auto lg:px-12 px-0 py-2 lg:py-8">
         @yield('content')
@@ -30,6 +30,8 @@
         @include('components.chooseqtymodal')
         @include('components.successaddtocart')
         @include('components.dekstopsuccessaddtocart')
+    @elseif(Route::is('cart.index'))
+        @include('components.cartmessagemodal')
     @endif
 </body>
 

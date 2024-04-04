@@ -14,22 +14,12 @@
             <h1 class="text-2xl mt-4 font-semibold">Your Balance Is Not Enough For Doing This Transaction!</h1>
         </div>
     </div>
-
-
-    <a href="/" class="back flex items-center gap-2 cursor-pointer">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left"
-            viewBox="0 0 16 16">
-            <path fill-rule="evenodd"
-                d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
-        </svg>
-        <p>Back</p>
-    </a>
-    <div class="title">
-        <h1 class="text-2xl font-semibold">Your Cart</h1>
+    <div class="title px-3 mt-4">
+        <h1 class="text-lg font-semibold">Keranjangmu</h1>
     </div>
-    <div class="container-cart flex gap-4">
+    <div class="container-cart flex lg:flex-row flex-col gap-4 mb-24">
         @if (count($carts))
-            <div class="cart-list w-3/4 p-2 ">
+            <div class="cart-list w-full lg:w-3/4 p-0 lg:p-2">
                 @foreach ($carts as $cart)
                     @if ($cart->product->deleted_at != '')
                         <div class="card my-3 bg-gray-200 relative p-4 rounded-lg flex gap-3 items-center">
@@ -39,9 +29,10 @@
                             </div>
                             <div class="description">
                                 <p class="line-through">{{ $cart->product->name }}</p>
-                                <p class="font-semibold price-products line-through" data-price="{{ $cart->product->price }}">
+                                <p class="font-semibold price-products line-through"
+                                    data-price="{{ $cart->product->price }}">
                                     {{ format_to_rp($cart->product->price) }}</p>
-                                    <span class="text-red-600">Product Not Available</span>
+                                <span class="text-red-600">Product Not Available</span>
                             </div>
                             <div class="action absolute right-4 bottom-4">
                                 <div class="flex items-center gap-2">
@@ -58,38 +49,74 @@
                             </div>
                         </div>
                     @else
-                        <div class="card my-3 bg-white relative p-4 rounded-lg flex gap-3 items-center">
-                            <div class="product-img h-16 w-28 rounded-lg overflow-hidden">
-                                <img class="w-full h-full object-cover" src="{{ asset('images/static/martgroup.png') }}"
-                                    alt="mart-group">
-                            </div>
-                            <div class="description">
-                                <p >{{ $cart->product->name }}</p>
-                                <p class="font-semibold price-products" data-price="{{ $cart->product->price }}">
-                                    {{ format_to_rp($cart->product->price) }}</p>
-                            </div>
-                            <div class="action absolute right-4 bottom-4">
-                                <div class="flex items-center gap-2">
-                                    <div id={{ $cart->id }} class="btn-delete-product group">
-                                        <svg class="group-hover:fill-red-500 transition cursor-pointer" xmlns="http://www.w3.org/2000/svg"
-                                            width="20" height="20" fill="currentColor" class="bi bi-trash3"
-                                            viewBox="0 0 16 16">
-                                            <path
-                                                d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
-                                        </svg>
-                                    </div>
-                                    <input data-transaction={{ $cart->id }} data-product-id="{{ $cart->id }}"
-                                        id="{{ 'cart-' . $cart->id }}" name="quantity"
-                                        class="quantities w-14 py-1 px-2 mt-2 bg-gray-100 shadow-lg border-2" type="number"
-                                        min="1" value="{{ $cart->quantity }}">
+                        <div
+                            class="card my-3 @if (!$loop->last) border-b-[1.2px] border-gray-200 @endif relative p-4 shadow-sm bg-white">
+                            <div class="detailandcheckbox flex items-start gap-3">
+                                <div class="checkbox-input flex items-center mt-1 justify-center relative">
+                                    <input data-quantity="{{ $cart->quantity }}" data-price="{{ $cart->product->price }}"
+                                        id="product-{{ $cart->product->id }}"
+                                        class="checkbox-checkout h-5 w-5 peer shrink-0 relative checked:fill-white rounded-md border-2 border-[#303fe2] focus:outline-none checked:bg-[#303fe2] disabled:border-[1.5px] disabled:border-gray-300 appearance-none"
+                                        type="checkbox" name="checkproducts" id="checkproduct">
+                                    <span
+                                        class="material-symbols-rounded pointer-events-none absolute left-0 text-[20px] text-white invisible peer-checked:visible">
+                                        done
+                                    </span>
                                 </div>
+                                <div class="product-detail flex items-start gap-3">
+                                    <div class="product-images">
+                                        <div class="img h-16 w-16 rounded-lg overflow-hidden">
+                                            @if (!empty($cart->product->photo) || File::exists(public_path($cart->product->photo)))
+                                                <img src="{{ asset('images/default/mart.png') }}" alt=""
+                                                    class="w-full h-full object-cover">
+                                            @else
+                                                <img src="{{ asset($cart->product->photo) }}" alt=""
+                                                    class="w-full h-full object-cover">
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="description">
+                                        <p class="text-base w-full line-clamp-3">{{ $cart->product->name }}</p>
+                                        <p class="font-semibold price-products" data-price="{{ $cart->product->price }}">
+                                            {{ format_to_rp($cart->product->price) }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-action flex items-center h-full justify-end gap-3">
+                                <div class="add-wishlist mt-2">
+                                    <span class="material-symbols-rounded text-zinc-500">
+                                        favorite
+                                    </span>
+                                </div>
+                                <div class="delete-product mt-2">
+                                    <span class="material-symbols-rounded text-zinc-500">
+                                        delete
+                                    </span>
+                                </div>
+                                <div class="qty-editor h-full">
+                                    <div class="quantity">
+                                        <div data-transid="{{ $cart->id }}"
+                                            class="input-quantity flex bg-[#303fe2]/5 shadow-sm w-fit px-2 py-1 rounded-md">
+                                            <button id="{{ $cart->product->id }}" class="cart-decrease">
+                                                -
+                                            </button>
+                                            <input type="number"
+                                                class="cart-input-quantity w-12 text-center bg-transparent focus:outline-none px-1"
+                                                min="1" value="{{ $cart->quantity }}"
+                                                max="{{ $cart->product->stock }}"
+                                                data-mbcurrentstock="{{ $cart->product->stock }}">
+                                            <button class="cart-increase" class="text-[#303fe2]">
+                                                +
+                                            </button>
+                                        </div>
+                                    </div>
 
+                                </div>
                             </div>
                         </div>
                     @endif
                 @endforeach
             </div>
-            <div class="price-list-balance w-1/2 mt-3 mb-8">
+            <div class="price-list-balance w-1/2 mt-3 mb-8 lg:block hidden">
                 <div class="balance bg-white rounded-md my-2 w-full p-4 font-bold text-lg ">
                     <p class="flex items-center gap-2 font-semibold text-[#003034]"><img class="h-6"
                             src="{{ asset('images/static/connexpay.png') }}"> Balance</p>

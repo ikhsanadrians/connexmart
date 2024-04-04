@@ -47,7 +47,7 @@
                                 <h1>Deskripsi Produk</h1>
                             </div>
                             <div class="product-details mt-2 text-gray-600 text-base">
-                                <table class="category-brand-detail lg:text-base text-sm !shadow-none">
+                                <table class="category-brand-detail !bg-transparent lg:text-base text-sm !shadow-none">
                                     <tr class=" !border-none text-start">
                                         <td class="!border-none w-22 !p-0">Kategori</td>
                                         <td class="!border-none pl-7 !py-1 text-[#303fe2] inline-block">
@@ -259,7 +259,7 @@
             </div>
             <div class="product-list w-full h-full flex mt-6 overflow-x-scroll no-scrollbar gap-4">
                 @foreach ($otherProducts as $otherProduct)
-                    <div class="wrappers ml-3 shadow-sm rounded-md h-full">
+                    <div class="wrappers ml-3 shadow-sm rounded-md h-full bg-white">
                         <a href="{{ route('show.product', $otherProduct->slug) }}"
                             class="product-card overflow-hidden rounded-md shadow-sm  w-full hover:shadow-xl">
                             <div class="content-img overflow-hidden h-36">

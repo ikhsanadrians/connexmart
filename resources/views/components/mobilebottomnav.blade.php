@@ -14,6 +14,32 @@
                 <p class="text-sm text-white">{{ format_to_rp($product->price) }}</p>
             </div>
         </div>
+    @elseif(Route::is('cart.index'))
+        <div class="container mx-auto grid grid-cols-7 gap-2 items-center h-full justify-between px-3 py-2">
+            <div class="totals-and-checks col-span-4 flex items-center gap-2">
+                <div class="checks flex flex-col items-center gap-[.8px] border-r-[1.2px] border-r-gray-400 pr-2">
+                    <div class="checkbox-input flex items-center justify-center relative">
+                        <input
+                            class="h-5 w-5 peer shrink-0 relative checked:fill-white rounded-md border-2 border-[#303fe2] focus:outline-none checked:bg-[#303fe2] disabled:border-[1.5px] disabled:border-gray-300 appearance-none"
+                            type="checkbox" name="checkproducts" id="checkproduct">
+                        <span
+                            class="material-symbols-rounded pointer-events-none absolute left-0 text-[20px] text-white invisible peer-checked:visible">
+                            done
+                        </span>
+                    </div>
+                    <p class="text-xs text-center">Semua</p>
+                </div>
+                <div class="total">
+                    <p class="text-sm">Total</p>
+                    <p class="text-lg font-semibold">{{ format_to_rp($total_prices) }}</p>
+                </div>
+            </div>
+
+            <div id="checkout-btn"
+                class="buy-now bg-gradient-to-r from-[#303fe2] to-blue-500 col-span-3 px-4 h-full font-semibold rounded-3xl gap-1 flex items-center justify-center">
+                <p class="text-white font-semibold text-sm">Checkout <span>( {{ count($carts) }} )</span></p>
+            </div>
+        </div>
     @else
         <div class="container mx-auto flex items-center h-full justify-between px-5">
             <a href="{{ route('home') }}"

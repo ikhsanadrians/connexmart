@@ -1,4 +1,4 @@
-<header class="bg-slate-50 shadow-lg sticky top-0 z-30">
+<header class="bg-white shadow-sm sticky top-0 z-30 border-b-[1px] border-zinc-200">
     <div class="container mx-auto w-full lg:px-12 py-4 px-2 lg:flex flex-none items-center  justify-between">
         <div class="titleiconsearch flex items-center">
             @if (Route::is('home'))
@@ -31,6 +31,10 @@
             @if (Route::is('show.product'))
                 <span class="material-symbols-rounded text-[#303fe2] ml-2 text-[32px] lg:hidden block">
                     shopping_cart
+                </span>
+            @elseif(Route::is('cart.index'))
+                <span class="material-symbols-rounded text-[#303fe2] ml-2 text-[32px] lg:hidden block">
+                    favorite
                 </span>
             @else
                 <span class="material-symbols-rounded text-[#303fe2] ml-2 text-[32px] lg:hidden block">

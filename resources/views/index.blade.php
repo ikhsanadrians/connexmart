@@ -172,7 +172,7 @@
         <div class="product-category-list lg:px-0 px-4 lg:pt-8 pt-4 pb-3 flex overflow-x-scroll no-scrollbar white">
             <div class="list-wrapper flex flex-nowrap gap-3">
                 <div
-                    class="category border-[2px] border-[#303fe2] ring-2 w-28 rounded-2xl flex items-center justify-center flex-col gap-2 py-3 px-1">
+                    class="category border-[2px] bg-white border-[#303fe2] ring-2 w-28 rounded-2xl flex items-center justify-center flex-col gap-2 py-3 px-1">
                     <span
                         class="material-symbols-rounded text-transparent bg-clip-text bg-gradient-to-r from-[#303fe2] to-cyan-600 text-[30px]">
                         thumb_up
@@ -180,7 +180,7 @@
                     <p class="text-xs text-gray-500 text-center">Untuk Kamu</p>
                 </div>
                 <div
-                    class="category border-[1.5px] border-gray-200 w-28 rounded-2xl flex items-center justify-center flex-col gap-2 py-3 px-1">
+                    class="category border-[1.5px] bg-white border-gray-200 w-28 rounded-2xl flex items-center justify-center flex-col gap-2 py-3 px-1">
                     <span
                         class="material-symbols-rounded text-transparent bg-clip-text bg-gradient-to-r from-[#303fe2] to-cyan-600 text-[30px]">
                         icecream
@@ -188,7 +188,7 @@
                     <p class="text-xs text-gray-500 text-center">Es Krim</p>
                 </div>
                 <div
-                    class="category border-[1.5px]  border-gray-200 w-28 rounded-2xl flex items-center justify-center flex-col gap-2 py-3 px-1">
+                    class="category border-[1.5px] bg-white border-gray-200 w-28 rounded-2xl flex items-center justify-center flex-col gap-2 py-3 px-1">
                     <span
                         class="material-symbols-rounded text-transparent bg-clip-text bg-gradient-to-r from-[#303fe2] to-cyan-600 text-[30px]">
                         bakery_dining
@@ -196,7 +196,7 @@
                     <p class="text-xs text-gray-500 text-center">Snack</p>
                 </div>
                 <div
-                    class="category border-[1.5px] border-gray-200 w-28 rounded-2xl flex items-center justify-center flex-col gap-2 py-3 px-1">
+                    class="category border-[1.5px] bg-white border-gray-200 w-28 rounded-2xl flex items-center justify-center flex-col gap-2 py-3 px-1">
                     <span
                         class="material-symbols-rounded text-transparent bg-clip-text bg-gradient-to-r from-[#303fe2] to-cyan-600 text-[30px]">
                         local_cafe
@@ -204,7 +204,7 @@
                     <p class="text-xs text-gray-500 text-center">Minuman</p>
                 </div>
                 <div
-                    class="category border-[1.5px] border-gray-200 w-28 rounded-2xl flex items-center justify-center flex-col gap-2 py-3 px-1">
+                    class="category border-[1.5px] bg-white border-gray-200 w-28 rounded-2xl flex items-center justify-center flex-col gap-2 py-3 px-1">
                     <span
                         class="material-symbols-rounded text-transparent bg-clip-text bg-gradient-to-r from-[#303fe2] to-cyan-600 text-[30px]">
                         lunch_dining
@@ -212,7 +212,7 @@
                     <p class="text-xs text-gray-500 text-center">Makanan</p>
                 </div>
                 <div
-                    class="category border-[1.5px] border-gray-200 w-28 rounded-2xl flex items-center justify-center flex-col gap-2 py-3 px-1">
+                    class="category border-[1.5px] bg-white border-gray-200 w-28 rounded-2xl flex items-center justify-center flex-col gap-2 py-3 px-1">
                     <span
                         class="material-symbols-rounded text-transparent bg-clip-text bg-gradient-to-r from-[#303fe2] to-cyan-600 text-[30px]">
                         stylus_note

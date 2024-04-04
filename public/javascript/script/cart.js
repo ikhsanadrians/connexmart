@@ -3,21 +3,138 @@ import rupiah from "./utils/rupiahFormater.js";
 const quantities = document.querySelectorAll('.quantities')
 let currentInputElement = "";
 const priceElements = document.querySelectorAll('.price-products');
+const checkboxCheckout = $(".checkbox-checkout")
 
-// Fungsi untuk menghitung jumlah semua nilai input
 
 $(document).ready(function () {
-    initializeTotals();
+    loadCheckBoxProduct()
+    // initializeTotals();
     updateTotals();
 });
 
 
-function initializeTotals() {
-    const totalPricesFromStorage = localStorage.getItem('total_prices');
-    if (totalPricesFromStorage) {
-        $('#total_prices').text(totalPricesFromStorage);
-    }
+function loadCheckBoxProduct() {
+    checkboxCheckout.on("change", function (e) {
+        this.checked ? localStorage.setItem(e.target.id, "checked") : localStorage.removeItem(e.target.id)
+    });
+
+    checkboxCheckout.each((index, checkbox) => {
+        let data = localStorage.getItem(checkbox.id);
+        data ? checkbox.checked = true : false
+    });
 }
+
+
+function loadModalMessage(messageText) {
+    $("#modal-message").removeClass("hidden-items")
+    $("#modal-text").text(messageText)
+    setTimeout(() => {
+        $("#modal-message").addClass("hidden-items")
+    }, 2000)
+}
+
+$(".cart-decrease").on("click", function (e) {
+    const decreaseWrapper = $(e.target).parent()
+    const qtyInputValue = decreaseWrapper.find("input").val()
+    const transactionId = decreaseWrapper.attr("data-transid")
+    let qtyUpdatedValue = parseInt(qtyInputValue) - 1
+
+    if (qtyUpdatedValue >= 1) {
+        decreaseWrapper.find("input").val(qtyUpdatedValue)
+        $.ajax({
+            url: '/cart/quantityupdate',
+            method: 'put',
+            dataType: 'json',
+            data: {
+                "transaction_id": transactionId,
+                "quantity": qtyUpdatedValue,
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (data) {
+                loadModalMessage("Berhasil Memperbarui Produk")
+            },
+            error: function (error) {
+                return
+            }
+        })
+    }
+
+})
+
+$(".cart-increase").on("click", function (e) {
+    const increaseWrapper = $(e.target).parent()
+    const qtyInputValue = increaseWrapper.find("input").val()
+    const transactionId = increaseWrapper.attr("data-transid")
+    const maxInputValue = increaseWrapper.find("input").attr("max")
+
+    let qtyUpdatedValue = parseInt(qtyInputValue) + 1
+
+    if (qtyUpdatedValue <= maxInputValue) {
+        increaseWrapper.find("input").val(qtyUpdatedValue)
+        $.ajax({
+            url: '/cart/quantityupdate',
+            method: 'put',
+            dataType: 'json',
+            data: {
+                "transaction_id": transactionId,
+                "quantity": qtyUpdatedValue,
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (data) {
+                loadModalMessage("Berhasil Memperbarui Produk")
+            },
+            error: function (error) {
+                loadModalMessage("Kamu tidak bisa menambahkan produk karena stoknya habis.")
+            }
+        })
+    }
+
+})
+
+$('.cart-input-quantity').on("input", function (e) {
+    let qtyInputValue = $(e.target).val()
+    let qtyInputWrapper = $(e.target).parent()
+    let qtyInputParsed = qtyInputValue.replace(/[^\d]|,|\.| /g, '')
+    const transactionId = qtyInputWrapper.attr("data-transid")
+    const maxInputValue = $(e.target).attr("max")
+
+
+    if (qtyInputParsed.length === 1 && qtyInputParsed[0] === '0' || qtyInputParsed === "") {
+        $(e.target).val("")
+        return
+    }
+
+    if (qtyInputParsed >= 1) {
+        $(e.target).val(qtyInputParsed)
+        $.ajax({
+            url: '/cart/quantityupdate',
+            method: 'put',
+            dataType: 'json',
+            data: {
+                "transaction_id": transactionId,
+                "quantity": qtyInputParsed,
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (data) {
+                loadModalMessage("Berhasil Memperbarui Produk")
+            },
+            error: function (error) {
+                loadModalMessage("Kamu tidak bisa menambahkan produk karena stoknya habis.")
+            }
+        })
+    }
+
+
+})
+
+
+
+// function initializeTotals() {
+//     const totalPricesFromStorage = localStorage.getItem('total_prices');
+//     if (totalPricesFromStorage) {
+//         $('#total_prices').text(totalPricesFromStorage);
+//     }
+// }
 
 
 function calculateTotalQuantity() {
@@ -161,7 +278,6 @@ $('.add-to-cart').on('click', function (e) {
     let productName = $(this).children().attr('data-name')
     let productTotalPrice = parentContainer.find('.subtotal').children().eq(1).text()
 
-    console.log(productTotalPrice)
     $.ajax({
         method: 'post',
         url: currentUrl,
@@ -183,40 +299,6 @@ $('.add-to-cart').on('click', function (e) {
     })
 
 })
-
-//addToCart Logic
-// $('.add-to-cart').on('click', function (e) {
-//     if ($(this).attr('data-islogined') == "logined") {
-//         e.preventDefault()
-//         const currentUrl = '/cart'
-
-//         let productName = $(this).closest('.product-card').find('h1').text();
-//         $('#success-product-name').text(productName)
-//         openModal()
-//         let productId = $(this).attr('id')
-//         let productQuantity = $(this).siblings().eq(0).val()
-
-//         $.ajax({
-//             method: 'post',
-//             url: currentUrl,
-//             dataType: 'json',
-//             data: {
-//                 "product_id": productId,
-//                 "quantity": productQuantity,
-//                 _token: $('meta[name="csrf-token"]').attr('content')
-//             },
-//             success: function (data) {
-//                 $('#quantity').val(1);
-//             },
-//             error: function (data) {
-//                 return
-//             }
-//         })
-//     } else {
-//         showLoginCard()
-//     }
-
-// });
 
 
 //payCart Logic

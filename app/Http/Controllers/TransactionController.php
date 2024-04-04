@@ -136,6 +136,12 @@ class TransactionController extends Controller
 
             $quantityToUpdate = Transaction::where('id', $request->transaction_id)->where('user_id', Auth::user()->id)->first();
 
+            if($request->quantity >= $quantityToUpdate->product->stock){
+                return response()->json([
+                    "message" => "error, stock outdated!",
+                ],401);
+            }
+
             $quantityToUpdate->update([
                 'quantity' => $request->quantity
             ]);
