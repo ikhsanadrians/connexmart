@@ -8,19 +8,78 @@ const checkboxCheckout = $(".checkbox-checkout")
 
 $(document).ready(function () {
     loadCheckBoxProduct()
-    // initializeTotals();
-    updateTotals();
+    checkboxAllProduct()
+    checkIfCheckboxAll()
+    calculateTotal('quantity')
+    calculateTotal('price')
 });
+
+function calculateTotal(type) {
+    let total = 0;
+    $('.cart-input-quantity').each((index, element) => {
+        const isDataSelected = $(element).attr("data-selected");
+        if (isDataSelected == "1") {
+            if (type === 'price') {
+                const singleProductPrice = $(element).attr("data-singleprice");
+                total += parseInt(element.value * singleProductPrice);
+            } else if (type === 'quantity') {
+                total += parseInt(element.value);
+            }
+        }
+    });
+
+    if (type === 'price') {
+        $("#product-price-info").text(rupiah(total));
+    } else if (type === 'quantity') {
+        $("#product-qty-info").text(total);
+    }
+}
+
+function checkIfCheckboxAll() {
+    $("#checkallproduct").prop("checked", localStorage.length == checkboxCheckout.length);
+}
+
 
 
 function loadCheckBoxProduct() {
     checkboxCheckout.on("change", function (e) {
         this.checked ? localStorage.setItem(e.target.id, "checked") : localStorage.removeItem(e.target.id)
+        loadCheckBoxProduct()
+        checkIfCheckboxAll()
+        calculateTotal('quantity')
+        calculateTotal('price')
     });
 
     checkboxCheckout.each((index, checkbox) => {
         let data = localStorage.getItem(checkbox.id);
-        data ? checkbox.checked = true : false
+        const parentCheckbox = $(checkbox).closest(".card")
+        if (data) {
+            checkbox.checked = true
+            parentCheckbox.find(".cart-input-quantity").attr("data-selected", "1")
+        } else {
+            checkbox.checked = false
+            parentCheckbox.find(".cart-input-quantity").attr("data-selected", "0")
+        }
+    });
+}
+
+function checkboxAllProduct() {
+    $("#checkallproduct").on("change", function (e) {
+        const isChecked = this.checked;
+
+        checkboxCheckout.each((index, checkbox) => {
+            const parentCheckbox = $(checkbox).closest(".card");
+            const data = localStorage.getItem(checkbox.id);
+            const newDataValue = isChecked ? "checked" : "";
+
+            checkbox.checked = isChecked;
+            newDataValue ? localStorage.setItem(checkbox.id, newDataValue) : localStorage.removeItem(checkbox.id);
+            parentCheckbox.find(".cart-input-quantity").attr("data-selected", newDataValue ? "1" : "0");
+        });
+
+        loadCheckBoxProduct();
+        calculateTotal('quantity');
+        calculateTotal('price');
     });
 }
 
@@ -51,6 +110,8 @@ $(".cart-decrease").on("click", function (e) {
                 _token: $('meta[name="csrf-token"]').attr('content')
             },
             success: function (data) {
+                calculateTotal('quantity')
+                calculateTotal('price')
                 loadModalMessage("Berhasil Memperbarui Produk")
             },
             error: function (error) {
@@ -81,6 +142,8 @@ $(".cart-increase").on("click", function (e) {
                 _token: $('meta[name="csrf-token"]').attr('content')
             },
             success: function (data) {
+                calculateTotal('quantity')
+                calculateTotal('price')
                 loadModalMessage("Berhasil Memperbarui Produk")
             },
             error: function (error) {
@@ -96,7 +159,6 @@ $('.cart-input-quantity').on("input", function (e) {
     let qtyInputWrapper = $(e.target).parent()
     let qtyInputParsed = qtyInputValue.replace(/[^\d]|,|\.| /g, '')
     const transactionId = qtyInputWrapper.attr("data-transid")
-    const maxInputValue = $(e.target).attr("max")
 
 
     if (qtyInputParsed.length === 1 && qtyInputParsed[0] === '0' || qtyInputParsed === "") {
@@ -116,6 +178,8 @@ $('.cart-input-quantity').on("input", function (e) {
                 _token: $('meta[name="csrf-token"]').attr('content')
             },
             success: function (data) {
+                calculateTotal('quantity')
+                calculateTotal('price')
                 loadModalMessage("Berhasil Memperbarui Produk")
             },
             error: function (error) {
@@ -123,18 +187,9 @@ $('.cart-input-quantity').on("input", function (e) {
             }
         })
     }
-
-
 })
 
 
-
-// function initializeTotals() {
-//     const totalPricesFromStorage = localStorage.getItem('total_prices');
-//     if (totalPricesFromStorage) {
-//         $('#total_prices').text(totalPricesFromStorage);
-//     }
-// }
 
 
 function calculateTotalQuantity() {
@@ -155,18 +210,6 @@ function calculateTotalPrice() {
     });
     return totalPrice;
 }
-
-// Function to update the total price
-function updateTotals() {
-    const totalQuantity = calculateTotalQuantity();
-    const totalPrice = calculateTotalPrice();
-    $('#product_count').text(totalQuantity);
-    localStorage.setItem('total_prices', totalPrice);
-    $('#total_prices').text(rupiah(totalPrice));
-    $('#product-price-top').text(rupiah(totalPrice));
-    $('#product-price-top').attr('data-prices', totalPrice);
-}
-
 
 
 function openModal() {

@@ -102,8 +102,9 @@
                                             <input type="number"
                                                 class="cart-input-quantity w-12 text-center bg-transparent focus:outline-none px-1"
                                                 min="1" value="{{ $cart->quantity }}"
-                                                max="{{ $cart->product->stock }}"
-                                                data-mbcurrentstock="{{ $cart->product->stock }}">
+                                                max="{{ $cart->product->stock }}" data-selected="0"
+                                                data-mbcurrentstock="{{ $cart->product->stock }}"
+                                                data-singleprice="{{ $cart->product->price }}">
                                             <button class="cart-increase" class="text-[#303fe2]">
                                                 +
                                             </button>

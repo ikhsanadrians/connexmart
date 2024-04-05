@@ -21,7 +21,7 @@
                     <div class="checkbox-input flex items-center justify-center relative">
                         <input
                             class="h-5 w-5 peer shrink-0 relative checked:fill-white rounded-md border-2 border-[#303fe2] focus:outline-none checked:bg-[#303fe2] disabled:border-[1.5px] disabled:border-gray-300 appearance-none"
-                            type="checkbox" name="checkproducts" id="checkproduct">
+                            type="checkbox" name="checkproducts" id="checkallproduct">
                         <span
                             class="material-symbols-rounded pointer-events-none absolute left-0 text-[20px] text-white invisible peer-checked:visible">
                             done
@@ -31,13 +31,13 @@
                 </div>
                 <div class="total">
                     <p class="text-sm">Total</p>
-                    <p class="text-lg font-semibold">{{ format_to_rp($total_prices) }}</p>
+                    <p class="text-lg font-semibold" id="product-price-info">{{ format_to_rp($total_prices) }}</p>
                 </div>
             </div>
 
             <div id="checkout-btn"
                 class="buy-now bg-gradient-to-r from-[#303fe2] to-blue-500 col-span-3 px-4 h-full font-semibold rounded-3xl gap-1 flex items-center justify-center">
-                <p class="text-white font-semibold text-sm">Checkout <span>( {{ count($carts) }} )</span></p>
+                <p class="text-white font-semibold text-sm">Checkout (<span id="product-qty-info">0</span>)</p>
             </div>
         </div>
     @else
