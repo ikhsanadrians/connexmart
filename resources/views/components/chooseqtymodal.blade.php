@@ -27,7 +27,8 @@
         <hr class="w-full mt-8 z-40">
         <div class="quantity-editor flex items-center justify-between mt-4">
             <div class="price text-lg">
-                <p id="product_price_mobile">{{ format_to_rp($product->price) }}</p>
+                <p data-singleprice="{{ $product->price }}" id="product_price_mobile">
+                    {{ format_to_rp($product->price) }}</p>
             </div>
             <div class="quantity">
                 <div class="input-quantity flex bg-[#303fe2]/5 shadow-sm w-fit px-2 py-1 rounded-md">

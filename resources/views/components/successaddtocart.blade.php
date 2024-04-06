@@ -24,11 +24,11 @@
                     </div>
                     <div class="product-quantity-wrappers text-sm flex items-center text-slate-500">
                         <span class="pr-1">Jumlah:</span>
-                        <p id="product-quantity">2</p>
+                        <p id="product-quantity-success"></p>
                     </div>
                     <div class="product-totals-wrappers text-sm flex items-center text-slate-500">
                         <span class="pr-1">Total:</span>
-                        <p id="product-quantity">Rp 12.000</p>
+                        <p id="product-price-success"></p>
                     </div>
                 </div>
             </div>

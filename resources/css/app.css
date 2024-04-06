@@ -7,6 +7,15 @@
     font-family: 'Poppins', sans-serif;
 }
 
+.disabled-items {
+    @apply !bg-gradient-to-r from-[#afafaf] to-[#afafaf]
+ }
+
+
+.g-button {
+    @apply bg-gradient-to-r from-[#303fe2] to-blue-500;
+}
+
 .preload * {
     transition: none !important;
     animation-duration: 0.001s !important;
@@ -174,3 +183,5 @@ th {
         transform: rotate(360deg);
     }
     }
+
+

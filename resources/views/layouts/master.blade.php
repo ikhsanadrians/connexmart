@@ -27,6 +27,7 @@
     @include('components.footer')
     @include('components.mobilebottomnav')
     @if (Route::is('show.product'))
+        @include('components.cartmessagemodal')
         @include('components.chooseqtymodal')
         @include('components.successaddtocart')
         @include('components.dekstopsuccessaddtocart')

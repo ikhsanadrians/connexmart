@@ -14,12 +14,28 @@
             <h1 class="text-2xl mt-4 font-semibold">Your Balance Is Not Enough For Doing This Transaction!</h1>
         </div>
     </div>
-    <div class="title px-3 mt-4">
-        <h1 class="text-lg font-semibold">Keranjangmu</h1>
-    </div>
-    <div class="container-cart flex lg:flex-row flex-col gap-4 mb-24">
+
+
+    <div class="container-cart flex h-full lg:flex-row flex-col gap-4 mb-24">
         @if (count($carts))
-            <div class="cart-list w-full lg:w-3/4 p-0 lg:p-2">
+            <div class="cart-list w-full lg:w-4/5 p-0 lg:p-2">
+                <div class="title px-3 mt-4">
+                    <h1 class="text-lg font-semibold">Keranjangmu</h1>
+                </div>
+                <div class="choose-all-product-wrapper w-full lg:block hidden">
+                    <div class="choose-all-product flex justify-start pl-2 mt-4">
+                        <div class="checkbox-input flex items-center mt-1 gap-2 justify-center relative">
+                            <input
+                                class="checkbox-checkout-all h-5 w-5 peer shrink-0 relative checked:fill-white rounded-md border-2 border-[#303fe2] focus:outline-none checked:bg-[#303fe2] disabled:border-[1.5px] disabled:border-gray-300 appearance-none"
+                                type="checkbox" name="checkproducts" id="checkproductall-dekstop">
+                            <span
+                                class="material-symbols-rounded pointer-events-none absolute left-0 text-[20px] text-white invisible peer-checked:visible">
+                                done
+                            </span>
+                            <p class="text-slate-600">Pilih Semua Produk</p>
+                        </div>
+                    </div>
+                </div>
                 @foreach ($carts as $cart)
                     @if ($cart->product->deleted_at != '')
                         <div class="card my-3 bg-gray-200 relative p-4 rounded-lg flex gap-3 items-center">
@@ -54,7 +70,7 @@
                             <div class="detailandcheckbox flex items-start gap-3">
                                 <div class="checkbox-input flex items-center mt-1 justify-center relative">
                                     <input data-quantity="{{ $cart->quantity }}" data-price="{{ $cart->product->price }}"
-                                        id="product-{{ $cart->product->id }}"
+                                        id="{{ $cart->id }}"
                                         class="checkbox-checkout h-5 w-5 peer shrink-0 relative checked:fill-white rounded-md border-2 border-[#303fe2] focus:outline-none checked:bg-[#303fe2] disabled:border-[1.5px] disabled:border-gray-300 appearance-none"
                                         type="checkbox" name="checkproducts" id="checkproduct">
                                     <span
@@ -87,7 +103,7 @@
                                         favorite
                                     </span>
                                 </div>
-                                <div class="delete-product mt-2">
+                                <div id="{{ $cart->id }}" class="delete-product mt-2 cursor-pointer">
                                     <span class="material-symbols-rounded text-zinc-500">
                                         delete
                                     </span>
@@ -117,34 +133,23 @@
                     @endif
                 @endforeach
             </div>
-            <div class="price-list-balance w-1/2 mt-3 mb-8 lg:block hidden">
-                <div class="balance bg-white rounded-md my-2 w-full p-4 font-bold text-lg ">
-                    <p class="flex items-center gap-2 font-semibold text-[#003034]"><img class="h-6"
-                            src="{{ asset('images/static/connexpay.png') }}"> Balance</p>
-                    @foreach (Auth::user()->wallet as $wallet)
-                        <p>{{ format_to_rp($wallet->credit) }}</p>
-                    @endforeach
-                </div>
-                <div class="price-list bg-white rounded-md w-full py-10 px-10">
-                    <p class="text-xl font-semibold">Shopping Summary</p>
-                    <div class="voucher border-b-2 mt-3">
-                        <label for="">Have A Voucher?</label>
-                        <input class="w-full outline-none mt-3" type="text" placeholder="Type Your Voucher Code Here">
-                    </div>
+            <div class="price-list-balance w-2/5 mt-6 mb-8 lg:block hidden">
+                <div class="price-list bg-white sticky top-28 rounded-xl w-full p-6 shadow-md">
+                    <p class="text-lg font-semibold">Detail pesanan</p>
                     <div class="shopping-data flex items-center mt-4 text-gray-500 justify-between">
-                        <p>Total Price <span id="product_count">{{ $product_count }}</span> Product</p>
-                        <p data-prices="0" id="product-price-top">{{ format_to_rp($total_prices) }}</p>
+                        <p class="text-sm">Total Harga (<span class="product-qty-info">{{ $product_count }}</span> Produk)
+                        </p>
+                        <p data-prices="0" class="product-price-info">{{ format_to_rp($total_prices) }}</p>
                     </div>
                     <hr class="mt-2">
-                    <div class="shoping-total font-semibold text-xl mt-4 flex items-center justify-between">
-                        <p>Total Price</p>
-                        <p><span id="total_prices">{{ format_to_rp($total_prices) }}</span></p>
+                    <div class="shoping-total font-semibold text-lg mt-4 flex items-center justify-between">
+                        <p>Total</p>
+                        <p><span class="product-price-info">{{ format_to_rp($total_prices) }}</span></p>
                     </div>
-
-                    <button id="btn-pay"
-                        class="bg-[#003034] text-white w-full p-4 rounded-lg mt-8 font-bold flex items-center justify-center gap-2">Pay
-                        Using <img class="h-6 invert-[1] brightness-0 " src="{{ asset('images/static/connexpay.png') }}"
-                            alt="cnx-pay"></button>
+                    <button disabled
+                        class="btn-checkout disabled-items w-full text-sm mt-5 text-white py-3  col-span-3 px-4 h-full font-semibold rounded-3xl gap-1 flex items-center justify-center">
+                        Checkout (<span class="product-qty-info">0</span>)
+                    </button>
                 </div>
             </div>
         @else

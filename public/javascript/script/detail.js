@@ -3,21 +3,19 @@ import rupiah from "./utils/rupiahFormater.js";
 $("#value_quantity").on("input", function (e) {
     const defaultPrice = parseInt($("#price_of_product").attr("data-price"));
     let quantityProduct = $(this).val().replace(/[^\d]|,|\.| /g, '');
-
+    const currentStock = $(e.target).attr("data-currentstock")
 
     if (quantityProduct.length === 1 && quantityProduct[0] === '0' || $(this).val() === "") {
         $(this).val('');
         return;
     }
 
-    if (quantityProduct >= 1) {
+    if (parseInt(quantityProduct) >= 1 && parseInt(currentStock) >= parseInt(quantityProduct)) {
         let updatedPrice = parseInt(quantityProduct) * defaultPrice;
         $("#product_price_subtotals").text(rupiah(updatedPrice));
     }
 
 });
-
-
 
 $("#increase").on("click", function () {
     let valueQuantity = $("#value_quantity").val();
@@ -86,6 +84,7 @@ $("#mobile-decrease").on("click", function () {
 $("#mobile_value_quantity").on("input", function (e) {
     const defaultPrice = parseInt($("#price_of_product").attr("data-price"));
     let quantityProduct = $(this).val().replace(/[^\d]|,|\.| /g, '');
+    const currentStock = $(e.target).attr("data-mbcurrentstock")
 
 
     if (quantityProduct.length === 1 && quantityProduct[0] === '0' || $(this).val() === "") {
@@ -93,7 +92,7 @@ $("#mobile_value_quantity").on("input", function (e) {
         return;
     }
 
-    if (quantityProduct >= 1) {
+    if (parseInt(quantityProduct) >= 1 && parseInt(currentStock) > parseInt(quantityProduct)) {
         let updatedPrice = parseInt(quantityProduct) * defaultPrice;
         $("#product_price_mobile").text(rupiah(updatedPrice));
     }

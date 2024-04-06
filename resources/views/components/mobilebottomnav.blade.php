@@ -4,7 +4,7 @@
         <div class="container mx-auto flex gap-2 items-center h-full justify-between px-3 py-2">
             <div id="open_cart"
                 class="cursor pointer add-cart p-4 h-full w-fit rounded-3xl bg-[#303fe2]/5 flex items-center">
-                <span class="material-symbols-rounded text-[#303fe2]">
+                <span class="material-symbols-rounded text-[#303fe2] cursor-pointer">
                     shopping_cart
                 </span>
             </div>
@@ -31,14 +31,14 @@
                 </div>
                 <div class="total">
                     <p class="text-sm">Total</p>
-                    <p class="text-lg font-semibold" id="product-price-info">{{ format_to_rp($total_prices) }}</p>
+                    <p class="text-lg font-semibold product-price-info">{{ format_to_rp($total_prices) }}</p>
                 </div>
             </div>
 
-            <div id="checkout-btn"
-                class="buy-now bg-gradient-to-r from-[#303fe2] to-blue-500 col-span-3 px-4 h-full font-semibold rounded-3xl gap-1 flex items-center justify-center">
-                <p class="text-white font-semibold text-sm">Checkout (<span id="product-qty-info">0</span>)</p>
-            </div>
+            <button disabled id="checkout-btn"
+                class="btn-checkout disabled-items col-span-3 px-4 h-full font-semibold rounded-3xl gap-1 flex items-center justify-center">
+                <p class="text-white font-semibold text-sm">Checkout (<span class="product-qty-info">0</span>)</p>
+            </button>
         </div>
     @else
         <div class="container mx-auto flex items-center h-full justify-between px-5">

@@ -3,7 +3,7 @@ import rupiah from "./utils/rupiahFormater.js";
 const quantities = document.querySelectorAll('.quantities')
 let currentInputElement = "";
 const priceElements = document.querySelectorAll('.price-products');
-const checkboxCheckout = $(".checkbox-checkout")
+let checkboxCheckout = $(".checkbox-checkout")
 
 
 $(document).ready(function () {
@@ -16,34 +16,44 @@ $(document).ready(function () {
 
 function calculateTotal(type) {
     let total = 0;
+
     $('.cart-input-quantity').each((index, element) => {
         const isDataSelected = $(element).attr("data-selected");
         if (isDataSelected == "1") {
-            if (type === 'price') {
-                const singleProductPrice = $(element).attr("data-singleprice");
-                total += parseInt(element.value * singleProductPrice);
-            } else if (type === 'quantity') {
-                total += parseInt(element.value);
-            }
+            total += type === 'price' ? parseInt(element.value * $(element).attr("data-singleprice")) : parseInt(element.value);
         }
     });
 
     if (type === 'price') {
-        $("#product-price-info").text(rupiah(total));
+        $(".product-price-info").text(rupiah(total));
     } else if (type === 'quantity') {
-        $("#product-qty-info").text(total);
+        $(".product-qty-info").text(total);
     }
 }
 
 function checkIfCheckboxAll() {
-    $("#checkallproduct").prop("checked", localStorage.length == checkboxCheckout.length);
+    $("#checkallproduct").prop("checked", (localStorage.length === checkboxCheckout.length && (localStorage.length >= 1 && checkboxCheckout.length >= 1)));
+    $("#checkproductall-dekstop").prop("checked", (localStorage.length === checkboxCheckout.length && (localStorage.length >= 1 && checkboxCheckout.length >= 1)));
 }
 
+
+function checkoutButtonVisibility(visibleType) {
+    if (visibleType) {
+        $(".btn-checkout").removeClass("disabled-items");
+        $(".btn-checkout").addClass("g-button")
+        $(".btn-checkout").prop("disabled", false)
+    } else {
+        $(".btn-checkout").addClass("disabled-items");
+        $(".btn-checkout").removeClass("g-button")
+        $(".btn-checkout").prop("disabled", true)
+    }
+}
 
 
 function loadCheckBoxProduct() {
     checkboxCheckout.on("change", function (e) {
         this.checked ? localStorage.setItem(e.target.id, "checked") : localStorage.removeItem(e.target.id)
+        this.checked ? checkoutButtonVisibility(true) : checkoutButtonVisibility(false)
         loadCheckBoxProduct()
         checkIfCheckboxAll()
         calculateTotal('quantity')
@@ -55,6 +65,7 @@ function loadCheckBoxProduct() {
         const parentCheckbox = $(checkbox).closest(".card")
         if (data) {
             checkbox.checked = true
+            checkoutButtonVisibility(true)
             parentCheckbox.find(".cart-input-quantity").attr("data-selected", "1")
         } else {
             checkbox.checked = false
@@ -66,6 +77,8 @@ function loadCheckBoxProduct() {
 function checkboxAllProduct() {
     $("#checkallproduct").on("change", function (e) {
         const isChecked = this.checked;
+
+        checkoutButtonVisibility((isChecked && checkboxCheckout.length >= 1) ? true : false);
 
         checkboxCheckout.each((index, checkbox) => {
             const parentCheckbox = $(checkbox).closest(".card");
@@ -80,7 +93,30 @@ function checkboxAllProduct() {
         loadCheckBoxProduct();
         calculateTotal('quantity');
         calculateTotal('price');
+        checkIfCheckboxAll()
     });
+
+    $("#checkproductall-dekstop").on("change", function (e) {
+        const isCheckedDekstop = this.checked
+
+        checkoutButtonVisibility(isCheckedDekstop ? true : false);
+
+        checkboxCheckout.each((index, checkbox) => {
+            const parentCheckbox = $(checkbox).closest(".card")
+            const data = localStorage.getItem(checkbox.id)
+            const newDataValue = isCheckedDekstop ? "checked" : ""
+
+            checkbox.checked = isCheckedDekstop
+            newDataValue ? localStorage.setItem(checkbox.id, newDataValue) : localStorage.removeItem(checkbox.id)
+            parentCheckbox.find(".cart-input-quantity").attr("data-selected", newDataValue)
+        })
+
+        loadCheckBoxProduct()
+        calculateTotal('quantity')
+        calculateTotal('price')
+        checkIfCheckboxAll()
+    })
+
 }
 
 
@@ -148,6 +184,7 @@ $(".cart-increase").on("click", function (e) {
             },
             error: function (error) {
                 loadModalMessage("Kamu tidak bisa menambahkan produk karena stoknya habis.")
+                console.log(error)
             }
         })
     }
@@ -159,7 +196,6 @@ $('.cart-input-quantity').on("input", function (e) {
     let qtyInputWrapper = $(e.target).parent()
     let qtyInputParsed = qtyInputValue.replace(/[^\d]|,|\.| /g, '')
     const transactionId = qtyInputWrapper.attr("data-transid")
-
 
     if (qtyInputParsed.length === 1 && qtyInputParsed[0] === '0' || qtyInputParsed === "") {
         $(e.target).val("")
@@ -183,6 +219,7 @@ $('.cart-input-quantity').on("input", function (e) {
                 loadModalMessage("Berhasil Memperbarui Produk")
             },
             error: function (error) {
+
                 loadModalMessage("Kamu tidak bisa menambahkan produk karena stoknya habis.")
             }
         })
@@ -190,26 +227,6 @@ $('.cart-input-quantity').on("input", function (e) {
 })
 
 
-
-
-function calculateTotalQuantity() {
-    let totalQuantity = 0;
-    quantities.forEach((element) => {
-        totalQuantity += parseInt(element.value);
-    });
-    return totalQuantity;
-}
-
-
-function calculateTotalPrice() {
-    let totalPrice = 0;
-    quantities.forEach((element, index) => {
-        const quantity = parseInt(element.value);
-        const price = parseFloat(priceElements[index].getAttribute('data-price')); // Get the price from the data attribute
-        totalPrice += quantity * price;
-    });
-    return totalPrice;
-}
 
 
 function openModal() {
@@ -255,64 +272,6 @@ $('#close-btn-balancenotenough').on('click', function () {
     closeModalBalanceNotEnough()
 })
 
-
-
-quantities.forEach(element => {
-    element.addEventListener('change', function (e) {
-        // e.target.value = quantity
-        // Memperbarui tampilan quantityAll
-        updateTotals();
-        $.ajax({
-            method: 'put',
-            url: '/cart/quantityupdate',
-            dataType: 'json',
-            data: {
-                "transaction_id": e.target.getAttribute('data-transaction'),
-                "quantity": e.target.value,
-                _token: $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function (data) {
-                updateTotals();
-                console.log(data)
-            },
-            error: function (data) {
-                console.log(data)
-            }
-        })
-
-
-    });
-});
-
-//delete product in cart logic
-
-$('.btn-delete-product').on('click', function (e) {
-    const currentUrl = "/cart"
-    const product = $(this);
-    const currentBtnId = e.currentTarget.id
-
-    $.ajax({
-        method: 'delete',
-        url: currentUrl,
-        dataType: 'json',
-        data: {
-            "product_id": currentBtnId,
-            _token: $('meta[name="csrf-token"]').attr('content')
-        },
-        success: function (data) {
-            product.parent().parent().parent().remove()
-            location.reload()
-        },
-        error: function (data) {
-            console.log(data)
-        }
-    })
-
-
-})
-
-
-
 $('.add-to-cart').on('click', function (e) {
     const currentUrl = '/cart'
     const parentContainer = $(this).closest('.container')
@@ -320,52 +279,28 @@ $('.add-to-cart').on('click', function (e) {
     let productId = $(this).children().attr('id')
     let productName = $(this).children().attr('data-name')
     let productTotalPrice = parentContainer.find('.subtotal').children().eq(1).text()
+    const currentStock = parentContainer.find('.input-of-quantity').attr("data-currentstock")
 
-    $.ajax({
-        method: 'post',
-        url: currentUrl,
-        dataType: 'json',
-        data: {
-            "product_id": productId,
-            "quantity": productQuantity,
-            _token: $('meta[name="csrf-token"]').attr('content')
-        },
-        success: function (data) {
-            openModal()
-            $("#dekstop-quantity-product").text(productQuantity)
-            $("#dekstop-total-price").text(productTotalPrice)
-        },
-        error: function (error) {
-            console.log(error)
-        }
-
-    })
-
-})
-
-
-//payCart Logic
-$('#btn-pay').on('click', function (e) {
-
-    const currentUrl = '/cart/pay'
-
-    e.preventDefault()
-    $.ajax({
-        method: 'put',
-        url: currentUrl,
-        dataType: 'json',
-        data: {
-            total_prices: $('#product-price-top').attr('data-prices'),
-            _token: $('meta[name="csrf-token"]').attr('content')
-        },
-        success: function (data) {
-            window.location.replace("/cart/receipt");
-        },
-        error: function (data) {
-            openModalBalanceNotEnough();
-        }
-    })
-
+    if (currentStock >= productQuantity) {
+        $.ajax({
+            method: 'post',
+            url: currentUrl,
+            dataType: 'json',
+            data: {
+                "product_id": productId,
+                "quantity": productQuantity,
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (data) {
+                openModal()
+                $("#dekstop-quantity-product").text(productQuantity)
+                $("#dekstop-total-price").text(productTotalPrice)
+            },
+            error: function (error) {
+                loadModalMessage("Kamu tidak bisa menambahkan produk karena stoknya habis.")
+            }
+        })
+    }
 
 })
 
@@ -425,6 +360,7 @@ $(".mobile-add-to-cart").on("click", function (e) {
     const currentUrl = '/cart'
     const productId = $(this).attr('id')
     let productQuantity = $(this).siblings().eq(3).children().eq(1).children().children().eq(1).val()
+    let totalPrices = parseInt(productQuantity) * $("#product_price_mobile").attr("data-singleprice")
     showQtyModalLoader(true)
     $.ajax({
         method: 'post',
@@ -437,13 +373,53 @@ $(".mobile-add-to-cart").on("click", function (e) {
         },
         success: function (data) {
             showQtyModalLoader(false)
+            $("#product-quantity-success").text(productQuantity)
+            $("#product-price-success").text(rupiah(totalPrices))
             closeQuantityEditor(false)
             openSuccessAddToCart()
         },
-        error: function () {
-            return
+        error: function (error) {
+            loadModalMessage("Kamu tidak bisa menambahkan produk karena stoknya habis.")
         }
 
     })
 
+})
+
+
+$(".delete-product").on("click", function (e) {
+    const currentUrl = '/cart'
+    const deleteWrapper = $(e.target).closest(".card")
+    const productId = deleteWrapper.find(".input-quantity").attr("data-transid")
+    const checkBoxProduct = deleteWrapper.find(".checkbox-checkout")
+
+    if (localStorage.getItem(productId)) {
+        localStorage.removeItem(productId)
+
+        loadCheckBoxProduct()
+        checkIfCheckboxAll()
+
+    }
+
+    $.ajax({
+        method: "delete",
+        url: currentUrl,
+        dataType: "json",
+        data: {
+            "product_id": productId,
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function (data) {
+            deleteWrapper.remove()
+            location.reload()
+            loadModalMessage("Berhasil Menghapus Data")
+            calculateTotal("price")
+            calculateTotal("quantity")
+            loadCheckBoxProduct()
+            checkIfCheckboxAll()
+        },
+        error: function (error) {
+            return
+        }
+    })
 })

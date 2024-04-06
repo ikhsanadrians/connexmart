@@ -90,29 +90,35 @@ class TransactionController extends Controller
                 ->where('status', 'not_paid')
                 ->first();
 
-
-            if ($sameTransaction) {
-                $sumQuantity = $sameTransaction->quantity += $request->quantity;
-                $sumPrice = $sumQuantity * $product->price;
-                $sameTransaction->update([
-                    'quantity' => $sumQuantity,
-                    'price' => $sumPrice
-                ]);
+            if($product->stock < $request->quantity){
+                return response()->json([
+                    "message" => "failed, product stock is not enough"
+                ], 401);
             } else {
-                Transaction::create([
-                    "user_id" => Auth::user()->id,
-                    "product_id" => $product->id,
-                    "status" => "not_paid",
-                    "order_id" => "INV-" . Auth::user()->id . now()->format('dmYHis'),
-                    "quantity" => $request->quantity,
-                    "price" => $productSummaryPrice
+                if ($sameTransaction) {
+                    $sumQuantity = $sameTransaction->quantity += $request->quantity;
+                    $sumPrice = $sumQuantity * $product->price;
+                    $sameTransaction->update([
+                        'quantity' => $sumQuantity,
+                        'price' => $sumPrice
+                    ]);
+                } else {
+                    Transaction::create([
+                        "user_id" => Auth::user()->id,
+                        "product_id" => $product->id,
+                        "status" => "not_paid",
+                        "order_id" => "INV-" . Auth::user()->id . now()->format('dmYHis'),
+                        "quantity" => $request->quantity,
+                        "price" => $productSummaryPrice
+                    ]);
+                }
+
+                return response()->json([
+                    "message" => "success",
+                    "data" => $product
                 ]);
             }
 
-            return response()->json([
-                "message" => "success",
-                "data" => $product
-            ]);
         }
     }
 

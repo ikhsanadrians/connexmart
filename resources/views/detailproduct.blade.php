@@ -246,7 +246,7 @@
                     </div>
                     <div class="add-to-cart mt-4">
                         <button data-name="{{ $product->name }}" id="{{ $product->id }}"
-                            class="bg-gradient-to-r from-[#303fe2] to-blue-500 text-white py-3 px-4 text-sm w-full rounded-xl font-semibold">
+                            class="bg-gradient-to-r from-[#303fe2] to-blue-500 text-white py-3 px-4 text-sm w-full rounded-3xl font-semibold">
                             Tambah Ke Keranjang
                         </button>
                     </div>
