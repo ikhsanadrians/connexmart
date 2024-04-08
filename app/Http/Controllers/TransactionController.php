@@ -9,6 +9,8 @@ use App\Models\Product;
 use App\Models\Wallet;
 use App\Models\TopUp;
 use App\Models\User;
+use Illuminate\Support\Str;
+use App\Models\UserCheckout;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class TransactionController extends Controller
@@ -237,5 +239,33 @@ class TransactionController extends Controller
         return response()->json([
             "message" => "Berhasil Update"
         ]);
+    }
+
+
+    public function checkout(string $checkout_code){
+        $checkouts = UserCheckout::where("checkout_code", $checkout_code)->first();
+        $product_list = json_decode($checkouts->product_list);
+        $transactions = Transaction::whereIn("id", $product_list)->get();
+
+        return view("checkout", compact("transactions"));
+    }
+
+    public function handleCheckout(Request $request){
+        if($request->ajax()){
+
+            $checkout_code = now()->format('dmYHis') . Auth::user()->id . substr(uniqid(), 0, 3);
+            $data = UserCheckout::create([
+                "checkout_code" => $checkout_code,
+                "user_id" => Auth::user()->id,
+                "product_list" => json_encode($request->product_list),
+                "total_quantity" => $request->total_quantity,
+                "total_price" => $request->total_price
+            ]);
+
+            return response()->json([
+                "message" => "success, checkout user",
+                "checkout_code" => $data->checkout_code
+            ]);
+        }
     }
 }

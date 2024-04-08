@@ -38,8 +38,10 @@ Route::middleware('user')->group(function(){
         Route::delete('/',[TransactionController::class,'cart_delete'])->name('cart.product.delete');
         Route::put('/pay', [TransactionController::class, 'payCart'])->name('cart.pay');
         Route::put('/quantityupdate', [TransactionController::class, 'updateQuantity'])->name('cart.quantity.update');
-        Route::get('/receipt', [TransactionController::class, 'cart_receipt'])->name('cart.receipt');
-        Route::put('/receipt/take', [TransactionController::class, 'cart_take'])->name('cart.take');
+        Route::get("/checkout/{checkout_code}", [TransactionController::class,'checkout'])->name("checkout");
+        Route::put("/checkout", [TransactionController::class, "handleCheckout"])->name("checkout.handle");
+        // Route::get('/receipt', [TransactionController::class, 'cart_receipt'])->name('cart.receipt');
+        // Route::put('/receipt/take', [TransactionController::class, 'cart_take'])->name('cart.take');
     });
 
 });

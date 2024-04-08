@@ -1,4 +1,4 @@
-<footer class="w-full  border-t-[1.5px] mt-8 ">
+<footer class="w-full bg-white border-t-[1.5px] mt-8 ">
     <div
         class="wrapper flex lg:flex-row flex-col justify-between gap-8 container mx-auto lg:px-12 px-4 pt-8 py-2 lg:pt-12">
         <div class="company">

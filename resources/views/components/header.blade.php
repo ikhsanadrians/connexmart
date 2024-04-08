@@ -1,21 +1,31 @@
 <header class="bg-white shadow-sm sticky top-0 z-30 border-b-[1px] border-zinc-200">
     <div class="container mx-auto w-full lg:px-12 py-4 px-2 lg:flex flex-none items-center  justify-between">
-        <div class="titleiconsearch flex items-center">
-            @if (Route::is('home'))
-                <div class="icon pr-4 flex-none">
-                    <a href="/" class="header-title flex items-center gap-2 w-full h-full">
-                        <img src="{{ asset('images/static/tenizenmart.png') }}" alt="connexmart" class="h-12">
-                        <p class="font-semibold text-lg text-[#303fe2] lg:block hidden">Tenizen Mart</p>
-                    </a>
-                </div>
-            @else
-                <a href="{{ route('home') }}" class="pr-2">
+        <div class="titleiconsearch flex items-center justify-between">
+            <div class="page-back flex items-center justify-between">
+                <a href="{{ route('home') }}"
+                    class="pr-2 @if (Route::is('home')) hidden @else lg:hidden block @endif">
                     <span class="material-symbols-rounded text-[28px] mt-2 text-zinc-500">
                         arrow_back
                     </span>
                 </a>
-            @endif
-            <div class="search relative basis-full">
+                @if (Route::is('cart.index'))
+                    <p class="lg:hidden block font-medium text-zinc-700">Keranjangmu</p>
+                @else
+                    <p class="lg:hidden block font-medium text-zinc-700">Checkout</p>
+                @endif
+            </div>
+
+            <div class="icon pr-4 flex-none @if (Route::is('home')) block @else lg:block hidden @endif">
+                <a href="/" class="header-title flex items-center gap-2 w-full h-full">
+                    <img src="{{ asset('images/static/tenizenmart.png') }}" alt="connexmart"
+                        class="h-12 @if (Route::is('home')) block @else lg:block hidden @endif">
+                    <p class="font-semibold text-lg text-[#303fe2] lg:block hidden">
+                        TenizenMart</p>
+                </a>
+            </div>
+
+            <div
+                class="search relative basis-full @if (Route::is('home') || Route::is('show.product')) block @else lg:block hidden @endif">
                 <div class="flex items-center w-full">
                     <svg class="absolute left-3" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                         fill="#9196a3" class="bi bi-search" viewBox="0 0 16 16">
@@ -28,10 +38,14 @@
 
                 </div>
             </div>
+
+
             @if (Route::is('show.product'))
-                <span class="material-symbols-rounded text-[#303fe2] ml-2 text-[32px] lg:hidden block">
-                    shopping_cart
-                </span>
+                <a href="{{ route('cart.index') }}">
+                    <span class="material-symbols-rounded text-[#303fe2] ml-2 text-[32px] lg:hidden block">
+                        shopping_cart
+                    </span>
+                </a>
             @elseif(Route::is('cart.index'))
                 <span class="material-symbols-rounded text-[#303fe2] ml-2 text-[32px] lg:hidden block">
                     favorite
@@ -93,6 +107,4 @@
             @endif
         </div>
     </div>
-
-
 </header>

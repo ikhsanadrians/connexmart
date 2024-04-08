@@ -19,7 +19,7 @@
     <div class="container-cart flex h-full lg:flex-row flex-col gap-4 mb-24">
         @if (count($carts))
             <div class="cart-list w-full lg:w-4/5 p-0 lg:p-2">
-                <div class="title px-3 mt-4">
+                <div class="title px-3 mt-4 lg:block hidden">
                     <h1 class="text-lg font-semibold">Keranjangmu</h1>
                 </div>
                 <div class="choose-all-product-wrapper w-full lg:block hidden">
@@ -66,7 +66,7 @@
                         </div>
                     @else
                         <div
-                            class="card my-3 @if (!$loop->last) border-b-[1.2px] border-gray-200 @endif relative p-4 shadow-sm bg-white">
+                            class="card my-3 @if (!$loop->last) border-b-[1.2px] rounded-md border-gray-200 @endif relative p-4 shadow-sm bg-white">
                             <div class="detailandcheckbox flex items-start gap-3">
                                 <div class="checkbox-input flex items-center mt-1 justify-center relative">
                                     <input data-quantity="{{ $cart->quantity }}" data-price="{{ $cart->product->price }}"

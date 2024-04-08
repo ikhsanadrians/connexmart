@@ -12,7 +12,7 @@
     @vite('resources/css/app.css')
 </head>
 
-<body class="preload bg-[#f1f3f2]/30">
+<body class="preload @if (Route::is('cart.index')) bg-[#f0f3f8]  @else bg-[#f1f3f2]/30 @endif">
     @include('components.header')
     <main class="container mx-auto lg:px-12 px-0 py-2 lg:py-8">
         @yield('content')

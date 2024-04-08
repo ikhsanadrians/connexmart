@@ -281,26 +281,25 @@ $('.add-to-cart').on('click', function (e) {
     let productTotalPrice = parentContainer.find('.subtotal').children().eq(1).text()
     const currentStock = parentContainer.find('.input-of-quantity').attr("data-currentstock")
 
-    if (currentStock >= productQuantity) {
-        $.ajax({
-            method: 'post',
-            url: currentUrl,
-            dataType: 'json',
-            data: {
-                "product_id": productId,
-                "quantity": productQuantity,
-                _token: $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function (data) {
-                openModal()
-                $("#dekstop-quantity-product").text(productQuantity)
-                $("#dekstop-total-price").text(productTotalPrice)
-            },
-            error: function (error) {
-                loadModalMessage("Kamu tidak bisa menambahkan produk karena stoknya habis.")
-            }
-        })
-    }
+
+    $.ajax({
+        method: 'post',
+        url: currentUrl,
+        dataType: 'json',
+        data: {
+            "product_id": productId,
+            "quantity": productQuantity,
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function (data) {
+            openModal()
+            $("#dekstop-quantity-product").text(productQuantity)
+            $("#dekstop-total-price").text(productTotalPrice)
+        },
+        error: function (error) {
+            loadModalMessage("Kamu tidak bisa menambahkan produk karena stoknya habis.")
+        }
+    })
 
 })
 
@@ -420,6 +419,33 @@ $(".delete-product").on("click", function (e) {
         },
         error: function (error) {
             return
+        }
+    })
+})
+
+$(".btn-checkout").on("click", function (e) {
+    const currentUrl = "/cart/checkout"
+    let transactionList = [];
+
+    checkboxCheckout.each((index, checkbox) => {
+        if (checkbox.checked) {
+            transactionList.push($(checkbox).attr("id"))
+        }
+    })
+
+    $.ajax({
+        method: "put",
+        url: currentUrl,
+        dataType: "json",
+        data: {
+            "product_list": transactionList,
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function (data) {
+            window.location.href = `/cart/checkout/${data.checkout_code}`
+        },
+        error: function (error) {
+            console.log(error)
         }
     })
 })
