@@ -5,17 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Checkout TenizenMart</title>
+    <title>TenizenMart</title>
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" />
-
+    <link rel="icon" type="image/png" href="{{ asset('images/static/tenizenmart.png') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite('resources/css/app.css')
 </head>
 
 <body class="bg-[#f1f3f2]/80">
     <header class="bg-white sticky top-0 z-30 border-b-[1.5px] h-[70px] flex items-center border-zinc-300">
-        <div class="container mx-auto w-full px-3 lg:px-6 py-3 lg:flex flex-none items-center  justify-between">
+        <div class="container mx-auto w-full px-3  lg:px-12 py-3 lg:flex flex-none items-center  justify-between">
             <div class="icon flex items-center gap-6">
                 <a href="/" class="header-title items-center gap-2 w-full h-full lg:flex hidden">
                     <img src="{{ asset('images/static/tenizenmart.png') }}" alt="connexmart"
@@ -37,9 +37,29 @@
         </div>
     </header>
     <div class="container mx-auto">
-        <div class="container-cart flex h-full lg:px-6 lg:flex-row flex-col gap-4">
+        <div class="container-cart flex h-full lg:px-12 lg:flex-row flex-col gap-4">
             <div class="right-checkout lg:w-4/5 w-full">
-                <div class="voucher-and-promo w-full mt-2 lg:mt-6 mb-4 lg:hidden block">
+                <div class="address w-full mt-0 lg:mt-6 px-0 lg:px-2">
+                    <div class="bg-white rounded-xl w-full p-6 shadow-sm">
+                        <p class="text-base lg:text-lg font-semibold">Alamat Pengiriman</p>
+                        <div class="address-detail flex items-start justify-between mt-3">
+                            <div class="detail-wrappers">
+                                <div class="detail-name font-semibold">
+                                    <p>Hendrik Do Santos <span class="font-normal">| 08180842380</span></p>
+                                </div>
+                                <div class="detail-address">
+                                    <p>
+                                        Ruang teori 1 lantai 1
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="change-address cursor-pointer text-sm text-[#303fe2]">
+                                Ubah
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="voucher-and-promo w-full mt-2 lg:mt-4 mb-4 lg:hidden block">
                     <div class="voucher-and-promo bg-white sticky top-28 rounded-xl w-full py-6 px-5 shadow-sm">
                         <p class="text-base lg:text-lg font-semibold">Voucher & Promo</p>
                         <p class="text-xs lg:text-sm text-zinc-500">
@@ -73,14 +93,15 @@
                                             @endif
                                         </div>
                                     </div>
-                                    <div class="description">
+                                    <div class="description -mt-[1px]">
                                         <p class="text-base w-full line-clamp-3">{{ $transaction->product->name }}</p>
-                                        <p class="text-sm price-products font-medium"
+                                        <p class="text-sm price-products font-normal text-zinc-500"
                                             data-price="{{ $transaction->product->price }}">
                                             {{ format_to_rp($transaction->price) }} <span
-                                                class="text-xs font-normal text-zinc-500">/ Produk</span></p>
-                                        <p class="font-normal text-xs text-zinc-500">
-                                            {{ $transaction->quantity }} Produk
+                                                class="text-sm font-normal text-zinc-500">x
+                                                {{ $transaction->quantity }}</span></p>
+                                        <p class="font-semibold">
+                                            {{ format_to_rp($transaction->totalPricePerTransaction) }}
                                         </p>
                                     </div>
                                 </div>
@@ -203,6 +224,7 @@
     <script type="module" src="{{ asset('javascript/lib/jquery.min.js') }}"></script>
     <script type="module" src="{{ asset('javascript/script/checkout.js') }}"></script>
     @include('components.choosepaymentmethod')
+    @include('components.insertaddress')
     @include('components.backdrop')
     @include('components.mobilebottomnav')
 </body>

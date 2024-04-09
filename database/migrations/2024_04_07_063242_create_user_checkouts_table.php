@@ -18,11 +18,15 @@ return new class extends Migration
             $table->json("product_list");
             $table->integer("total_quantity")->nullable();
             $table->integer("total_price")->nullable();
+            $table->enum("payment_method", ["tb-1","tb-2","bdk","cod"])->nullable();
+            $table->text("address_order")->nullable();
+            $table->enum("status", ["pending", "ordered", "taken", "canceled"]);
             $table->timestamps();
         });
     }
 
-    /**
+    /**    <title>TenizenMart</title>
+
      * Reverse the migrations.
      */
     public function down(): void

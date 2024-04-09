@@ -44,7 +44,7 @@
         <div class="container mx-auto grid grid-cols-7 gap-2 items-center h-full justify-between px-3 py-2">
             <div class="totals-and-checks col-span-4 flex items-start gap-2">
                 <div class="total">
-                    <p class="text-sm">Total Pembayaran</p>
+                    <p class="text-xs">Total Pembayaran</p>
                     <p class="text-lg font-semibold product-price-info">
                         {{ format_to_rp($checkouts->total_price) }}
                     </p>

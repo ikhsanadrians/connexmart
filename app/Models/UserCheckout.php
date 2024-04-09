@@ -14,7 +14,8 @@ class UserCheckout extends Model
         "user_id",
         "product_list",
         "total_quantity",
-        "total_price"
+        "total_price",
+        "status"
     ];
 
 }

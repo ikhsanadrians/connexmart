@@ -13,6 +13,11 @@ function modalPaymentMethod(visible) {
     $('.backdrop').toggleClass('hidden', !visible);
 }
 
+function modalInsertAddress(visible) {
+    $(".insertaddress").toggleClass("hidden", !visible)
+    $(".backdrop").toggleClass("hidden", !visible)
+}
+
 
 $("#close-btn-paymentmethod").on("click", function () {
     modalPaymentMethod(false)
@@ -24,6 +29,14 @@ $("#choose-payment-method-btn").on("click", function () {
 
 $(".payment-change").on("click", function () {
     modalPaymentMethod(true)
+})
+
+$(".change-address").on("click", function () {
+    modalInsertAddress(true)
+})
+
+$("#close-btn-insertaddress").on("click", function () {
+    modalInsertAddress(false)
 })
 
 

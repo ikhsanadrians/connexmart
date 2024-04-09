@@ -263,7 +263,8 @@ class TransactionController extends Controller
                 "user_id" => Auth::user()->id,
                 "product_list" => json_encode($request->product_list),
                 "total_quantity" => $request->total_quantity,
-                "total_price" => $request->total_price
+                "total_price" => $request->total_price,
+                "status" => "pending"
             ]);
 
             return response()->json([
