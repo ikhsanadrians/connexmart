@@ -17,7 +17,7 @@
     <header class="bg-white sticky top-0 z-30 border-b-[1.5px] h-[70px] flex items-center border-zinc-300">
         <div class="container mx-auto w-full px-3 lg:px-6 py-3 lg:flex flex-none items-center  justify-between">
             <div class="icon flex items-center gap-6">
-                <a href="/" class="header-title flex items-center gap-2 w-full h-full lg:block hidden">
+                <a href="/" class="header-title items-center gap-2 w-full h-full lg:flex hidden">
                     <img src="{{ asset('images/static/tenizenmart.png') }}" alt="connexmart"
                         class="h-12 lg:block hidden">
                     <p class="font-semibold text-lg text-[#303fe2]">
@@ -25,11 +25,11 @@
                 </a>
                 <div class="checkout-title flex items-center">
                     <a href="{{ route('cart.index') }}" class="pr-2">
-                        <span class="material-symbols-rounded text-[28px] mt-2 text-zinc-500">
+                        <span class="material-symbols-rounded text-[28px] mt-2 text-zinc-500 lg:hidden block">
                             arrow_back
                         </span>
                     </a>
-                    <div class="title">
+                    <div class="title mt-1">
                         <h1 class="font-medium">Checkout</h1>
                     </div>
                 </div>
