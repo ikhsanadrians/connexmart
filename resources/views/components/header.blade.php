@@ -10,7 +10,7 @@
                 </a>
                 @if (Route::is('cart.index'))
                     <p class="lg:hidden block font-medium text-zinc-700">Keranjangmu</p>
-                @else
+                @elseif(Route::is('checkout'))
                     <p class="lg:hidden block font-medium text-zinc-700">Checkout</p>
                 @endif
             </div>

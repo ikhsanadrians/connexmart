@@ -134,10 +134,11 @@
                 @endforeach
             </div>
             <div class="price-list-balance w-2/5 mt-6 mb-8 lg:block hidden">
-                <div class="price-list bg-white sticky top-28 rounded-xl w-full p-6 shadow-md">
+                <div class="price-list bg-white sticky top-28 rounded-xl w-full p-6 shadow-sm">
                     <p class="text-lg font-semibold">Detail pesanan</p>
                     <div class="shopping-data flex items-center mt-4 text-gray-500 justify-between">
-                        <p class="text-sm">Total Harga (<span class="product-qty-info">{{ $product_count }}</span> Produk)
+                        <p class="text-sm">Total Harga (<span data-qty="{{ $product_count }}"
+                                class="product-qty-info">{{ $product_count }}</span> Produk)
                         </p>
                         <p data-prices="0" class="product-price-info">{{ format_to_rp($total_prices) }}</p>
                     </div>

@@ -247,7 +247,11 @@ class TransactionController extends Controller
         $product_list = json_decode($checkouts->product_list);
         $transactions = Transaction::whereIn("id", $product_list)->get();
 
-        return view("checkout", compact("transactions"));
+        foreach($transactions as $transaction){
+            $transaction->totalPricePerTransaction = ($transaction->price * $transaction->quantity);
+        }
+
+        return view("checkout", compact("transactions", "checkouts"));
     }
 
     public function handleCheckout(Request $request){

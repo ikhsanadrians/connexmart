@@ -185,3 +185,37 @@ th {
     }
 
 
+.payment-list::-webkit-scrollbar {
+    width: 4px;
+    background-color: transparent
+}
+
+.payment-list::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 10px;
+}
+
+
+
+.arrow {
+    transition: transform 0.3s ease-out; /* Add transition effect for smooth animation */
+}
+
+.arrow.rotate {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    transform: rotate(180deg); /* Rotate the arrow 180 degrees */
+}
+
+
+
+@keyframes adjustDown {
+    0% {
+        height: 0;
+    }
+    100% {
+        height: fit; /* Adjust the final height as needed */
+    }
+}
+

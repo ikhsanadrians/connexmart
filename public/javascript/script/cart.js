@@ -26,14 +26,18 @@ function calculateTotal(type) {
 
     if (type === 'price') {
         $(".product-price-info").text(rupiah(total));
+        $(".product-price-info").attr("data-prices", total)
     } else if (type === 'quantity') {
         $(".product-qty-info").text(total);
+        $(".product-qty-info").attr("data-qty", total)
     }
 }
 
 function checkIfCheckboxAll() {
-    $("#checkallproduct").prop("checked", (localStorage.length === checkboxCheckout.length && (localStorage.length >= 1 && checkboxCheckout.length >= 1)));
-    $("#checkproductall-dekstop").prop("checked", (localStorage.length === checkboxCheckout.length && (localStorage.length >= 1 && checkboxCheckout.length >= 1)));
+    const checkboxCheckoutAtStorage = Object.keys(localStorage).filter(key => key !== "payment_method");
+
+    $("#checkallproduct").prop("checked", (checkboxCheckoutAtStorage.length === checkboxCheckout.length && (localStorage.length >= 1 && checkboxCheckout.length >= 1)));
+    $("#checkproductall-dekstop").prop("checked", (checkboxCheckoutAtStorage.length === checkboxCheckout.length && (localStorage.length >= 1 && checkboxCheckout.length >= 1)));
 }
 
 
@@ -426,6 +430,8 @@ $(".delete-product").on("click", function (e) {
 $(".btn-checkout").on("click", function (e) {
     const currentUrl = "/cart/checkout"
     let transactionList = [];
+    const currentTotalQuantity = $(".product-qty-info").attr("data-qty")
+    const currentTotalPrice = $(".product-price-info").attr("data-prices")
 
     checkboxCheckout.each((index, checkbox) => {
         if (checkbox.checked) {
@@ -439,6 +445,8 @@ $(".btn-checkout").on("click", function (e) {
         dataType: "json",
         data: {
             "product_list": transactionList,
+            "total_quantity": currentTotalQuantity,
+            "total_price": currentTotalPrice,
             _token: $('meta[name="csrf-token"]').attr('content')
         },
         success: function (data) {

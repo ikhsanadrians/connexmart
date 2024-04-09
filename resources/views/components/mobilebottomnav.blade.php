@@ -40,6 +40,24 @@
                 <p class="text-white font-semibold text-sm">Checkout (<span class="product-qty-info">0</span>)</p>
             </button>
         </div>
+    @elseif(Route::is('checkout'))
+        <div class="container mx-auto grid grid-cols-7 gap-2 items-center h-full justify-between px-3 py-2">
+            <div class="totals-and-checks col-span-4 flex items-start gap-2">
+                <div class="total">
+                    <p class="text-sm">Total Pembayaran</p>
+                    <p class="text-lg font-semibold product-price-info">
+                        {{ format_to_rp($checkouts->total_price) }}
+                    </p>
+                </div>
+            </div>
+            <button
+                class="disabled w-full text-sm bg-gradient-to-r from-[#303fe2] to-blue-500 text-white py-3  col-span-3 px-4 h-full font-semibold rounded-3xl gap-1 flex items-center justify-center">
+                <span class="material-symbols-rounded">
+                    lock
+                </span>
+                Bayar
+            </button>
+        </div>
     @else
         <div class="container mx-auto flex items-center h-full justify-between px-5">
             <a href="{{ route('home') }}"
