@@ -39,22 +39,29 @@
     <div class="container mx-auto">
         <div class="container-cart flex h-full lg:px-12 lg:flex-row flex-col gap-4">
             <div class="right-checkout lg:w-4/5 w-full">
-                <div class="address w-full mt-0 lg:mt-6 px-0 lg:px-2">
+                <div class="address w-full mt-2 lg:mt-6 px-0 lg:px-2">
                     <div class="bg-white rounded-xl w-full p-6 shadow-sm">
                         <p class="text-base lg:text-lg font-semibold">Alamat Pengiriman</p>
-                        <div class="address-detail flex items-start justify-between mt-3">
-                            <div class="detail-wrappers">
-                                <div class="detail-name font-semibold">
-                                    <p>Hendrik Do Santos <span class="font-normal">| 08180842380</span></p>
+                        <div class="address-detail flex items-start justify-between mt-3">                
+                                <div id="address-box" class="detail-wrappers @if(Auth::user()->recipient_name) block @else hidden @endif">
+                                    <div class="detail-name flex items-center">
+                                        <p id="recipient_name" class="font-semibold">{{ Auth::user()->recipient_name ?? '' }}</p>
+                                        <span class="mx-1">|</span>
+                                        <p id="recipient_phonenumber">{{ Auth::user()->phone_number ?? '' }}</p>
+                                    </div>
+                                    <div id="recipient_address" class="detail-address">
+                                        <p>
+                                            {{ Auth::user()->address ?? '' }}
+                                        </p>
+                                    </div>
                                 </div>
-                                <div class="detail-address">
-                                    <p>
-                                        Ruang teori 1 lantai 1
-                                    </p>
-                                </div>
-                            </div>
+                            <p id="address-warning" class="@if(Auth::user()->recipient_name)hidden @else block @endif">Kamu Belum Menambahkan Alamat</p>
                             <div class="change-address cursor-pointer text-sm text-[#303fe2]">
+                                @if(Auth::user()->recipient_name)
                                 Ubah
+                                @else
+                                Tambah
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -206,9 +213,9 @@
                                 <h1>{{ format_to_rp($checkouts->total_price) }}</h1>
                             </div>
                         </div>
-                        <div class="payment-button mt-3 lg:block hidden">
-                            <button
-                                class="w-full text-sm mt-5 bg-gradient-to-r from-[#303fe2] to-blue-500 text-white py-3  col-span-3 px-4 h-full font-semibold rounded-3xl gap-1 flex items-center justify-center">
+                        <div class="mt-3 lg:block hidden">
+                            <button disabled
+                                class="w-full disabled-items payment-button text-sm mt-5 bg-gradient-to-r from-[#303fe2] to-blue-500 text-white py-3  col-span-3 px-4 h-full font-semibold rounded-3xl gap-1 flex items-center justify-center">
                                 <span class="material-symbols-rounded">
                                     lock
                                 </span>
@@ -227,6 +234,7 @@
     @include('components.insertaddress')
     @include('components.backdrop')
     @include('components.mobilebottomnav')
+    @include('components.cartmessagemodal')
 </body>
 
 </html>

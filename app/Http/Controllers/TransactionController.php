@@ -243,13 +243,16 @@ class TransactionController extends Controller
 
 
     public function checkout(string $checkout_code){
+        
         $checkouts = UserCheckout::where("checkout_code", $checkout_code)->first();
+        if(!$checkouts) return view("errors.404");
         $product_list = json_decode($checkouts->product_list);
-        $transactions = Transaction::whereIn("id", $product_list)->get();
+        $transactions = Transaction::whereIn("id", $product_list)->where("user_id", Auth::user()->id)->get();
 
         foreach($transactions as $transaction){
             $transaction->totalPricePerTransaction = ($transaction->price * $transaction->quantity);
         }
+
 
         return view("checkout", compact("transactions", "checkouts"));
     }
@@ -271,6 +274,22 @@ class TransactionController extends Controller
                 "message" => "success, checkout user",
                 "checkout_code" => $data->checkout_code
             ]);
+        }
+    }
+
+    public function addAdressUser(Request $request){
+        if($request->ajax()){
+           $user = User::where("id", Auth::user()->id)->first();
+           $updated_user = $user->update([
+              "recipient_name" => $request->recipient,
+              "phone_number" => $request->recipient_phonenumber,
+              "address" => $request->address
+           ]);
+           
+           return response()->json([
+               "message" => "success, update address user",
+           ]); 
+
         }
     }
 }

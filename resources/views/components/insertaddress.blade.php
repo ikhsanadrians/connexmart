@@ -13,22 +13,22 @@
     <div class="content-payment w-full lg:pb-0 pb-12 px-3 lg:px-8">
         <div class="nama-penerima">
             <label for="" class="text-sm">Nama Penerima <span class="text-red-500">*</span></label>
-            <input type="text" name="" id=""
+            <input value="{{ Auth::user()->recipient_name }}" type="text" name="" id="recipient"
                 class=" block py-3 pl-2 mt-2 !w-full bg-transparent focus:bg-zinc-200 focus:outline-none focus:border-[1.5px] text-sm border-gray-300 border-[1.5px] rounded-lg">
         </div>
         <div class="nomor-penerima mt-2">
             <label for="" class="text-sm">Nomor Hp Penerima <span class="text-red-500">*</span></label>
-            <input type="text" name="" id=""
+            <input value="{{ Auth::user()->phone_number }}" type="number" name="" id="recipient_phone"
                 class=" block py-3 pl-2 mt-2 !w-full bg-transparent focus:bg-zinc-200 focus:outline-none focus:border-[1.5px] text-sm border-gray-300 border-[1.5px] rounded-lg">
         </div>
         <div class="address mt-2">
             <label for="" class="text-sm">Alamat <span class="text-red-500">*</span></label>
-            <textarea name="" id="" rows="4"
+            <textarea name="" id="address" rows="4"
                 class="textarea resize-x block py-3 pl-2 mt-2 !w-full bg-transparent focus:bg-zinc-200 focus:outline-none focus:border-[1.5px] text-sm border-gray-300 border-[1.5px] rounded-lg"
-                placeholder="Contoh: Ruang Teori 1 lantai 1"></textarea>
+                placeholder="Contoh: Ruang Teori 1 lantai 1">{{ Auth::user()->address }}</textarea>
         </div>
         <button disabled
-            class="btn-payment-method-confirm w-full cursor-pointer disabled-items bg-gradient-to-r from-[#303fe2] to-blue-500 text-center p-3 text-white rounded-3xl font-medium mt-4">
+            class="btn-confirm-address w-full cursor-pointer disabled-items bg-gradient-to-r from-[#303fe2] to-blue-500 text-center p-3 text-white rounded-3xl font-medium mt-5">
             Confirm Alamat
         </button>
     </div>
