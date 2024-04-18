@@ -82,18 +82,20 @@ function checkboxAllProduct() {
     $("#checkallproduct").on("change", function (e) {
         const isChecked = this.checked;
 
-        checkoutButtonVisibility((isChecked && checkboxCheckout.length >= 1) ? true : false);
+        if (checkboxCheckout.length > 0) {
+            checkoutButtonVisibility((isChecked && checkboxCheckout.length >= 1) ? true : false);
 
-        checkboxCheckout.each((index, checkbox) => {
+            checkboxCheckout.each((index, checkbox) => {
 
-            const parentCheckbox = $(checkbox).closest(".card");
-            const data = localStorage.getItem(checkbox.id);
-            const newDataValue = isChecked ? "checked" : "";
+                const parentCheckbox = $(checkbox).closest(".card");
+                const data = localStorage.getItem(checkbox.id);
+                const newDataValue = isChecked ? "checked" : "";
 
-            checkbox.checked = isChecked;
-            newDataValue ? localStorage.setItem(checkbox.id, newDataValue) : localStorage.removeItem(checkbox.id);
-            parentCheckbox.find(".cart-input-quantity").attr("data-selected", newDataValue ? "1" : "0");
-        });
+                checkbox.checked = isChecked;
+                newDataValue ? localStorage.setItem(checkbox.id, newDataValue) : localStorage.removeItem(checkbox.id);
+                parentCheckbox.find(".cart-input-quantity").attr("data-selected", newDataValue ? "1" : "0");
+            });
+        }
 
         loadCheckBoxProduct();
         calculateTotal('quantity');
