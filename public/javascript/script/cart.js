@@ -457,3 +457,16 @@ $(".btn-checkout").on("click", function (e) {
         }
     })
 })
+
+$(".add-wishlist").on("click", function () {
+    const currentUrl = "/cart/addwishlist"
+
+    $.ajax({
+        method: "put",
+        url: currentUrl,
+        dataType: "json",
+        data: {
+            "product_id":
+       }
+    })
+});

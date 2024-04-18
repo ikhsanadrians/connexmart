@@ -19,7 +19,7 @@ class TransactionController extends Controller
     {
         $product_count = 0;
         $total_prices = 0;
-        $carts = Transaction::with('product')->where('user_id', Auth::user()->id)->where('status', 'not_paid')->orderBy('created_at', 'desc')->get();
+        $carts = Transaction::with('product')->where('user_id', Auth::user()->id)->where('status', 'outcart')->orderBy('created_at', 'desc')->get();
 
         foreach ($carts as $product_cart) {
             $product_count += $product_cart->quantity;
@@ -32,52 +32,6 @@ class TransactionController extends Controller
         return view('cart', compact('carts', 'product_count', 'total_prices'));
     }
 
-    public function payCart(Request $request)
-    {
-        if ($request->ajax()) {
-
-            $total_prices = $request->total_prices;
-            $wallets = Wallet::where('user_id', Auth::user()->id)->first();
-
-            if ($total_prices > $wallets->credit) {
-                return response()->json([
-                    "message" => "Your Balance Is Not Enough",
-                ],406);
-
-            } else {
-
-                $current_debit = $wallets->debit;
-                $current_credit = $wallets->credit;
-
-                $carts = Transaction::with('product')->where('user_id', Auth::user()->id)->where('status', 'not_paid')->orderBy('created_at', 'desc')->get();
-
-
-                foreach ($carts as $cr) {
-                    if($cr->product->deleted_at == ""){
-                        $cr->update([
-                            "status" => "paid"
-                        ]);
-                    }
-                }
-
-                $wallets->update([
-                    "debit" => ($current_debit += $total_prices),
-                    "credit" => ($current_credit -= $total_prices)
-                ]);
-
-
-                session(['total_price' => $total_prices]);
-
-
-                return response()->json([
-                    "status" => "success",
-                ]);
-
-            }
-
-        }
-
-    }
 
     public function sentToCart(Request $request)
     {
@@ -89,7 +43,7 @@ class TransactionController extends Controller
 
             $sameTransaction = Transaction::where('product_id', $request->product_id)
                 ->where('user_id', Auth::user()->id)
-                ->where('status', 'not_paid')
+                ->where('status', 'outcart')
                 ->first();
 
             if($product->stock < $request->quantity){
@@ -108,7 +62,7 @@ class TransactionController extends Controller
                     Transaction::create([
                         "user_id" => Auth::user()->id,
                         "product_id" => $product->id,
-                        "status" => "not_paid",
+                        "status" => "outcart",
                         "order_id" => "INV-" . Auth::user()->id . now()->format('dmYHis'),
                         "quantity" => $request->quantity,
                         "price" => $productSummaryPrice
@@ -187,47 +141,11 @@ class TransactionController extends Controller
         }
     }
 
-    public function receipt(Request $request)
-    {
-        $currentTopUp = TopUp::where('unique_code', $request->unique_code)->first();
-
-        $data = QrCode::size(200)->generate(
-            $currentTopUp->unique_code,
-        );
-
-        $currentTopUp->qr_code = $data;
-
-        return view('receipt', compact('currentTopUp'));
-    }
-
-    public function cart_receipt()
-    {
-
-        $total_prices = 0;
-        $currentTransactions = Transaction::where('status', 'paid')->where('user_id', Auth::user()->id)->get();
-
-        $qrcode = $currentTransactions[0];
-
-        foreach ($currentTransactions as $transaction) {
-            $total_prices += $transaction->price;
-        }
-
-        $data = QrCode::size(100)->generate(
-            $qrcode->order_id,
-        );
-
-        $currentTransactions->qr_code = $data;
-        $currentTransactions->total_prices = session('total_price');
-
-
-        return view('receiptcart', compact('currentTransactions'));
-
-    }
 
     public function cart_take(Request $request)
     {
         if ($request->ajax()) {
-            $currentTransactions = Transaction::where('status', 'paid')->where('user_id', Auth::user()->id)->get();
+            $currentTransactions = Transaction::where('status', 'incart')->where('user_id', Auth::user()->id)->get();
 
             foreach ($currentTransactions as $transaction) {
                 $transaction->update([
@@ -243,9 +161,9 @@ class TransactionController extends Controller
 
 
     public function checkout(string $checkout_code){
-        
+
         $checkouts = UserCheckout::where("checkout_code", $checkout_code)->first();
-        if(!$checkouts) return view("errors.404");
+        if(!$checkouts || $checkouts->status == "ordered") return view("errors.404");
         $product_list = json_decode($checkouts->product_list);
         $transactions = Transaction::whereIn("id", $product_list)->where("user_id", Auth::user()->id)->get();
 
@@ -256,6 +174,7 @@ class TransactionController extends Controller
 
         return view("checkout", compact("transactions", "checkouts"));
     }
+
 
     public function handleCheckout(Request $request){
         if($request->ajax()){
@@ -285,11 +204,141 @@ class TransactionController extends Controller
               "phone_number" => $request->recipient_phonenumber,
               "address" => $request->address
            ]);
-           
+
            return response()->json([
                "message" => "success, update address user",
-           ]); 
+           ]);
 
         }
+    }
+
+    public function addPaymentMethod(Request $request){
+        if($request->ajax()){
+            $user = User::where("id", Auth::user()->id)->first();
+            $updated_user = $user->update([
+                "latest_paymentmethod" => $request->paymentMethod
+            ]);
+
+            return response()->json([
+               "message" => "success. update payment",
+               "user" => $updated_user,
+            ]);
+        }
+    }
+
+    public function checkoutEntry(Request $request){
+        if($request->ajax()){
+            $latest_payment_method = Auth::user()->latest_paymentmethod;
+            $address = Auth::user()->address;
+
+             if($request->payment_method == "tb-1" || $request->payment_method == "tb-2"){
+                $user_wallet = Auth::user()->wallet;
+                $user_checkout = UserCheckout::where("checkout_code", $request->checkout_code)->where("user_id", Auth::user()->id)->first();
+                $total_price = $user_checkout->total_price;
+
+                if($user_wallet < $total_price){
+                   return response()->json([
+                       "message" => "failed, wallet not enough"
+                   ],401);
+                }
+
+                $transaction_list = json_decode($user_checkout->product_list);
+                $transactions = Transaction::whereIn("id", $transaction_list)->where("user_id", Auth::user()->id)->get();
+
+                foreach($transactions as $transaction){
+                    $transaction->update([
+                         "status" => "checkedout"
+                    ]);
+                }
+
+                $user_checkout->update([
+                    "status" => "ordered",
+                    "payment_method" => $latest_payment_method,
+                    "address_order" => $address
+                ]);
+
+                $updatedBalanceCredit = $user_wallet->credit -= $total_price;
+                $updatedBalanceDebit = $user_wallet->debit += $total_price;
+
+                $user_wallet->update([
+                    "credit" => $updatedBalanceCredit,
+                    "debit" => $updatedBalanceDebit
+                ]);
+
+                return response()->json([
+                    "message" => "success, checkout",
+                ]);
+
+             }
+
+
+
+             $user_checkout = UserCheckout::where("checkout_code", $request->checkout_code)->where("user_id", Auth::user()->id)->first();
+             $transaction_list = json_decode($user_checkout->product_list);
+             $transactions = Transaction::whereIn("id", $transaction_list)->where("user_id", Auth::user()->id)->get();
+
+             foreach($transactions as $transaction){
+                 $transaction->update([
+                      "status" => "checkedout"
+                 ]);
+             }
+             $user_checkout->update([
+                 "status" => "ordered",
+                 "payment_method" => $latest_payment_method,
+                 "address_order" => $address
+             ]);
+
+             return response()->json([
+                "message" => "success, checkout",
+
+             ]);
+
+        }
+    }
+
+    public function getUserLatestPaymentMethod(Request $request){
+        if($request->ajax()){
+            $user = User::where("id", Auth::user()->id)->first();
+
+            return response()->json([
+                "message" => "success, get latest payment",
+                "payment_method" => $user->latest_paymentmethod
+            ]);
+        }
+    }
+
+    public function checkoutSuccess(Request $request){
+        $checkouts = UserCheckout::where("checkout_code", $request->checkout_code)->where("user_id", Auth::user()->id)->first();
+
+        if(!$checkouts) return view("errors.404");
+
+
+        if($request->detail == "show"){
+            $product_list = json_decode($checkouts->product_list);
+            $transactions = Transaction::whereIn("id", $product_list)->get();
+
+            foreach($transactions as $transaction){
+                $transaction->totalPricePerTransaction = ($transaction->price * $transaction->quantity);
+            }
+
+            return view('detailcheckout', compact('checkouts','transactions'));
+        }
+
+        return view("successcheckout", compact("checkouts"));
+    }
+    public function addWishlist(Request $request){
+        $user = User::find(Auth::user()->id);
+        $wishlistArray = json_decode($user->wishlist);
+
+        if (!in_array($request->product_id, $wishlistArray)) {
+            array_push($wishlistArray, $request->product_id);
+            $user->wishlist = json_encode($wishlistArray);
+            $user->save();
+        }
+
+        return response()->json([
+            "message" => "success, added to wishlist",
+            "wishlist" => $wishlistArray
+        ]);
     }
 }

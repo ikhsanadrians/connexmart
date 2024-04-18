@@ -36,11 +36,15 @@ Route::middleware('user')->group(function(){
         Route::get('/', [TransactionController::class, 'index'])->name('cart.index');
         Route::post('/', [TransactionController::class, 'sentToCart'])->name('cart.proceed');
         Route::delete('/',[TransactionController::class,'cart_delete'])->name('cart.product.delete');
-        Route::put('/pay', [TransactionController::class, 'payCart'])->name('cart.pay');
+        Route::put("/addwishlist",[TransactionController::class, 'addWishlist'])->name("add.wishlist");
         Route::put('/quantityupdate', [TransactionController::class, 'updateQuantity'])->name('cart.quantity.update');
         Route::get("/checkout/{checkout_code}", [TransactionController::class,'checkout'])->name("checkout");
+        Route::put("/checkout/getpaymentmethod", [TransactionController::class, "getUserLatestPaymentMethod"])->name("checkout.paymentmethod");
         Route::put("/checkout", [TransactionController::class, "handleCheckout"])->name("checkout.handle");
         Route::put("/checkout/updateaddress", [TransactionController::class,"addAdressUser"])->name("checkout.update.address");
+        Route::put("/checkout/updatepaymentmethod", [TransactionController::class, "addPaymentMethod"])->name("checkout.update.paymentmethod");
+        Route::put("/checkout/pay", [TransactionController::class, "checkoutEntry"])->name("checkout.pay");
+        Route::get("/checkout/{checkout_code}/success", [TransactionController::class, "checkoutSuccess"])->name("checkout.success");
         // Route::get('/receipt', [TransactionController::class, 'cart_receipt'])->name('cart.receipt');
         // Route::put('/receipt/take', [TransactionController::class, 'cart_take'])->name('cart.take');
     });

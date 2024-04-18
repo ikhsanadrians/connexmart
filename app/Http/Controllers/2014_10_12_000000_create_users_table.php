@@ -19,7 +19,6 @@ return new class extends Migration
             $table->char('phone_number',13)->nullable();
             $table->string("recipient_name")->nullable();
             $table->enum("latest_paymentmethod", ["tb-1","tb-2","bdk","cod"])->nullable();
-            $table->json("wishlist")->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

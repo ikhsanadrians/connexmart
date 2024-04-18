@@ -23,6 +23,8 @@ class User extends Authenticatable
         'role_id',
         "address",
         "phone_number",
+        "wishlist",
+        "latest_paymentmethod",
         'password',
     ];
 
@@ -61,5 +63,7 @@ class User extends Authenticatable
     public function roles(){
         return $this->belongsTo(Roles::class,'role_id');
     }
+
+
 
 }

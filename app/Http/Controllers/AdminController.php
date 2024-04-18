@@ -6,6 +6,7 @@ use App\Models\Roles;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Wallet;
 use RealRashid\SweetAlert\Facades\Alert;
 
 
@@ -55,6 +56,12 @@ class AdminController extends Controller
 
 
        $user = User::create($validation);
+
+       $wallet = Wallet::create([
+          "user_id" => $user->id,
+          "credit" => 0,
+          "debit" => 0
+       ]);
 
        alert()->success('Success','Success Add New User!');
 

@@ -50,8 +50,8 @@
                     </p>
                 </div>
             </div>
-            <button
-                class="disabled w-full text-sm bg-gradient-to-r from-[#303fe2] to-blue-500 text-white py-3  col-span-3 px-4 h-full font-semibold rounded-3xl gap-1 flex items-center justify-center">
+            <button disabled
+                class="pay-btn disabled-items payment-button w-full text-sm bg-gradient-to-r from-[#303fe2] to-blue-500 text-white py-3  col-span-3 px-4 h-full font-semibold rounded-3xl gap-1 flex items-center justify-center">
                 <span class="material-symbols-rounded">
                     lock
                 </span>

@@ -98,7 +98,7 @@
                                 </div>
                             </div>
                             <div class="product-action flex items-center h-full justify-end gap-3">
-                                <div class="add-wishlist mt-2">
+                                <div id="{{ $cart->product->id }}" class="add-wishlist mt-2 cursor-pointer">
                                     <span class="material-symbols-rounded text-zinc-500">
                                         favorite
                                     </span>
@@ -157,7 +157,7 @@
             <div class="empty-cart flex justify-center w-full items-center">
                 <div class="flex flex-col text-center pt-32">
                     <img src="{{ asset('images/static/Empty-Cart.svg') }}" alt="empty" class="h-48">
-                    <h1 class="mt-8 font-bold text-2xl">Your Cart Is Empty</h1>
+                    <h1 class="mt-8 font-bold text-2xl">Yah Keranjangmu saat ini Kosong</h1>
                 </div>
             </div>
         @endif

@@ -24,13 +24,14 @@
                         TenizenMart</p>
                 </a>
                 <div class="checkout-title flex items-center">
-                    <a href="{{ route('cart.index') }}" class="pr-2">
+                    <a href="{{ route('home') }}" class="pr-2">
                         <span class="material-symbols-rounded text-[28px] mt-2 text-zinc-500 lg:hidden block">
                             arrow_back
                         </span>
                     </a>
-                    <div class="title mt-1">
+                    <div class="title mt-1 flex gap-1">
                         <h1 class="font-medium">Checkout</h1>
+                        <p>#{{ $checkouts->checkout_code }}</p>
                     </div>
                 </div>
             </div>
@@ -58,31 +59,6 @@
                                     </p>
                                 </div>
                             </div>
-                            <p id="address-warning" class="@if (Auth::user()->recipient_name) hidden @else block @endif">
-                                Kamu Belum Menambahkan Alamat</p>
-                            <div class="change-address cursor-pointer text-sm text-[#303fe2]">
-                                @if (Auth::user()->recipient_name)
-                                    Ubah
-                                @else
-                                    Tambah
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="voucher-and-promo w-full mt-2 lg:mt-4 mb-4 lg:hidden block">
-                    <div class="voucher-and-promo bg-white sticky top-28 rounded-xl w-full py-6 px-5 shadow-sm">
-                        <p class="text-base lg:text-lg font-semibold">Voucher & Promo</p>
-                        <p class="text-xs lg:text-sm text-zinc-500">
-                            Kamu punya Voucher atau Kode? Masukan disini
-                        </p>
-                        <div class="input-voucher w-full h-fit relative overflow-hidden">
-                            <input
-                                class="py-3 pl-2 mt-2 w-full bg-transparent focus:bg-zinc-200 focus:outline-none focus:border-[1.5px] text-sm border-gray-300 border-[1.5px] rounded-lg"
-                                type="text" placeholder="Kode Promo">
-                            <button class="absolute right-2 top-4 text-sm hover:bg-blue-200/20 py-1 px-3 rounded-2xl">
-                                Pakai
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -122,69 +98,59 @@
                 </div>
             </div>
             <div class="left-chekout-controls w-full lg:w-2/5">
-                <div class="voucher-and-promo w-full mt-0 lg:mt-6 lg:mb-4 lg:block hidden">
-                    <div class="voucher-and-promo bg-white sticky top-28 rounded-xl w-full p-6 shadow-sm">
-                        <p class="text-base lg:text-lg font-semibold">Voucher & Promo</p>
-                        <p class="text-xs lg:text-sm text-zinc-500">
-                            Kamu punya Voucher atau Kode? Masukan disini
-                        </p>
-                        <div class="input-voucher w-full h-fit relative overflow-hidden">
-                            <input
-                                class="py-3 pl-2 mt-2 w-full bg-transparent focus:bg-zinc-200 focus:outline-none focus:border-[1.5px] text-sm border-gray-300 border-[1.5px] rounded-lg"
-                                type="text" placeholder="Kode Promo">
-                            <button class="absolute right-2 top-4 text-sm hover:bg-blue-200/20 py-1 px-3 rounded-2xl">
-                                Pakai
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="payment-method w-full mb-4">
+                <div class="payment-method w-full mb-4 lg:mt-6">
                     <div id="payment-method-box"
                         data-latestpaymentmethod="{{ Auth::user()->latest_paymentmethod ?? '' }}"
                         data-paymentmethod="null"
                         class="payment-method bg-white sticky top-28 rounded-xl w-full p-6 shadow-sm">
                         <p class="text-base lg:text-lg font-semibold">Metode Pembayaran</p>
-                        <div class="tenizen-bank-method hidden mt-5 flex items-start justify-between">
-                            <div class="payment-name flex gap-2 items-center">
-                                <img src="{{ asset('images/static/tenbank2.png') }}" alt=""
-                                    class="bg-[#303fe2] h-8 p-1 rounded-lg mb-1">
-                                <div class="payment-detail -mt-1">
-                                    <p class="font-medium text-sm">Transfer dengan TenizenBank</p>
-                                    <p id="tenbank-options" class="text-sm text-zinc-500"></p>
+                        @if ($checkouts->payment_method == 'tb-1')
+                            <div class="tenizen-bank-method mt-5 flex items-start justify-between">
+                                <div class="payment-name flex gap-2 items-center">
+                                    <img src="{{ asset('images/static/tenbank2.png') }}" alt=""
+                                        class="bg-[#303fe2] h-8 p-1 rounded-lg mb-1">
+                                    <div class="payment-detail -mt-1">
+                                        <p class="font-medium text-sm">Transfer dengan TenizenBank</p>
+                                        <p id="tenbank-options" class="text-sm text-zinc-500"></p>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="payment-change cursor-pointer text-sm -mt-[2px] text-[#303fe2]">
-                                Ubah
-                            </div>
-                        </div>
-                        <div class="bayar-di-kantin-method hidden mt-5 flex items-start justify-between">
-                            <div class="payment-name flex gap-2 items-center">
-                                <span class="material-symbols-rounded text-[#303fe2] text-[35px]">
-                                    point_of_sale
-                                </span>
-                                <div class="payment-detail -mt-1">
-                                    <p class="font-medium text-sm">Bayar di Kantin</p>
-                                    <p class="text-sm text-zinc-500">Ambil Sendiri</p>
+                        @elseif($checkouts->payment_method == 'tb-2')
+                            <div class="tenizen-bank-method mt-5 flex items-start justify-between">
+                                <div class="payment-name flex gap-2 items-center">
+                                    <img src="{{ asset('images/static/tenbank2.png') }}" alt=""
+                                        class="bg-[#303fe2] h-8 p-1 rounded-lg mb-1">
+                                    <div class="payment-detail -mt-1">
+                                        <p class="font-medium text-sm">Transfer dengan TenizenBank</p>
+                                        <p id="tenbank-options" class="text-sm text-zinc-500"></p>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="payment-change cursor-pointer text-sm -mt-[2px] text-[#303fe2]">
-                                Ubah
-                            </div>
-                        </div>
-                        <div class="cod-method hidden mt-5 flex items-start justify-between">
-                            <div class="payment-name flex gap-2 items-center">
-                                <span class="material-symbols-rounded text-[#303fe2] text-[35px] -mt-2">
-                                    approval_delegation
-                                </span>
-                                <div class="payment-detail">
-                                    <p class="font-medium text-sm">Cash On Delivery ( COD )</p>
-                                    <p class="text-sm text-zinc-500">Antar Ke Tempat</p>
+                        @elseif($checkouts->payment_method == 'bdk')
+                            <div class="bayar-di-kantin-method mt-5 flex items-start justify-between">
+                                <div class="payment-name flex gap-2 items-center">
+                                    <span class="material-symbols-rounded text-[#303fe2] text-[35px]">
+                                        point_of_sale
+                                    </span>
+                                    <div class="payment-detail -mt-1">
+                                        <p class="font-medium text-sm">Bayar di Kantin</p>
+                                        <p class="text-sm text-zinc-500">Ambil Sendiri</p>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="payment-change cursor-pointer text-sm -mt-[2px] text-[#303fe2]">
-                                Ubah
+                        @elseif($checkouts->payment_method == 'cod')
+                            <div class="cod-method mt-5 flex items-start justify-between">
+                                <div class="payment-name flex gap-2 items-center">
+                                    <span class="material-symbols-rounded text-[#303fe2] text-[35px] -mt-2">
+                                        approval_delegation
+                                    </span>
+                                    <div class="payment-detail">
+                                        <p class="font-medium text-sm">Cash On Delivery ( COD )</p>
+                                        <p class="text-sm text-zinc-500">Antar Ke Tempat</p>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        @endif
                         <button id="choose-payment-method-btn"
                             class="w-full text-sm mt-5 bg-gradient-to-r from-[#303fe2] to-blue-500 text-white py-3  col-span-3 px-4 h-full font-semibold rounded-3xl gap-1 text-center">Pilih
                             Metode Pembayaran</button>
@@ -220,15 +186,6 @@
                                 <h1>{{ format_to_rp($checkouts->total_price) }}</h1>
                             </div>
                         </div>
-                        <div class="mt-3 lg:block hidden">
-                            <button disabled
-                                class="w-full pay-btn disabled-items payment-button text-sm mt-5 bg-gradient-to-r from-[#303fe2] to-blue-500 text-white py-3  col-span-3 px-4 h-full font-semibold rounded-3xl gap-1 flex items-center justify-center">
-                                <span class="material-symbols-rounded">
-                                    lock
-                                </span>
-                                Bayar
-                            </button>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -241,7 +198,6 @@
     @include('components.choosepaymentmethod')
     @include('components.insertaddress')
     @include('components.backdrop')
-    @include('components.mobilebottomnav')
     @include('components.cartmessagemodal')
 </body>
 

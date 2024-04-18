@@ -36,7 +36,7 @@ class DatabaseSeeder extends Seeder
          ]);
 
 
-         User::create([ 
+         User::create([
             "name" => "ikhsan_adrians",
             "role_id" => 4,
             "password" => bcrypt("mahabarata")
@@ -125,14 +125,7 @@ class DatabaseSeeder extends Seeder
          ]);
 
 
-         Transaction::create([
-            "user_id" => 1,
-            "product_id" => 1,
-            "status" => 'not_paid',
-            "order_id" => 'INV-12345',
-            "quantity" => 2,
-            "price" => 3000
-         ]);
+
 
 
 

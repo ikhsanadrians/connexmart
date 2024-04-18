@@ -3,6 +3,7 @@ $(document).ready(function () {
     loadPaymentMethodDesc()
     checkConfirmPaymentMethod()
     loadPaymentMethodBox()
+    checkCheckoutComplete()
 });
 
 let currentPaymentMethod = ""
@@ -48,6 +49,18 @@ $("#close-btn-insertaddress").on("click", function () {
 })
 
 
+function checkCheckoutComplete() {
+    const paymentMethod = $("#payment-method-box").attr("data-paymentmethod")
+    const address = $("#address-box").attr("data-address")
+
+    if (paymentMethod == "filled" && (address == " filled " || address == "filled")) {
+        checkoutBtnGroupVisibility("confirm", true)
+    } else {
+        checkoutBtnGroupVisibility("confirm", false)
+    }
+}
+
+
 
 function loadPaymentMethodDesc() {
     $(".extend-tenbank").click(() => {
@@ -58,7 +71,8 @@ function loadPaymentMethodDesc() {
     $(".tenizen-bank-desc").removeClass("hidden");
 
     $(".form-radio").click((e) => {
-        
+
+
         const paymentMethods = {
             "tb-1": ".tenizen-bank-desc",
             "tb-2": ".tenizen-bank-desc",
@@ -80,15 +94,33 @@ function loadPaymentMethodDesc() {
 }
 
 function checkConfirmPaymentMethod() {
+
     $(".btn-payment-method-confirm").on("click", function () {
-        localStorage.setItem("payment_method", currentPaymentMethod)
-        modalPaymentMethod(false)
-        loadPaymentMethodBox()
+        $.ajax({
+            url: "/cart/checkout/updatepaymentmethod",
+            method: "PUT",
+            data: {
+                paymentMethod: currentPaymentMethod,
+                _token: $('meta[name="csrf-token"]').attr('content')
+
+            },
+            success: function (data) {
+                console.log(data)
+                localStorage.setItem("payment_method", currentPaymentMethod)
+                modalPaymentMethod(false)
+                loadPaymentMethodBox()
+                checkCheckoutComplete()
+            },
+            error: function (error) {
+                return
+            }
+        });
     })
 }
 
 function loadPaymentMethodBox() {
     let paymentMethod = localStorage.getItem("payment_method")
+    $("#payment-method-box").attr("data-paymentmethod", "filled")
 
     switch (paymentMethod) {
         case "tb-1":
@@ -119,26 +151,26 @@ function loadPaymentMethodBox() {
 }
 
 
-function checkValueInputAddress(){
+function checkValueInputAddress() {
     const recipient = $("#recipient").val()
     const recipientNumber = $("#recipient_phone").val()
     const address = $("#address").val()
-    
-    recipient && recipientNumber && address ? checkoutBtnGroupVisibility("insertAddress" , true) : checkoutBtnGroupVisibility("insertAddress", false)
-    
+
+    recipient && recipientNumber && address ? checkoutBtnGroupVisibility("insertAddress", true) : checkoutBtnGroupVisibility("insertAddress", false)
+
 }
 
-$("#recipient_phone").on("input", function() {
+$("#recipient_phone").on("input", function () {
     $(this).val($(this).val().slice(0, 13));
 });
 
 
-$("#recipient, #recipient_phone, #address").on("keyup", function(){
+$("#recipient, #recipient_phone, #address").on("keyup", function () {
     checkValueInputAddress()
 })
- 
 
-function submitAddress(){ 
+
+function submitAddress() {
     const recipient = $("#recipient").val()
     const recipientNumber = $("#recipient_phone").val()
     const address = $("#address").val()
@@ -149,18 +181,19 @@ function submitAddress(){
         dataType: 'json',
         data: {
             "recipient": recipient,
-            "recipient_phonenumber" : recipientNumber,
-            "address" : address,
+            "recipient_phonenumber": recipientNumber,
+            "address": address,
             _token: $('meta[name="csrf-token"]').attr('content')
         },
         success: function (data) {
-           modalInsertAddress(false)
-           $("#address-box").removeClass("hidden")
-           $("#recipient_name").text(recipient)
-           $("#recipient_phonenumber").text(recipientNumber)
-           $("#recipient_address").text(address)
-           $("#address-warning").addClass("hidden")
-           loadModalMessage("Berhasil Menambahkan Alamat")
+            modalInsertAddress(false)
+            $("#address-box").attr("data-address", "filled")
+            $("#address-box").removeClass("hidden")
+            $("#recipient_name").text(recipient)
+            $("#recipient_phonenumber").text(recipientNumber)
+            $("#recipient_address").text(address)
+            $("#address-warning").addClass("hidden")
+            loadModalMessage("Berhasil Menambahkan Alamat")
         },
         error: function (error) {
             loadModalMessage("Gagal Menambahkan Alamat")
@@ -168,16 +201,60 @@ function submitAddress(){
         }
     })
 
-}   
+    checkCheckoutComplete()
 
-$(".btn-confirm-address").on("click", function(){
+}
+
+$(".btn-confirm-address").on("click", function () {
     submitAddress()
 })
 
 function checkoutBtnGroupVisibility(btnType, visible) {
     const targetElement = btnType === "insertAddress" ? $(".btn-confirm-address") : $(".payment-button");
-    
+
     targetElement.prop("disabled", !visible)
-                 .toggleClass("disabled-items", !visible);
+        .toggleClass("disabled-items", !visible);
+}
+
+$(".pay-btn").on("click", function () {
+    payCheckout()
+})
+
+function removeProductChecked() {
+    if (Object.keys(localStorage).length === 0) {
+        return;
+    }
+
+    for (let key in localStorage) {
+        if (key !== 'payment_method') {
+            localStorage.removeItem(key);
+        }
+    }
+}
+
+function payCheckout() {
+    const url = window.location.href;
+    const checkoutCode = url.substring(url.lastIndexOf('/') + 1);
+    const paymentMethod = $("#payment-method-box").attr("data-paymentmethod")
+
+    $.ajax({
+        url: '/cart/checkout/pay',
+        method: 'put',
+        dataType: 'json',
+        data: {
+            "checkout_code": checkoutCode,
+            "payment_method": paymentMethod,
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function (data) {
+            removeProductChecked()
+            window.location.href = "/cart/checkout/" + checkoutCode + "/success";
+        },
+        error: function (error) {
+            loadModalMessage("Gagal Membayar")
+            console.log(error)
+        }
+    })
+
 }
 
