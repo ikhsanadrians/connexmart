@@ -142,23 +142,6 @@ class TransactionController extends Controller
     }
 
 
-    public function cart_take(Request $request)
-    {
-        if ($request->ajax()) {
-            $currentTransactions = Transaction::where('status', 'incart')->where('user_id', Auth::user()->id)->get();
-
-            foreach ($currentTransactions as $transaction) {
-                $transaction->update([
-                    'status' => 'taken'
-                ]);
-            }
-        }
-
-        return response()->json([
-            "message" => "Berhasil Update"
-        ]);
-    }
-
 
     public function checkout(string $checkout_code){
 
@@ -251,6 +234,15 @@ class TransactionController extends Controller
                     ]);
                 }
 
+                foreach($transactions as $transaction){
+                    $relatedProduct = $transaction->product;
+                    $newStockUpdate = $relatedProduct->stock -= $transaction->quantity;
+
+                    $relatedProduct->update([
+                        "stock" =>  $newStockUpdate
+                    ]);
+                }
+
                 $user_checkout->update([
                     "status" => "ordered",
                     "payment_method" => $latest_payment_method,
@@ -272,7 +264,7 @@ class TransactionController extends Controller
              }
 
 
-
+             //payment_not_tb
              $user_checkout = UserCheckout::where("checkout_code", $request->checkout_code)->where("user_id", Auth::user()->id)->first();
              $transaction_list = json_decode($user_checkout->product_list);
              $transactions = Transaction::whereIn("id", $transaction_list)->where("user_id", Auth::user()->id)->get();
@@ -282,6 +274,17 @@ class TransactionController extends Controller
                       "status" => "checkedout"
                  ]);
              }
+
+             foreach($transactions as $transaction){
+                $relatedProduct = $transaction->product;
+                $newStockUpdate = $relatedProduct->stock -= $transaction->quantity;
+
+                $relatedProduct->update([
+                    "stock" =>  $newStockUpdate
+                ]);
+            }
+
+
              $user_checkout->update([
                  "status" => "ordered",
                  "payment_method" => $latest_payment_method,

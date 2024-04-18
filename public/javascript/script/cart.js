@@ -85,6 +85,7 @@ function checkboxAllProduct() {
         checkoutButtonVisibility((isChecked && checkboxCheckout.length >= 1) ? true : false);
 
         checkboxCheckout.each((index, checkbox) => {
+
             const parentCheckbox = $(checkbox).closest(".card");
             const data = localStorage.getItem(checkbox.id);
             const newDataValue = isChecked ? "checked" : "";
@@ -103,17 +104,20 @@ function checkboxAllProduct() {
     $("#checkproductall-dekstop").on("change", function (e) {
         const isCheckedDekstop = this.checked
 
-        checkoutButtonVisibility(isCheckedDekstop ? true : false);
 
-        checkboxCheckout.each((index, checkbox) => {
-            const parentCheckbox = $(checkbox).closest(".card")
-            const data = localStorage.getItem(checkbox.id)
-            const newDataValue = isCheckedDekstop ? "checked" : ""
+        if (checkboxCheckout.length > 0) {
+            checkoutButtonVisibility(isCheckedDekstop ? true : false);
 
-            checkbox.checked = isCheckedDekstop
-            newDataValue ? localStorage.setItem(checkbox.id, newDataValue) : localStorage.removeItem(checkbox.id)
-            parentCheckbox.find(".cart-input-quantity").attr("data-selected", newDataValue)
-        })
+            checkboxCheckout.each((index, checkbox) => {
+                const parentCheckbox = $(checkbox).closest(".card");
+                const data = localStorage.getItem(checkbox.id);
+                const newDataValue = isCheckedDekstop ? "checked" : "";
+
+                checkbox.checked = isCheckedDekstop;
+                newDataValue ? localStorage.setItem(checkbox.id, newDataValue) : localStorage.removeItem(checkbox.id);
+                parentCheckbox.find(".cart-input-quantity").attr("data-selected", newDataValue);
+            });
+        }
 
         loadCheckBoxProduct()
         calculateTotal('quantity')
@@ -427,6 +431,30 @@ $(".delete-product").on("click", function (e) {
     })
 })
 
+$(".delete-empty-product").on("click", function (e) {
+    const currentUrl = '/cart'
+    const deleteWrapper = $(e.target).closest(".card")
+    const productId = e.target.id
+
+    $.ajax({
+        method: "delete",
+        url: currentUrl,
+        dataType: "json",
+        data: {
+            "product_id": productId,
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function (data) {
+            deleteWrapper.remove()
+            location.reload()
+        },
+        error: function (error) {
+            return
+        }
+    })
+
+})
+
 $(".btn-checkout").on("click", function (e) {
     const currentUrl = "/cart/checkout"
     let transactionList = [];
@@ -458,7 +486,7 @@ $(".btn-checkout").on("click", function (e) {
     })
 })
 
-$(".add-wishlist").on("click", function () {
+$(".add-wishlist").on("click", function (e) {
     const currentUrl = "/cart/addwishlist"
 
     $.ajax({
@@ -466,7 +494,14 @@ $(".add-wishlist").on("click", function () {
         url: currentUrl,
         dataType: "json",
         data: {
-            "product_id":
-       }
+            "product_id": e.target.id,
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function () {
+            loadModalMessage("Berhasil Menambahkan Wishlist");
+        },
+        error: function () {
+            return
+        }
     })
 });

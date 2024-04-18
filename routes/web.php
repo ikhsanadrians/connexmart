@@ -45,8 +45,6 @@ Route::middleware('user')->group(function(){
         Route::put("/checkout/updatepaymentmethod", [TransactionController::class, "addPaymentMethod"])->name("checkout.update.paymentmethod");
         Route::put("/checkout/pay", [TransactionController::class, "checkoutEntry"])->name("checkout.pay");
         Route::get("/checkout/{checkout_code}/success", [TransactionController::class, "checkoutSuccess"])->name("checkout.success");
-        // Route::get('/receipt', [TransactionController::class, 'cart_receipt'])->name('cart.receipt');
-        // Route::put('/receipt/take', [TransactionController::class, 'cart_take'])->name('cart.take');
     });
 
 });

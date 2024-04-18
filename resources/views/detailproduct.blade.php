@@ -240,16 +240,27 @@
                         </div>
                         <p>Stok: <span class="font-semibold">{{ $product->stock }}</span></p>
                     </div>
-                    <div class="subtotal mt-4 flex justify-between items-center">
-                        <p class="text-sm text-gray-500">Subtotal</p>
-                        <h1 class="font-semibold" id="product_price_subtotals">{{ format_to_rp($product->price) }}</h1>
-                    </div>
-                    <div class="add-to-cart mt-4">
-                        <button data-name="{{ $product->name }}" id="{{ $product->id }}"
-                            class="bg-gradient-to-r from-[#303fe2] to-blue-500 text-white py-3 px-4 text-sm w-full rounded-3xl font-semibold">
-                            Tambah Ke Keranjang
-                        </button>
-                    </div>
+                    @if ($product->stock > 0)
+                        <div class="subtotal mt-4 flex justify-between items-center">
+                            <p class="text-sm text-gray-500">Subtotal</p>
+                            <h1 class="font-semibold" id="product_price_subtotals">{{ format_to_rp($product->price) }}
+                            </h1>
+                        </div>
+                        <div class="add-to-cart mt-4">
+                            <button data-name="{{ $product->name }}" id="{{ $product->id }}"
+                                class="bg-gradient-to-r from-[#303fe2] to-blue-500 text-white py-3 px-4 text-sm w-full rounded-3xl font-semibold">
+                                Tambah Ke Keranjang
+                            </button>
+                        </div>
+                    @else
+                        <div class="mt-4 cursor-not-allowed">
+                            <div
+                                class="disabled-items text-white py-3 px-4 text-sm w-full rounded-3xl font-semibold text-center">
+                                Stok Habis
+                            </div>
+                        </div>
+                    @endif
+
                 </div>
             @endif
         </div>
