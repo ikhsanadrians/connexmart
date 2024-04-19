@@ -20,7 +20,7 @@
                             <div
                                 class="product-sold-rating flex items-center mt-1 gap-4 text-gray-500 lg:text-base text-sm">
                                 <div class="sold">
-                                    Terjual <span>7</span>
+                                    Terjual <span>{{ $product->quantity_sold }}</span>
                                 </div>
                                 <p>
                                     •

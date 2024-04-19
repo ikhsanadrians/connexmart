@@ -77,46 +77,69 @@ class DatabaseSeeder extends Seeder
             "name" => "Stationary"
          ]);
 
-         Product::create([
-            "name" => "Roti Goreng",
-            "price" =>  6000,
-            "stock" => 64,
-            "photo" => "test",
-            "desc" => "test",
-            "category_id" => 2,
-            "stand" => 2
-         ]);
 
-         Product::create([
-            "name" => "Lemon Ice Tea",
-            "price" =>  5000,
-            "stock" => 56,
-            "photo" => "",
-            "desc" => "test",
-            "category_id" => 3,
-            "stand" => 2
-         ]);
+         $foods = [
+            "Nasi Goreng",
+            "Mie Goreng",
+            "Ayam Goreng",
+            "Bakso",
+            "Soto Ayam",
+            "Gado-Gado",
+            "Rendang",
+            "Martabak",
+            "Pempek",
+            "Ketoprak",
+            "Sop Buntut",
+            "Sop Iga",
+            "Sop Ayam",
+            "Sop Kambing",
+            "Sop Seafood",
+            "Ketupat Sayur",
+            "Lontong Cap Go Meh",
+            "Rawon",
+            "Sambal Goreng Ati",
+            "Sayur Asem",
+            "Sayur Lodeh",
+            "Sayur Nangka",
+            "Sayur Sop",
+            "Selat Solo",
+            "Semur Jengkol",
+            "Sop Bening",
+            "Sop Buah",
+            "Sop Kacang",
+            "Sop Merah",
+            "Sop Timlo",
+            "Sop Waluh",
+            "Soto Betawi",
+            "Soto Daging",
+            "Soto Kudus",
+            "Soto Medan",
+            "Soto Padang",
+            "Soto Semarang",
+            "Soto Tangkar",
+            "Soto Tauto",
+            "Soto Mie",
+            "Soto Babat",
+            "Soto Banjar",
+            "Soto Batok",
+            "Soto Kaki",
+            "Soto Kikil",
+            "Soto Sokaraja",
+            "Soto Sulung"
+         ];
 
-         Product::create([
-            "name" => "Es Ranco Elixir",
-            "price" =>  9000,
-            "stock" => 36,
-            "photo" => "",
-            "desc" => "test",
-            "category_id" => 3,
-            "stand" => 2
-         ]);
-
-
-         Product::create([
-            "name" => "Ransum Khas Ranco",
-            "price" =>  15000,
-            "stock" => 26,
-            "photo" => "",
-            "desc" => "test",
-            "category_id" => 1,
-            "stand" => 2
-         ]);
+         foreach ($foods as $food) {
+            Product::create([
+                "name" => $food,
+                "price" =>  rand(5000, 20000),
+                "stock" => rand(10, 50),
+                "photo" => "",
+                "desc" => "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                "quantity_sold" => 0,
+                "category_id" => rand(1,4),
+                "stand" => 2
+            ]);
+         }
 
          Wallet::create([
            "user_id" => 1,

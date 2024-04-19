@@ -23,7 +23,7 @@ const openModalGoods = () => {
     $('.backdrop').removeClass('hidden')
 }
 
-const closeModalGoods  = () => {
+const closeModalGoods = () => {
     $('.addgoodmodal').addClass('hidden');
     $('.backdrop').addClass('hidden');
     $('#thumbnail-input').val("");
@@ -40,108 +40,108 @@ const closeModalGoodsUpdate = () => {
     $('.backdrop').addClass('hidden')
 }
 
-$('#openaddmodal').on('click',function(){
-      openModal();
+$('#openaddmodal').on('click', function () {
+    openModal();
 })
 
-$('#closemodal').on('click',function(){
-      closeModal();
+$('#closemodal').on('click', function () {
+    closeModal();
 });
 
-$('#closemodalupdate').on('click',function(){
+$('#closemodalupdate').on('click', function () {
     closeModalUpdate();
 });
 
 
 
-$('#opengoodsmodal').on('click',function(){
+$('#opengoodsmodal').on('click', function () {
     openModalGoods()
 })
 
 
-$('#closegoodmodal').on('click',function(){
+$('#closegoodmodal').on('click', function () {
     closeModalGoods()
 })
 
-$('#closemodalgoodsupdate').on('click',function(){
+$('#closemodalgoodsupdate').on('click', function () {
     closeModalGoodsUpdate()
 })
 
 
 
-$('.edit-btn').on('click', function(e){
+$('.edit-btn').on('click', function (e) {
     openModalUpdate()
     const userId = $(this).parent().siblings().eq(0).text();
     const userName = $(this).parent().siblings().eq(1).text();
     const userRoles = $(this).parent().siblings().eq(2).data('role');
 
 
-   let roleSelect = $(".role-select-update");
+    let roleSelect = $(".role-select-update");
 
-    roleSelect.find('option').each(function() {
+    roleSelect.find('option').each(function () {
         let value = $(this).val();
-        if (value == userRoles)  $(this).prop('selected', true);
+        if (value == userRoles) $(this).prop('selected', true);
         else $(this).prop('selected', false);
     });
 
     $('#username-input-update').val(userName);
-    $('#username-input-update').data('userid',userId);
+    $('#username-input-update').data('userid', userId);
 
 })
 
-$('#update-btn').on('click',function(e){
+$('#update-btn').on('click', function (e) {
     e.preventDefault();
     const currentUrl = window.location.pathname
     let usernameValue = $('#username-input-update').val()
     let roleValue = $('#role-input-update').val()
     $.ajax({
         method: 'put',
-        url : currentUrl,
+        url: currentUrl,
         dataType: 'json',
         data: {
-            "user_id" : $('#username-input-update').data('userid'),
-            "username" : usernameValue,
-            "role" : roleValue,
+            "user_id": $('#username-input-update').data('userid'),
+            "username": usernameValue,
+            "role": roleValue,
             _token: $('meta[name="csrf-token"]').attr('content')
         },
-        success:function(data){
+        success: function (data) {
             closeModal()
             $('#username-input').val("")
             $('#role-input').val("role").change()
             location.reload()
         },
-        error: function(data){
-             return
+        error: function (data) {
+            return
         }
-})
+    })
 
 })
 
-$('.delete-btn').on('click',function(e){
-    if( confirm('Apakah Yakin Ingin Menghapus User Ini?')){
+$('.delete-btn').on('click', function (e) {
+    if (confirm('Apakah Yakin Ingin Menghapus User Ini?')) {
         e.preventDefault();
         const currentUrl = window.location.pathname
         const idToDelete = $(this).parent().siblings().eq(0).text();
 
         $.ajax({
             method: 'delete',
-            url : currentUrl,
+            url: currentUrl,
             dataType: 'json',
             data: {
-                "id_to_delete" : idToDelete,
+                "id_to_delete": idToDelete,
                 _token: $('meta[name="csrf-token"]').attr('content')
             },
-            success:function(data){
+            success: function (data) {
                 location.reload()
             },
-            error: function(data){
-                 return
+            error: function (data) {
+                return
             }
-    })
+        })
     }
 })
 
-$('.edit-goods-update-btn').on('click', function(e){
+$('.edit-goods-update-btn').on('click', function (e) {
     openModalGoodsUpdate()
 
     const productId = $(this).parent().parent().siblings().eq(0).data('productid')
@@ -155,9 +155,9 @@ $('.edit-goods-update-btn').on('click', function(e){
 
     let categoryProductSelect = $(".category-select-goods");
 
-    categoryProductSelect.find('option').each(function(){
+    categoryProductSelect.find('option').each(function () {
         let value = $(this).val()
-        value == productCategoryId ? $(this).prop('selected',true) : $(this).prop('selected',false)
+        value == productCategoryId ? $(this).prop('selected', true) : $(this).prop('selected', false)
     })
 
     $('#goods-input').val(productName)
@@ -168,26 +168,30 @@ $('.edit-goods-update-btn').on('click', function(e){
     $('#imgPreviewUpdate').attr('src', urlProductThumbnail)
 })
 
-$('#update-forms').on('submit', function(){
-     $('#product_id').val($('#product_id').val())
-     console.log('test')
+$('#update-forms').on('submit', function () {
+    $('#product_id').val($('#product_id').val())
+    console.log('test')
 
-     return true
+    return true
 });
 
 
 
-$('#thumbnail-input').on('change',function(e){
+$('#thumbnail-input').on('change', function (e) {
     const file = this.files[0];
-    if (file){
+    if (file) {
         let reader = new FileReader();
-        reader.onload = function(event){
+        reader.onload = function (event) {
 
-          $('.icons').addClass('hidden')
-          $('.img-previews').removeClass('hidden')
-          $('#imgPreview').attr('src', event.target.result);
+            $('.icons').addClass('hidden')
+            $('.img-previews').removeClass('hidden')
+            $('#imgPreview').attr('src', event.target.result);
 
         }
         reader.readAsDataURL(file);
-      }
+    }
 })
+
+const openModalCategory = () => {
+
+}

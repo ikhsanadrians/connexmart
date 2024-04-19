@@ -111,7 +111,9 @@ class MartController extends Controller
 
   public function addcategory()
   {
-    return view('mart.category');
+    $categories = Category::all();
+
+    return view('mart.category', compact("categories"));
   }
 
 
@@ -135,6 +137,19 @@ class MartController extends Controller
     return redirect()->back();
   }
 
+  public function cashier(Request $request){
+    $products = "";
+    $categories = Category::all();
+
+    if($request->category){
+        $products = Product::where("category_id", $request->category)->get();
+    } else {
+        $products = Product::all();
+    }
+
+    return view("mart.cashier", compact("products", "categories"));
+  }
+
   public function martlogout()
   {
     Auth::logout();
@@ -143,6 +158,6 @@ class MartController extends Controller
 
     return redirect()->route('mart.auth');
   }
-  
+
 
 }

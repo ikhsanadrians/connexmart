@@ -256,7 +256,7 @@
                                         4.5
                                     </div>
                                     •
-                                    <p>Terjual 14</p>
+                                    <p>Terjual {{ $product->quantity_sold }}</p>
                                 </div>
                             </div>
                         @endif

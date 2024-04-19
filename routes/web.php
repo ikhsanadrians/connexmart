@@ -71,6 +71,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/settings', [AdminController::class, 'settings'])->name('setting.index');
         Route::get('/notifications', [AdminController::class, 'notifications'])->name('notification.index');
         Route::get('/logout', [AdminController::class, 'adminlogout'])->name('admin.logout');
+
     });
 
     Route::middleware('loggedin')->group(function() {
@@ -102,12 +103,13 @@ Route::prefix('mart')->group(function () {
 
     Route::middleware('mart')->group(function () {
         Route::get('/', [MartController::class, 'index'])->name('mart.index');
-        Route::get('/goodscategory', [MartController::class, 'goodscategory'])->name('mart.goods.category');
+        Route::get('/goodscategory', [MartController::class, 'addcategory'])->name('mart.goods.category');
         Route::get('/goods', [MartController::class, 'goodsindex'])->name('mart.goods');
         Route::post('/goods', [MartController::class, 'goodpost'])->name('mart.addgoods');
         Route::put('/goods/update', [MartController::class, 'goodsupdate'])->name('mart.updategoods');
         Route::delete('/goods', [MartController::class, 'goodsdelete'])->name('mart.deletegoods');
         Route::get('/entrytransaction', [MartController::class, 'entrytransaction'])->name('mart.entrytransaction');
+        Route::get('/cashier',[MartController::class,'cashier'])->name("mart.cashier");
         Route::get('/logout', [MartController::class, 'martlogout'])->name('mart.logout');
     });
 
@@ -115,4 +117,5 @@ Route::prefix('mart')->group(function () {
         Route::get('/login', [MartController::class, 'auth'])->name('mart.auth');
         Route::post('/login', [MartController::class, 'auth_proceed'])->name('mart.auth.proceed');
     });
+
 });

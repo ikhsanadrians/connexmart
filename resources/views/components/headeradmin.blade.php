@@ -1,14 +1,14 @@
 <header class="bg-slate-50 shadow-lg sticky top-0 z-30">
     <div class="py-4 px-4 flex items-center justify-between">
         <div class="title-search flex items-center gap-4">
-            <a href="/" class="header-title">
-                @if(Auth::user()->role_id == 1)
-                  <img src="{{ asset('images/static/connexmart.png') }}" alt="connexmart" class="h-10">
-                @else
-                <img src="{{ asset('images/static/connexpay.png') }}" alt="connexpay" class="h-10">
-                @endif
-            </a>
-            
+            <div class="icon pr-4 flex-none @if (Route::is('home')) block @else lg:block hidden @endif">
+                <a href="/" class="header-title flex items-center gap-2 w-full h-full">
+                    <img src="{{ asset('images/static/tenizenmart.png') }}" alt="connexmart"
+                        class="h-8 @if (Route::is('home')) block @else lg:block hidden @endif">
+                    <p class="font-semibold text-xl text-[#303fe2] lg:block hidden">
+                        TenizenMart</p>
+                </a>
+            </div>
         </div>
         <div class="flex">
             <div class="header-menu flex items-center gap-2 mx-4">

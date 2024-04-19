@@ -196,6 +196,15 @@ th {
 }
 
 
+.cashier-prod-list::-webkit-scrollbar , .cashier-items-list::-webkit-scrollbar {
+    width: 4px;
+    background-color: transparent
+}
+
+
+
+
+
 
 .arrow {
     transition: transform 0.3s ease-out; /* Add transition effect for smooth animation */

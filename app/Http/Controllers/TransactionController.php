@@ -237,9 +237,11 @@ class TransactionController extends Controller
                 foreach($transactions as $transaction){
                     $relatedProduct = $transaction->product;
                     $newStockUpdate = $relatedProduct->stock -= $transaction->quantity;
+                    $newSoldQuantity = $relatedProduct->quantity_sold += $transaction->quantity;
 
                     $relatedProduct->update([
-                        "stock" =>  $newStockUpdate
+                        "stock" =>  $newStockUpdate,
+                        "quantity_sold" => $newSoldQuantity
                     ]);
                 }
 
@@ -278,9 +280,11 @@ class TransactionController extends Controller
              foreach($transactions as $transaction){
                 $relatedProduct = $transaction->product;
                 $newStockUpdate = $relatedProduct->stock -= $transaction->quantity;
+                $newSoldQuantity = $relatedProduct->quantity_sold += $transaction->quantity;
 
                 $relatedProduct->update([
-                    "stock" =>  $newStockUpdate
+                    "stock" =>  $newStockUpdate,
+                    "quantity_sold" => $newSoldQuantity
                 ]);
             }
 

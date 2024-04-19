@@ -20,7 +20,7 @@ class Product extends Model
         "price",
         "stock" ,
         "photo",
-        "is_liked",
+        "quantity_sold",
         "desc",
         "category_id",
         "stand",

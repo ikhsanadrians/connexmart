@@ -1,59 +1,67 @@
 @extends('layouts.admin')
 @section('content')
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-    <div class="card p-8 rounded-md bg-white shadow-md">
-        <div class="card-top flex justify-between items-center relative">
-            <div class="icon p-3 bg-emerald-500 rounded">
-                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 16 16"><g fill="currentColor"><path d="M1.92.506a.5.5 0 0 1 .434.14L3 1.293l.646-.647a.5.5 0 0 1 .708 0L5 1.293l.646-.647a.5.5 0 0 1 .708 0L7 1.293l.646-.647a.5.5 0 0 1 .708 0L9 1.293l.646-.647a.5.5 0 0 1 .708 0l.646.647l.646-.647a.5.5 0 0 1 .708 0l.646.647l.646-.647a.5.5 0 0 1 .801.13l.5 1A.5.5 0 0 1 15 2v12a.5.5 0 0 1-.053.224l-.5 1a.5.5 0 0 1-.8.13L13 14.707l-.646.647a.5.5 0 0 1-.708 0L11 14.707l-.646.647a.5.5 0 0 1-.708 0L9 14.707l-.646.647a.5.5 0 0 1-.708 0L7 14.707l-.646.647a.5.5 0 0 1-.708 0L5 14.707l-.646.647a.5.5 0 0 1-.708 0L3 14.707l-.646.647a.5.5 0 0 1-.801-.13l-.5-1A.5.5 0 0 1 1 14V2a.5.5 0 0 1 .053-.224l.5-1a.5.5 0 0 1 .367-.27m.217 1.338L2 2.118v11.764l.137.274l.51-.51a.5.5 0 0 1 .707 0l.646.647l.646-.646a.5.5 0 0 1 .708 0l.646.646l.646-.646a.5.5 0 0 1 .708 0l.646.646l.646-.646a.5.5 0 0 1 .708 0l.646.646l.646-.646a.5.5 0 0 1 .708 0l.646.646l.646-.646a.5.5 0 0 1 .708 0l.509.509l.137-.274V2.118l-.137-.274l-.51.51a.5.5 0 0 1-.707 0L12 1.707l-.646.647a.5.5 0 0 1-.708 0L10 1.707l-.646.647a.5.5 0 0 1-.708 0L8 1.707l-.646.647a.5.5 0 0 1-.708 0L6 1.707l-.646.647a.5.5 0 0 1-.708 0L4 1.707l-.646.647a.5.5 0 0 1-.708 0z"/><path d="M3 4.5a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5m8-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5"/></g></svg>            </div>
-            <div class="notif flex items-center gap-1 bg-[#003034] text-white px-3 py-2 absolute top-0 right-0 text-xs rounded-2xl">
-                15%
-                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-chevron-up" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
-                  </svg>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <div class="card p-8 rounded-md bg-white shadow-md">
+            <div class="card-top flex justify-between items-center relative">
+                <div class="icon p-3 bg-[#303fe2] rounded text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 16 16">
+                        <g fill="currentColor">
+                            <path
+                                d="M1.92.506a.5.5 0 0 1 .434.14L3 1.293l.646-.647a.5.5 0 0 1 .708 0L5 1.293l.646-.647a.5.5 0 0 1 .708 0L7 1.293l.646-.647a.5.5 0 0 1 .708 0L9 1.293l.646-.647a.5.5 0 0 1 .708 0l.646.647l.646-.647a.5.5 0 0 1 .708 0l.646.647l.646-.647a.5.5 0 0 1 .801.13l.5 1A.5.5 0 0 1 15 2v12a.5.5 0 0 1-.053.224l-.5 1a.5.5 0 0 1-.8.13L13 14.707l-.646.647a.5.5 0 0 1-.708 0L11 14.707l-.646.647a.5.5 0 0 1-.708 0L9 14.707l-.646.647a.5.5 0 0 1-.708 0L7 14.707l-.646.647a.5.5 0 0 1-.708 0L5 14.707l-.646.647a.5.5 0 0 1-.708 0L3 14.707l-.646.647a.5.5 0 0 1-.801-.13l-.5-1A.5.5 0 0 1 1 14V2a.5.5 0 0 1 .053-.224l.5-1a.5.5 0 0 1 .367-.27m.217 1.338L2 2.118v11.764l.137.274l.51-.51a.5.5 0 0 1 .707 0l.646.647l.646-.646a.5.5 0 0 1 .708 0l.646.646l.646-.646a.5.5 0 0 1 .708 0l.646.646l.646-.646a.5.5 0 0 1 .708 0l.646.646l.646-.646a.5.5 0 0 1 .708 0l.646.646l.646-.646a.5.5 0 0 1 .708 0l.509.509l.137-.274V2.118l-.137-.274l-.51.51a.5.5 0 0 1-.707 0L12 1.707l-.646.647a.5.5 0 0 1-.708 0L10 1.707l-.646.647a.5.5 0 0 1-.708 0L8 1.707l-.646.647a.5.5 0 0 1-.708 0L6 1.707l-.646.647a.5.5 0 0 1-.708 0L4 1.707l-.646.647a.5.5 0 0 1-.708 0z" />
+                            <path
+                                d="M3 4.5a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5m8-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5" />
+                        </g>
+                    </svg>
+                </div>
+            </div>
+            <div class="card-bottom mt-4">
+                <h1 class="font-bold text-2xl"><span class="text-xl">Rp.</span> 1.242.500</h1>
+                <p class="text-zinc-500 text-lg">Total Transactions</p>
             </div>
         </div>
-        <div class="card-bottom mt-4">
-            <h1 class="font-bold text-2xl"><span class="text-xl">Rp.</span> 1.242.500</h1>
-            <p class="text-zinc-500 text-lg">Total Transactions</p>
-        </div>
-    </div>
-    <div class="card p-8 rounded-md bg-white shadow-md">
-        <div class="card-top flex justify-between items-center relative">
-            <div class="icon p-3 bg-emerald-500 rounded">
-                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 16 16"><path fill="currentColor" d="M2.95.4a1 1 0 0 1 .8-.4h8.5a1 1 0 0 1 .8.4l2.85 3.8a.5.5 0 0 1 .1.3V15a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V4.5a.5.5 0 0 1 .1-.3zM7.5 1H3.75L1.5 4h6zm1 0v3h6l-2.25-3zM15 5H1v10h14z"/></svg>
-            </div>
-            {{-- <div class="notif flex items-center gap-1 bg-[#003034] text-white px-3 py-2 absolute top-0 right-0 text-xs rounded-2xl">
+        <div class="card p-8 rounded-md bg-white shadow-md">
+            <div class="card-top flex justify-between items-center relative">
+                <div class="icon p-3 bg-[#303fe2] text-white rounded">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 16 16">
+                        <path fill="currentColor"
+                            d="M2.95.4a1 1 0 0 1 .8-.4h8.5a1 1 0 0 1 .8.4l2.85 3.8a.5.5 0 0 1 .1.3V15a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V4.5a.5.5 0 0 1 .1-.3zM7.5 1H3.75L1.5 4h6zm1 0v3h6l-2.25-3zM15 5H1v10h14z" />
+                    </svg>
+                </div>
+                {{-- <div class="notif flex items-center gap-1 bg-[#003034] text-white px-3 py-2 absolute top-0 right-0 text-xs rounded-2xl">
                 32%
                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-chevron-up" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
                   </svg>
             </div> --}}
-        </div>
-        <div class="card-bottom mt-4">
-            <h1 class="font-bold text-2xl">145</h1>
-            <p class="text-zinc-500 text-lg">Total Products</p>
-        </div>
-    </div>
-    
-    <div class="card p-8 rounded-md bg-white shadow-md">
-        <div class="card-top flex justify-between items-center relative">
-            <div class="icon p-3 bg-emerald-500 rounded">
-                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 16 16"><path fill="currentColor" d="M7.752.066a.5.5 0 0 1 .496 0l3.75 2.143a.5.5 0 0 1 .252.434v3.995l3.498 2A.5.5 0 0 1 16 9.07v4.286a.5.5 0 0 1-.252.434l-3.75 2.143a.5.5 0 0 1-.496 0l-3.502-2l-3.502 2.001a.5.5 0 0 1-.496 0l-3.75-2.143A.5.5 0 0 1 0 13.357V9.071a.5.5 0 0 1 .252-.434L3.75 6.638V2.643a.5.5 0 0 1 .252-.434zM4.25 7.504L1.508 9.071l2.742 1.567l2.742-1.567zM7.5 9.933l-2.75 1.571v3.134l2.75-1.571zm1 3.134l2.75 1.571v-3.134L8.5 9.933zm.508-3.996l2.742 1.567l2.742-1.567l-2.742-1.567zm2.242-2.433V3.504L8.5 5.076V8.21zM7.5 8.21V5.076L4.75 3.504v3.134zM5.258 2.643L8 4.21l2.742-1.567L8 1.076zM15 9.933l-2.75 1.571v3.134L15 13.067zM3.75 14.638v-3.134L1 9.933v3.134z"/></svg>
             </div>
-            {{-- <div class="notif flex items-center gap-1 bg-[#003034] text-white px-3 py-2 absolute top-0 right-0 text-xs rounded-2xl">
+            <div class="card-bottom mt-4">
+                <h1 class="font-bold text-2xl">145</h1>
+                <p class="text-zinc-500 text-lg">Total Products</p>
+            </div>
+        </div>
+
+        <div class="card p-8 rounded-md bg-white shadow-md">
+            <div class="card-top flex justify-between items-center relative">
+                <div class="icon p-3 bg-[#303fe2] text-white rounded">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 16 16">
+                        <path fill="currentColor"
+                            d="M7.752.066a.5.5 0 0 1 .496 0l3.75 2.143a.5.5 0 0 1 .252.434v3.995l3.498 2A.5.5 0 0 1 16 9.07v4.286a.5.5 0 0 1-.252.434l-3.75 2.143a.5.5 0 0 1-.496 0l-3.502-2l-3.502 2.001a.5.5 0 0 1-.496 0l-3.75-2.143A.5.5 0 0 1 0 13.357V9.071a.5.5 0 0 1 .252-.434L3.75 6.638V2.643a.5.5 0 0 1 .252-.434zM4.25 7.504L1.508 9.071l2.742 1.567l2.742-1.567zM7.5 9.933l-2.75 1.571v3.134l2.75-1.571zm1 3.134l2.75 1.571v-3.134L8.5 9.933zm.508-3.996l2.742 1.567l2.742-1.567l-2.742-1.567zm2.242-2.433V3.504L8.5 5.076V8.21zM7.5 8.21V5.076L4.75 3.504v3.134zM5.258 2.643L8 4.21l2.742-1.567L8 1.076zM15 9.933l-2.75 1.571v3.134L15 13.067zM3.75 14.638v-3.134L1 9.933v3.134z" />
+                    </svg>
+                </div>
+                {{-- <div class="notif flex items-center gap-1 bg-[#003034] text-white px-3 py-2 absolute top-0 right-0 text-xs rounded-2xl">
                 32%
                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-chevron-up" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
                   </svg>
             </div> --}}
-        </div>
-        <div class="card-bottom mt-4">
-            <h1 class="font-bold text-2xl">13</h1>
-            <p class="text-zinc-500 text-lg">Total Categories</p>
+            </div>
+            <div class="card-bottom mt-4">
+                <h1 class="font-bold text-2xl">13</h1>
+                <p class="text-zinc-500 text-lg">Total Categories</p>
+            </div>
         </div>
     </div>
-  </div>
-  {{-- <div class="grid grid-cols-2 gap-4 mt-8">
+    {{-- <div class="grid grid-cols-2 gap-4 mt-8">
     <div class="notification bg-gradient-to-r shadow-md p-6 from-[#003034] to-gray-800 h-full  rounded-md">
         <div class="wrappers flex gap-8">
             <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" fill="white" class="bi bi-bell-fill" viewBox="0 0 16 16">
@@ -100,67 +108,43 @@
         </div>
     </div>
   </div> --}}
-<div class="products-list w-full mt-8 mb-8">
-    <table class="w-full">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Thumbnail</th>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Stock</th>
-                <th>Category</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($products as $key => $product)
+    <div class="products-list w-full mt-8 mb-8">
+        <table class="w-full">
+            <thead>
                 <tr>
-                    <td class="product-id" data-productid="{{ $product->id }}">{{ $key + 1 }}</td>
-                    <td class="product-thumbnail flex justify-center border-none" data-thumbnail="{{ $product->photo }}">
-                        <div class="thumbnail overflow-hidden h-12 w-16">
-                            @if (!empty($product->photo) || File::exists(public_path($product->photo)))
-                            <img class="w-full h-full object-cover" src="{{ asset('images/default/mart.png') }}"
-                                alt="">
-                            @else
-                                <img class="w-full h-full object-cover" src="{{ asset($product->photo) }}" alt="">
-                            @endif
-                        </div>
-                    </td>
-                    <td class="product-td" data-description="{{ $product->desc }}">{{ $product->name }}</td>
-                    <td class="price-td" data-price="{{ $product->price }}">{{ format_to_rp($product->price) }}</td>
-                    <td class="product-stock">{{ $product->stock }}</td>
-                    <td data-categoryid="{{ $product->category->id }}" class="product-category">
-                        {{ $product->category->name }}</td>
-                    <td>
-                        <div class="action-wrappers flex items-center gap-2 justify-center">
-                            <button id="{{ $product->id }}" data-id="{{ $product->name }}"
-                                class="edit-goods-update-btn bg-gradient-to-r from-yellow-600 to-yellow-400 p-2 text-white rounded-md">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
-                                    fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
-                                    <path
-                                        d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z" />
-                                </svg>
-                            </button>
-                            <form action="{{ route('mart.deletegoods') }}" method="POST">
-                                @csrf
-                                @method('delete')
-                                <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                <button type="submit"
-                                    class="delete-btn-goods-update bg-gradient-to-r from-red-600 to-red-400 p-2 text-white rounded-md">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
-                                        fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-                                        <path
-                                            d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" />
-                                    </svg>
-                                </button>
-                            </form>
-                        </div>
-                    </td>
+                    <th>ID</th>
+                    <th>Thumbnail</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>Category</th>
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
-</div>
+            </thead>
+            <tbody>
+                @foreach ($products as $key => $product)
+                    <tr>
+                        <td class="product-id" data-productid="{{ $product->id }}">{{ $key + 1 }}</td>
+                        <td class="product-thumbnail flex justify-center border-none"
+                            data-thumbnail="{{ $product->photo }}">
+                            <div class="thumbnail overflow-hidden h-12 w-16">
+                                @if (!empty($product->photo) || File::exists(public_path($product->photo)))
+                                    <img class="w-full h-full object-cover" src="{{ asset('images/default/mart.png') }}"
+                                        alt="">
+                                @else
+                                    <img class="w-full h-full object-cover" src="{{ asset($product->photo) }}"
+                                        alt="">
+                                @endif
+                            </div>
+                        </td>
+                        <td class="product-td" data-description="{{ $product->desc }}">{{ $product->name }}</td>
+                        <td class="price-td" data-price="{{ $product->price }}">{{ format_to_rp($product->price) }}</td>
+                        <td class="product-stock">{{ $product->stock }}</td>
+                        <td data-categoryid="{{ $product->category->id }}" class="product-category">
+                            {{ $product->category->name }}</td>
 
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 @endsection
