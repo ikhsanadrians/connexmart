@@ -44,11 +44,11 @@
                                 <div class="product-detail flex items-start gap-3">
                                     <div class="product-images">
                                         <div class="img h-16 w-16 rounded-lg overflow-hidden">
-                                            @if (!empty($cart->product->photo) || File::exists(public_path($cart->product->photo)))
-                                                <img src="{{ asset('images/default/mart.png') }}" alt=""
+                                            @if (!empty($cart->product->photo) && File::exists(public_path($cart->product->photo)))
+                                                <img src="{{ asset($cart->product->photo) }}" alt=""
                                                     class="w-full h-full object-cover">
                                             @else
-                                                <img src="{{ asset($cart->product->photo) }}" alt=""
+                                                <img src="{{ asset('images/default/mart.png') }}" alt=""
                                                     class="w-full h-full object-cover">
                                             @endif
                                         </div>
@@ -86,11 +86,11 @@
                                 <div class="product-detail flex items-start gap-3">
                                     <div class="product-images">
                                         <div class="img h-16 w-16 rounded-lg overflow-hidden">
-                                            @if (!empty($cart->product->photo) || File::exists(public_path($cart->product->photo)))
-                                                <img src="{{ asset('images/default/mart.png') }}" alt=""
+                                            @if (!empty($cart->product->photo) && File::exists(public_path($cart->product->photo)))
+                                                <img src="{{ asset($cart->product->photo) }}" alt=""
                                                     class="w-full h-full object-cover">
                                             @else
-                                                <img src="{{ asset($cart->product->photo) }}" alt=""
+                                                <img src="{{ asset('images/default/mart.png') }}" alt=""
                                                     class="w-full h-full object-cover">
                                             @endif
                                         </div>

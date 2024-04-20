@@ -56,7 +56,7 @@
                 New Top Up
             </a>
             <a href="{{ route('bank.logout') }}"
-                class="transaction hover:bg-slate-300 hover:text-[#003034] rounded transition fixed bottom-4 hover:bg-slate-300 hover:text-[#003034] transition  rounded text-sm  px-3 py-2 flex items-center gap-3 @if (request()->routeIs('notification.index')) bg-gradient-to-r from-gray-200 to-white text-[#003034] rounded-md font-semibold @endif">
+                class="transaction fixed bottom-4 hover:bg-slate-300 hover:text-[#003034] transition text-sm  px-3 py-2 flex items-center gap-3 @if (request()->routeIs('notification.index')) bg-gradient-to-r from-gray-200 to-white text-[#003034] rounded-md font-semibold @endif">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                     class="bi bi-box-arrow-left" viewBox="0 0 16 16">
                     <path fill-rule="evenodd"

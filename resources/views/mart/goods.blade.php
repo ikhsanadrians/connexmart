@@ -5,7 +5,7 @@
         <div class="wrappers flex h-full w-full">
             <div class="modal-input-group relative w-full px-4 py-8 overflow-y-auto">
                 <div class="flex justify-between pr-5">
-                    <p class="font-bold px-6"><span id="user-name-modal">Add New Good</span></p>
+                    <p class="font-bold px-6"><span id="user-name-modal">Tambah Produk Baru</span></p>
                     <button id="closegoodmodal">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" class="bi bi-x-lg"
                             viewBox="0 0 16 16">
@@ -19,30 +19,30 @@
                     @csrf
                     <div class="username py-1">
                         <label for="username">
-                            Goods Name
+                            Nama Produk
                         </label>
                         <input data-userid="" id="username-input"
                             class="w-full rounded-md focus:outline-none focus:ring-2 ring-[#003034] bg-gray-100 my-2 p-2"
-                            type="text" name="name" id="goods" placeholder="Type An Goods Name Here">
+                            type="text" name="name" id="goods" placeholder="Masukan Nama Produk">
                     </div>
                     <div class="grid grid-cols-3 gap-2">
                         <div class="py-1" id="price-input">
                             <label for="price">
-                                Price
+                                Harga
                             </label>
                             <input
                                 class="w-full rounded-md focus:outline-none focus:ring-2 ring-[#003034] bg-gray-100 my-2 p-2"
-                                type="text" name="price" id="price" placeholder="Type A Price Here">
+                                type="text" name="price" id="price" placeholder="Masukan Harga">
 
                         </div>
                         <div class="py-1">
                             <label for="category">
-                                Category
+                                Kategori
                             </label>
                             <select id="category-input"
                                 class="category-select-goods w-full rounded-md focus:outline-none focus:ring-2 ring-[#003034] bg-gray-100 my-2 p-2"
                                 name="category_id">
-                                <option value="goods-category">Select Goods Category</option>
+                                <option value="goods-category">Pilih Kategori Produk</option>
                                 @foreach ($productcategories as $productcategory)
                                     <option value="{{ $productcategory->id }}">{{ ucfirst($productcategory->name) }}
                                     </option>
@@ -51,23 +51,23 @@
                         </div>
                         <div class="py-1">
                             <label for="role">
-                                Stock
+                                Stok
                             </label>
                             <input min="0"
                                 class="w-full rounded-md focus:outline-none focus:ring-2 ring-[#003034] bg-gray-100 my-2 p-2"
-                                type="number" name="stock" id="password" placeholder="Type A Stock Here">
+                                type="number" name="stock" id="password" placeholder="Masukan Stok">
                         </div>
                     </div>
                     <div class="w-full">
                         <label for="role">
-                            Description
+                            Deskripsi
                         </label>
                         <textarea name="description" id=""
                             class="w-full rounded-md focus:outline-none focus:ring-2 ring-[#003034] bg-gray-100 my-2 p-2"
-                            placeholder="Type A Goods Description"></textarea>
+                            placeholder="Masukan Deskripsi"></textarea>
                     </div>
                     <div class="w-full">
-                        <label for="thumbnail">Thumbnail</label>
+                        <label for="thumbnail">Thumbnail Produk</label>
                         <br>
                         <div class="input-images flex items-center w-full h-12 bg-gray-100 relative">
                             <div class="img-previews h-12 w-12 hidden">
@@ -85,7 +85,7 @@
                         </div>
                     </div>
                     <button type="submit" id="add-btn-goods"
-                        class="submit-btn bg-[#003034] py-2 text-white px-4 rounded-md mt-4 w-full">
+                        class="submit-btn bg-[#303fe2] py-2 text-white px-4 rounded-md mt-4 w-full">
                         Submit
                     </button>
                 </form>
@@ -97,7 +97,7 @@
         <div class="wrappers flex h-full w-full ">
             <div class="modal-input-group relative w-full px-4 py-8 overflow-y-auto">
                 <div class="flex justify-between pr-5">
-                    <p class="font-bold px-6"><span id="user-name-modal">Update Product</span></p>
+                    <p class="font-bold px-6"><span id="user-name-modal">Update Produk</span></p>
                     <button id="closemodalgoodsupdate">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red"
                             class="bi bi-x-lg" viewBox="0 0 16 16">
@@ -112,31 +112,31 @@
                     @method('put')
                     <div class="username py-1">
                         <label for="goodsname">
-                            Goods Name
+                            Nama Produk
                         </label>
                         <input data-goodsname="" id="goods-input"
                             class="w-full rounded-md focus:outline-none focus:ring-2 ring-[#003034] bg-gray-100 my-2 p-2"
-                            type="text" name="name" id="goods" placeholder="Type An Goods Name Here">
+                            type="text" name="name" id="goods" placeholder="Masukan Nama Produk">
                     </div>
                     <input type="hidden" name="product_id" value="" id="product_id">
                     <div class="grid grid-cols-3 gap-2">
                         <div class="py-1" id="price-input">
                             <label for="price">
-                                Price
+                                Harga
                             </label>
                             <input
                                 class="w-full rounded-md focus:outline-none focus:ring-2 ring-[#003034] bg-gray-100 my-2 p-2"
-                                type="text" name="price" id="goods-price" placeholder="Type A Price Here">
+                                type="text" name="price" id="goods-price" placeholder="Masukan Harga">
 
                         </div>
                         <div class="py-1">
                             <label for="category">
-                                Category
+                                Kategori
                             </label>
                             <select id="category-input-update"
                                 class="category-select-goods w-full rounded-md focus:outline-none focus:ring-2 ring-[#003034] bg-gray-100 my-2 p-2"
                                 name="category_id">
-                                <option value="goods-category">Select Goods Category</option>
+                                <option value="goods-category">Pilih Kategori Produk</option>
                                 @foreach ($productcategories as $productcategory)
                                     <option value="{{ $productcategory->id }}">{{ ucfirst($productcategory->name) }}
                                     </option>
@@ -145,23 +145,23 @@
                         </div>
                         <div class="py-1">
                             <label for="role">
-                                Stock
+                                Stok
                             </label>
                             <input min="0"
                                 class="w-full rounded-md focus:outline-none focus:ring-2 ring-[#003034] bg-gray-100 my-2 p-2"
-                                type="number" name="stock" id="goods-stock" placeholder="Type A Stock Here">
+                                type="number" name="stock" id="goods-stock" placeholder="Masukan Stok Produk">
                         </div>
                     </div>
                     <div class="w-full">
                         <label for="role">
-                            Description
+                            Deskripsi
                         </label>
                         <textarea name="description" id="goods-description"
                             class="w-full rounded-md focus:outline-none focus:ring-2 ring-[#003034] bg-gray-100 my-2 p-2"
-                            placeholder="Type A Goods Description"></textarea>
+                            placeholder="Masukan Deskripsi"></textarea>
                     </div>
                     <div class="w-full">
-                        <label for="thumbnail">Thumbnail</label>
+                        <label for="thumbnail">Thumbnail Produk</label>
                         <br>
                         <div class="input-images flex items-center w-full h-12 bg-gray-100 relative">
                             <div class="img-previews h-12 w-12">
@@ -188,9 +188,9 @@
         </div>
     </div>
     <div class="headers flex justify-between">
-        <h1 class="text-2xl font-bold">Add Goods</h1>
+        <h1 class="text-2xl font-bold">Tambah Produk / Barang</h1>
         <button id="opengoodsmodal"
-            class="add-user bg-[#003034] text-white px-3 py-2 hover:bg-slate-300 hover:text-[#003034] transition cursor-pointer rounded-lg flex items-center gap-2">
+            class="add-user bg-[#303fe2] text-white px-3 py-2 hover:bg-slate-300 hover:text-[#003034] transition cursor-pointer rounded-lg flex items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                 class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
                 <path
@@ -210,10 +210,10 @@
                 <path
                     d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
             </svg>
-            <input type="text" placeholder="Search Goods" class="pl-8 pr-4 py-2 rounded-md focus:outline-none">
+            <input type="text" placeholder="Cari Barang" class="pl-8 pr-4 py-2 rounded-md focus:outline-none">
         </div>
         <div
-            class="filter bg-[#003034] text-white mt-2 p-[11px] rounded-md hover:bg-slate-300 hover:text-[#003034] rounded transition cursor-pointer">
+            class="filter bg-[#303fe2] text-white mt-2 p-[11px] rounded-md hover:bg-slate-300 hover:text-[#003034] rounded transition cursor-pointer">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                 class="bi bi-funnel-fill" viewBox="0 0 16 16">
                 <path
@@ -241,11 +241,11 @@
                         <td class="product-thumbnail flex justify-center border-none"
                             data-thumbnail="{{ $product->photo }}">
                             <div class="thumbnail overflow-hidden h-12 w-16">
-                                @if (!empty($product->photo) || File::exists(public_path($product->photo)))
-                                    <img class="w-full h-full object-cover" src="{{ asset('images/default/mart.png') }}"
+                                @if (!empty($product->photo) && File::exists(public_path($product->photo)))
+                                    <img class="w-full h-full object-cover" src="{{ asset($product->photo) }}"
                                         alt="">
                                 @else
-                                    <img class="w-full h-full object-cover" src="{{ asset($product->photo) }}"
+                                    <img class="w-full h-full object-cover" src="{{ asset('images/default/mart.png') }}"
                                         alt="">
                                 @endif
                             </div>

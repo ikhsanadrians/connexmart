@@ -5,11 +5,11 @@
             <div class="container-left cols-span-3 w-full border-b-[1.5px] pb-8">
                 <div class="product-container flex lg:flex-row flex-col gap-8">
                     <div class="product-img w-full lg:w-3/4 h-[20rem] rounded-lg overflow-hidden ">
-                        @if (!empty($product->photo) || File::exists(public_path($product->photo)))
+                        @if (!empty($product->photo) && File::exists(public_path($product->photo)))
+                            <img src="{{ asset($product->photo) }}" alt="" class="w-full h-full object-cover">
+                        @else
                             <img src="{{ asset('images/default/mart.png') }}" alt=""
                                 class="w-full h-full object-cover">
-                        @else
-                            <img src="{{ asset($product->photo) }}" alt="" class="w-full h-full object-cover">
                         @endif
                     </div>
                     <div class="product-wishlist-wrappers w-full relative">

@@ -59,18 +59,12 @@ class MartController extends Controller
   public function goodsupdate(Request $request)
   {
 
-      $imageThumbnail = "";
       $goodsToUpdate = Product::find($request->product_id);
 
       if ($request->hasFile('image')) {
           $imageThumbnail = $request->file('image')->move("images/", $request->file('image')->getClientOriginalName());
-
-          if (file_exists(public_path($goodsToUpdate->photo))) {
-              if (!unlink(public_path($goodsToUpdate->photo))) {
-                  Storage::delete($goodsToUpdate->photo);
-              } else {
-                  Storage::delete($goodsToUpdate->photo);
-              }
+          if ($goodsToUpdate->photo) {
+              Storage::disk('public')->delete($goodsToUpdate->photo);
           }
       }
 
@@ -84,8 +78,8 @@ class MartController extends Controller
       ];
 
 
-      if (!empty($imageThumbnail)) {
-          $updateData["photo"] = $imageThumbnail->getPathname();
+      if (isset($imageThumbnail)) {
+          $updateData["photo"] = $imageThumbnail;
       }
 
       $goodsToUpdate->update($updateData);
@@ -185,16 +179,19 @@ class MartController extends Controller
   }
 
   public function cashier(Request $request){
-    $products = "";
     $categories = Category::all();
+    $products = Product::query();
 
     if($request->category){
-        $products = Product::where("category_id", $request->category)->get();
-    } else {
-        $products = Product::all();
+        $category = Category::where("slug", $request->category)->first();
+        $products->where("category_id", $category->id);
     }
 
-    return view("mart.cashier", compact("products", "categories"));
+    $products = $request->show == "all" ? $products->get() : $products->paginate($request->show ?? 50);
+
+    $count_products = $products->count();
+
+    return view("mart.cashier", compact("products", "categories", "count_products"));
   }
 
   public function martlogout()

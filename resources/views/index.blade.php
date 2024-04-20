@@ -230,11 +230,11 @@
                 <a href="{{ route('show.product', $product->slug) }}"
                     class="product-card border-gray-200 bg-white overflow-hidden h-fit rounded-md shadow-md border-[1.5px] ">
                     <div class="content-img w-full h-[170px] overflow-hidden">
-                        @if (!empty($product->photo) || File::exists(public_path($product->photo)))
-                            <img class="w-full h-full object-cover" src="{{ asset('images/default/mart.png') }}"
-                                alt="">
+                        @if (!empty($product->photo) && File::exists(public_path($product->photo)))
+                            <img src="{{ asset($product->photo) }}" alt="" class="w-full h-full object-cover">
                         @else
-                            <img class="w-full h-full object-cover" src="{{ asset($product->photo) }}" alt="">
+                            <img src="{{ asset('images/default/mart.png') }}" alt=""
+                                class="w-full h-full object-cover">
                         @endif
                     </div>
                     <div class="content  p-4">

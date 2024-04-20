@@ -58,8 +58,8 @@
                     {{ request()->route('category') }}
                 </a>
                 @foreach ($categories as $category)
-                    <a class="font-medium @if (request('category') == $category->id) border-[#303fe2] text-[#303fe2] border-b-[1.8px] @endif p-2"
-                        href="{{ route('mart.cashier', ['category' => $category->id]) }}">
+                    <a class="font-medium @if (request('category') == $category->slug) border-[#303fe2] text-[#303fe2] border-b-[1.8px] @endif p-2"
+                        href="{{ route('mart.cashier', ['category' => $category->slug]) }}">
                         <p>{{ $category->name }}</p>
                     </a>
                 @endforeach
@@ -76,7 +76,7 @@
                 <div
                     class="product-list cashier-prod-list grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6 px-4 overflow-y-scroll h-[80%] pb-16">
                     @foreach ($products as $product)
-                        <div class="product p-3 rounded-lg border-[1.7px] border-[#303fe2]/50">
+                        <div class="product p-3 rounded-lg border-[1.7px] h-full max-h-auto border-[#303fe2]/50">
                             <div class="top-product w-full">
                                 <div class="name-stock flex justify-between">
                                     <div class="product-name">
@@ -121,13 +121,16 @@
                 </div>
                 <hr>
                 <div class="pagination-and-back  p-4">
+
                     <div
                         class="pagination flex flex-row justify-between w-full items-start lg:gap-0 gap-4 lg:items-center">
                         <div class="page-records flex items-center gap-4">
                             <div class="record-per-inputs relative">
-                                <select name="" id=""
+                                <select name="recordsPerPage" id="recordsPerPage"
                                     class="appearance-none bg-transparent text-sm focus:outline-none border-[1.8px] border-slate-200 py-1 pl-3 pr-6 rounded-md">
-                                    <option value="">24 per Page</option>
+                                    <option class="option" value="50">50 per Page</option>
+                                    <option class="option" value="100">100 per Page</option>
+                                    <option class="option" value="all">Show All</option>
                                 </select>
                                 <svg class="absolute right-0 top-1" width="24" height="25"
                                     viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -137,68 +140,76 @@
 
                             </div>
                             <div class="showing-inputs text-sm lg:block hidden">
-                                Showing 1-24 of {{ count($products) }} records
+                                Showing 1-24 of {{ $count_products }} records
                             </div>
                         </div>
-                        <div class="pagination-buttons flex items-center gap-2">
-                            <div
-                                class="first-page p-2 h-8 w-8 flex items-center justify-center border-slate-200 border-[1.8px] rounded-md">
-                                <svg width="16" height="17" viewBox="0 0 16 17" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M11.7267 12.875L12.6667 11.935L9.61341 8.875L12.6667 5.815L11.7267 4.875L7.72675 8.875L11.7267 12.875Z"
-                                        fill="#333333" />
-                                    <path
-                                        d="M7.33344 12.875L8.27344 11.935L5.2201 8.875L8.27344 5.815L7.33344 4.875L3.33344 8.875L7.33344 12.875Z"
-                                        fill="#333333" />
-                                </svg>
-                            </div>
-                            <div
-                                class="first-page p-2 h-8 w-8 flex items-center justify-center border-slate-200 border-[1.8px] rounded-md">
-                                <svg width="5" height="8" viewBox="0 0 5 8" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M4.06 8.875L5 7.935L1.94667 4.875L5 1.815L4.06 0.875L0.0599996 4.875L4.06 8.875Z"
-                                        fill="#1A1A1A" />
-                                </svg>
+                        @if (request('show') != 'all')
+                            @php
 
-                            </div>
-                            <div
-                                class="first-page p-2 h-8 w-8  flex items-center justify-center border-slate-200 border-[1.8px] rounded-md">
-                                <p>1</p>
-                            </div>
-                            <div
-                                class="sec-page p-2 h-8 w-8  flex items-center justify-center border-slate-200 border-[1.8px] rounded-md">
-                                <p>2</p>
-                            </div>
-                            <div
-                                class="third-page p-2 h-8 w-8  flex items-center justify-center border-slate-200 border-[1.8px] rounded-md">
-                                <p>3</p>
-                            </div>
-                            <div
-                                class="third-page p-2 h-8 w-8  flex items-center justify-center border-slate-200 border-[1.8px] rounded-md">
-                                <svg width="5" height="9" viewBox="0 0 5 9" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M0.94 0.875L0 1.815L3.05333 4.875L0 7.935L0.94 8.875L4.94 4.875L0.94 0.875Z"
-                                        fill="#1A1A1A" />
-                                </svg>
+                                $pageLimit = 3;
+                                $startPage = max(1, $products->currentPage() - floor($pageLimit / 2));
+                                $endPage = min($startPage + $pageLimit - 1, $products->lastPage());
+                                $nextPage =
+                                    $products->currentPage() < $products->lastPage()
+                                        ? $products->currentPage() + 1
+                                        : $products->lastPage();
+                                $prevPage = $products->currentPage() > 1 ? $products->currentPage() - 1 : 1;
 
-                            </div>
-                            <div
-                                class="third-page p-2 h-8 w-9  flex items-center justify-center border-slate-200 border-[1.8px] rounded-md">
-                                <svg width="10" height="9" viewBox="0 0 10 9" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M1.27325 0.875L0.333252 1.815L3.38659 4.875L0.333252 7.935L1.27325 8.875L5.27325 4.875L1.27325 0.875Z"
-                                        fill="#1A1A1A" />
-                                    <path
-                                        d="M5.66656 0.875L4.72656 1.815L7.7799 4.875L4.72656 7.935L5.66656 8.875L9.66656 4.875L5.66656 0.875Z"
-                                        fill="#1A1A1A" />
-                                </svg>
+                            @endphp
+                            <div class="pagination-buttons flex items-center gap-2">
 
+                                <a href="{{ request('category') ? route('mart.cashier', ['category' => request('category'), 'page' => '1']) : $products->url(1) }}"
+                                    class="first-page p-2 h-8 w-8 flex items-center justify-center border-slate-200 border-[1.8px] rounded-md opacity-50">
+                                    <svg width="16" height="17" viewBox="0 0 16 17" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M11.7267 12.875L12.6667 11.935L9.61341 8.875L12.6667 5.815L11.7267 4.875L7.72675 8.875L11.7267 12.875Z"
+                                            fill="#333333" />
+                                        <path
+                                            d="M7.33344 12.875L8.27344 11.935L5.2201 8.875L8.27344 5.815L7.33344 4.875L3.33344 8.875L7.33344 12.875Z"
+                                            fill="#333333" />
+                                    </svg>
+                                </a>
+                                <a href="{{ request('category') ? route('mart.cashier', ['category' => request('category'), 'page' => $prevPage]) : $products->previousPageUrl() }}"
+                                    class="previous-page p-2 h-8 w-8 flex items-center justify-center border-slate-200 border-[1.8px] rounded-md opacity-50">
+                                    <svg width="5" height="8" viewBox="0 0 5 8" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M4.06 8.875L5 7.935L1.94667 4.875L5 1.815L4.06 0.875L0.0599996 4.875L4.06 8.875Z"
+                                            fill="#1A1A1A" />
+                                    </svg>
+                                </a>
+
+                                @for ($page = $startPage; $page <= $endPage; $page++)
+                                    <div
+                                        class="page p-2 h-8 w-8 flex items-center justify-center border-slate-200 border-[1.8px] rounded-md">
+                                        <a
+                                            href="{{ request('category') ? route('mart.cashier', ['category' => request('category'), 'page' => $page]) : $products->url($page) }}">{{ $page }}</a>
+                                    </div>
+                                @endfor
+                                <a href="{{ request('category') ? route('mart.cashier', ['category' => request('category'), 'page' => $nextPage]) : $products->nextPageUrl() }}"
+                                    class="next-pages p-2 h-8 w-8 flex items-center justify-center border-slate-200 border-[1.8px] rounded-md opacity-50">
+                                    <svg width="5" height="9" viewBox="0 0 5 9" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M0.94 0.875L0 1.815L3.05333 4.875L0 7.935L0.94 8.875L4.94 4.875L0.94 0.875Z"
+                                            fill="#1A1A1A" />
+                                    </svg>
+                                </a>
+                                <a href="/mart/cashier?page={{ $products->lastPage() }}"
+                                    class="last-page p-2 h-8 w-9 flex items-center justify-center border-slate-200 border-[1.8px] rounded-md opacity-50">
+                                    <svg width="10" height="9" viewBox="0 0 10 9" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M1.27325 0.875L0.333252 1.815L3.38659 4.875L0.333252 7.935L1.27325 8.875L5.27325 4.875L1.27325 0.875Z"
+                                            fill="#1A1A1A" />
+                                        <path
+                                            d="M5.66656 0.875L4.72656 1.815L7.7799 4.875L4.72656 7.935L5.66656 8.875L9.66656 4.875L5.66656 0.875Z"
+                                            fill="#1A1A1A" />
+                                    </svg>
+                                </a>
                             </div>
-                        </div>
+                        @endif
                     </div>
                     <a href="{{ route('mart.index') }}" class="back text-[#303fe2] flex items-center gap-3 mt-3">
                         <svg width="10" height="18" viewBox="0 0 10 18" fill="none"
@@ -292,6 +303,15 @@
 
     <script type="module" src="{{ asset('javascript/lib/jquery.min.js') }}"></script>
     <script type="module" src="{{ asset('javascript/script/admin.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
+    <script type="module" src="{{ asset('javascript/script/cashier.js') }}"></script>
+
+    <script>
+        setInterval(() => {
+            const currentTime = moment().add(1, 'minute').format('HH:mm');
+            console.log(currentTime);
+        }, 60000);
+    </script>
 </body>
 
 </html>

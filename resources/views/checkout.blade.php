@@ -95,11 +95,11 @@
                                 <div class="product-detail flex items-start gap-3">
                                     <div class="product-images">
                                         <div class="img h-16 w-16 rounded-lg overflow-hidden">
-                                            @if (!empty($transaction->product->photo) || File::exists(public_path($transaction->product->photo)))
-                                                <img src="{{ asset('images/default/mart.png') }}" alt=""
+                                            @if (!empty($transaction->product->photo) && File::exists(public_path($transaction->product->photo)))
+                                                <img src="{{ asset($transaction->product->photo) }}" alt=""
                                                     class="w-full h-full object-cover">
                                             @else
-                                                <img src="{{ asset($transaction->product->photo) }}" alt=""
+                                                <img src="{{ asset('images/default/mart.png') }}" alt=""
                                                     class="w-full h-full object-cover">
                                             @endif
                                         </div>
