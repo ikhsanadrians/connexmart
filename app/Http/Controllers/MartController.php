@@ -116,6 +116,53 @@ class MartController extends Controller
     return view('mart.category', compact("categories"));
   }
 
+  public function addcategorypost(Request $request){
+     $request->validate([
+        "name" => "required"
+     ]);
+
+     Category::create([
+         "name" => $request->name
+     ]);
+
+     alert()->success("Success", "Success Create Category");
+
+     return redirect()->back();
+  }
+
+  public function deletegoodscategory(Request $request)
+  {
+
+      $deletedCategory = Category::find($request->category_id);
+
+      $deletedCategory->delete();
+
+      alert()->success("Success", "Success Delete Category");
+
+      return redirect()->back();
+
+
+  }
+
+
+  public function updategoodscategory(Request $request){
+
+    $category = Category::find($request->category_id);
+
+    $request->validate([
+        "name" => "required"
+    ]);
+
+    $category->update([
+         "name" => $request->name
+    ]);
+
+      alert()->success("Success", "Success Update Category");
+
+      return redirect()->back();
+
+  }
+
 
   public function auth()
   {

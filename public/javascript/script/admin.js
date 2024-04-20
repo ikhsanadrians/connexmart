@@ -170,7 +170,6 @@ $('.edit-goods-update-btn').on('click', function (e) {
 
 $('#update-forms').on('submit', function () {
     $('#product_id').val($('#product_id').val())
-    console.log('test')
 
     return true
 });
@@ -192,6 +191,48 @@ $('#thumbnail-input').on('change', function (e) {
     }
 })
 
-const openModalCategory = () => {
 
+const openModalCategory = (visible) => {
+    $(".addcategorymodal").toggleClass("hidden", !visible);
+    $('.backdrop').toggleClass('hidden', !visible);
 }
+
+const openModalCategoryUpdate = (visible) => {
+    $("#updategoodscategorymodal").toggleClass("hidden", !visible);
+    $(".backdrop").toggleClass("hidden", !visible)
+}
+
+$("#closegoodcategorymodal").on("click", function () {
+    openModalCategory(false)
+})
+
+$("#opengoodcategorymodal").on("click", function () {
+    openModalCategory(true)
+})
+
+$(".edit-goods-categoty-update-btn").on("click", function () {
+    const productname = $(this).parent().parent().siblings().eq(0).attr("data-name")
+    const productId = $(this).attr('id')
+
+    $('#category-name-input-update').val(productname)
+    $("#category-name-input-update").attr("data-categoryid", productId)
+    $("#category_update_id").val(productId)
+
+    openModalCategoryUpdate(true)
+
+})
+
+$('#update-form-category').on('submit', function () {
+    $('#category_update_id').val($('#category_update_id').val())
+
+    return true
+});
+
+
+$("#closegoodcategorymodalupdate").on("click", function () {
+    openModalCategoryUpdate(false)
+})
+
+
+
+
