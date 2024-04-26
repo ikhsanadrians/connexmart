@@ -236,7 +236,7 @@ $('.cart-input-quantity').on("input", function (e) {
     }
 })
 
-
+ 
 
 
 function openModal() {

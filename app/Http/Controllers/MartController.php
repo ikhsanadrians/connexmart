@@ -9,6 +9,8 @@ use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Transaction;
+
 
 class MartController extends Controller
 {
@@ -192,6 +194,50 @@ class MartController extends Controller
     $count_products = $products->count();
 
     return view("mart.cashier", compact("products", "categories", "count_products"));
+  }
+
+  public function CashierAddToCheckout(Request $request){
+       
+    if ($request->ajax()) {
+      $product = Product::find($request->product_id);
+      $productPrice = $product->price;
+      $productSummaryPrice = ($productPrice * $request->quantity);
+
+      $sameTransaction = Transaction::where('product_id', $request->product_id)
+          ->where('user_id', Auth::user()->id)
+          ->where('status', 'outcart')
+          ->first();
+
+      if($product->stock < $request->quantity){
+          return response()->json([
+              "message" => "failed, product stock is not enough"
+          ], 401);
+      } else {
+          if ($sameTransaction) {
+              $sumQuantity = $sameTransaction->quantity += $request->quantity;
+              $sumPrice = $sumQuantity * $product->price;
+              $sameTransaction->update([
+                  'quantity' => $sumQuantity,
+                  'price' => $sumPrice
+              ]);
+          } else {
+              Transaction::create([
+                  "user_id" => Auth::user()->id,
+                  "product_id" => $product->id,
+                  "status" => "outcart",
+                  "order_id" => "INV-" . Auth::user()->id . now()->format('dmYHis'),
+                  "quantity" => $request->quantity,
+                  "price" => $productSummaryPrice
+              ]);
+          }
+
+          return response()->json([
+              "message" => "success",
+              "data" => $product
+          ]);
+      }
+
+  }
   }
 
   public function martlogout()
