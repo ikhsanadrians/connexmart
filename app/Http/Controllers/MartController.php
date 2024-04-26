@@ -9,6 +9,8 @@ use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Transaction;
+
 
 class MartController extends Controller
 {
@@ -193,6 +195,7 @@ class MartController extends Controller
 
     return view("mart.cashier", compact("products", "categories", "count_products"));
   }
+
 
   public function martlogout()
   {
