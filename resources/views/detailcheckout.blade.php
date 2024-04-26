@@ -84,7 +84,7 @@
                                         <p class="text-base w-full line-clamp-3">{{ $transaction->product->name }}</p>
                                         <p class="text-sm price-products font-normal text-zinc-500"
                                             data-price="{{ $transaction->product->price }}">
-                                            {{ format_to_rp($transaction->price) }} <span
+                                            {{ format_to_rp($transaction->product->price) }} <span
                                                 class="text-sm font-normal text-zinc-500">x
                                                 {{ $transaction->quantity }}</span></p>
                                         <p class="font-semibold">

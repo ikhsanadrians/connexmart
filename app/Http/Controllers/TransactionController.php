@@ -148,10 +148,10 @@ class TransactionController extends Controller
         $checkouts = UserCheckout::where("checkout_code", $checkout_code)->first();
         if(!$checkouts || $checkouts->status == "ordered") return view("errors.404");
         $product_list = json_decode($checkouts->product_list);
-        $transactions = Transaction::whereIn("id", $product_list)->where("user_id", Auth::user()->id)->get();
+        $transactions = Transaction::whereIn("id", $product_list)->with('product')->where("user_id", Auth::user()->id)->get();
 
         foreach($transactions as $transaction){
-            $transaction->totalPricePerTransaction = ($transaction->price * $transaction->quantity);
+            $transaction->totalPricePerTransaction = ($transaction->product->price * $transaction->quantity);
         }
 
 
@@ -211,12 +211,13 @@ class TransactionController extends Controller
 
     public function checkoutEntry(Request $request){
         if($request->ajax()){
+            $checkoutCode = $request->checkout_code;
             $latest_payment_method = Auth::user()->latest_paymentmethod;
             $address = Auth::user()->address;
 
              if($request->payment_method == "tb-1" || $request->payment_method == "tb-2"){
                 $user_wallet = Auth::user()->wallet;
-                $user_checkout = UserCheckout::where("checkout_code", $request->checkout_code)->where("user_id", Auth::user()->id)->first();
+                $user_checkout = UserCheckout::where("checkout_code", $checkoutCode)->where("user_id", Auth::user()->id)->first();
                 $total_price = $user_checkout->total_price;
 
                 if($user_wallet < $total_price){
@@ -230,7 +231,8 @@ class TransactionController extends Controller
 
                 foreach($transactions as $transaction){
                     $transaction->update([
-                         "status" => "checkedout"
+                         "status" => "checkedout",
+                         "order_id" => $checkoutCode
                     ]);
                 }
 
@@ -241,7 +243,8 @@ class TransactionController extends Controller
 
                     $relatedProduct->update([
                         "stock" =>  $newStockUpdate,
-                        "quantity_sold" => $newSoldQuantity
+                        "quantity_sold" => $newSoldQuantity,
+
                     ]);
                 }
 
@@ -273,7 +276,8 @@ class TransactionController extends Controller
 
              foreach($transactions as $transaction){
                  $transaction->update([
-                      "status" => "checkedout"
+                      "status" => "checkedout",
+                      "order_id" => $checkoutCode
                  ]);
              }
 
@@ -284,7 +288,7 @@ class TransactionController extends Controller
 
                 $relatedProduct->update([
                     "stock" =>  $newStockUpdate,
-                    "quantity_sold" => $newSoldQuantity
+                    "quantity_sold" => $newSoldQuantity,
                 ]);
             }
 
@@ -322,10 +326,10 @@ class TransactionController extends Controller
 
         if($request->detail == "show"){
             $product_list = json_decode($checkouts->product_list);
-            $transactions = Transaction::whereIn("id", $product_list)->get();
+            $transactions = Transaction::whereIn("id", $product_list)->with('product')->get();
 
             foreach($transactions as $transaction){
-                $transaction->totalPricePerTransaction = ($transaction->price * $transaction->quantity);
+                $transaction->totalPricePerTransaction = ($transaction->product->price * $transaction->quantity);
             }
 
             return view('detailcheckout', compact('checkouts','transactions'));

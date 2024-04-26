@@ -1,3 +1,5 @@
+import rupiah from "./utils/rupiahFormater.js";
+
 $("#recordsPerPage").on("change", function (e) {
     const urlParams = new URLSearchParams(window.location.search);
     urlParams.set('show', e.target.value);
@@ -23,14 +25,21 @@ setInterval(updateClock, 60000);
 
 
 $(".add").on('click', function (e) {
-    $(".item-list").append(`
+    const currentUrl = "/mart/cashier/addorder"
+    const itemList = $(".item-list")
+    const products = $(e.currentTarget).closest(".product-card")
+    const productId = products.attr("id")
+    const productName = products.find(".product-name").attr("data-name")
+    const productPrice = products.find(".product-price").attr("data-price")
+
+    itemList.append(`
         <div class="item flex items-center justify-between border-b-[1.8px] border-slate-200 border-dashed p-4">
             <div class="item-desc">
                 <div class="desc-name font-medium">
-                    <p>Hotwhelss</p>
+                    <p>${productName}</p>
                 </div>
                 <div class="desc-price text-zinc-400">
-                    Rp15.000
+                    ${rupiah(productPrice)}
                 </div>
             </div>
             <div class="item-qtycontrol">
@@ -42,4 +51,24 @@ $(".add").on('click', function (e) {
             </div>
         </div>
     `);
+
+    itemList.scrollTop($(".item-list")[0].scrollHeight);
+
+    $.ajax({
+        url: currentUrl,
+        method: "post",
+        dataType: 'json',
+        data: {
+            "product_id": productId,
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function (data) {
+            console.log(data)
+        },
+        error: function () {
+            return
+        }
+    },
+
+    )
 })

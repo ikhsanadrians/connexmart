@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->enum('status',['outcart','incart','checkedout','taken']);
-            $table->string('order_id');
+            $table->string('order_id')->nullable();
             $table->double('price',5);
             $table->softDeletes();
             $table->integer('quantity');

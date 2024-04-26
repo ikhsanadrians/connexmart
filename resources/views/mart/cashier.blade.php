@@ -76,10 +76,11 @@
                 <div
                     class="product-list cashier-prod-list grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6 px-4 overflow-y-scroll h-[80%] pb-16">
                     @foreach ($products as $product)
-                        <div class="product p-3 rounded-lg border-[1.7px] h-full max-h-auto border-[#303fe2]/50">
+                        <div id="{{ $product->id }}"
+                            class="product-card p-3 rounded-lg border-[1.7px] h-full max-h-auto border-[#303fe2]/50">
                             <div class="top-product w-full">
                                 <div class="name-stock flex justify-between">
-                                    <div class="product-name">
+                                    <div data-name="{{ $product->name }}" class="product-name">
                                         <h1 class="text-sm font-medium text-[#303fe2]">{{ $product->name }}</h1>
                                     </div>
                                     <div class="stock flex gap-1 items-center">
@@ -92,7 +93,7 @@
                                         <p class="text-sm">{{ $product->stock }}</p>
                                     </div>
                                 </div>
-                                <div class="product-price">
+                                <div data-price="{{ $product->price }}" class="product-price">
                                     <p class="text-sm font-medium text-[#303fe2]">{{ format_to_rp($product->price) }}
                                     </p>
                                 </div>
@@ -247,7 +248,29 @@
             </div>
             <div class="pickup-items h-[73vh]">
                 <div class="item-list cashier-items-list overflow-y-auto h-[80%]">
-               
+                    @foreach ($transactions as $transaction)
+                        <div
+                            class="item flex items-center justify-between border-b-[1.8px] border-slate-200 border-dashed p-4">
+                            <div class="item-desc">
+                                <div class="desc-name font-medium">
+                                    <p>{{ $transaction->product->name }}</p>
+                                </div>
+                                <div class="desc-price text-zinc-400">
+                                    {{ format_to_rp($transaction->product->price) }} x {{ $transaction->quantity }}
+                                </div>
+                            </div>
+                            <div class="item-qtycontrol">
+                                <div
+                                    class="input-quantity flex border-slate-300 border-[1.3px] w-fit px-2 py-1 rounded-md">
+                                    <button id="decrease">-</button>
+                                    <input type="number" value="1"
+                                        class="input-of-quantity w-12 text-center focus:outline-none px-1"
+                                        min="1" id="value_quantity" max="20">
+                                    <button id="increase">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
                 <div class="bottom-controls stick bottom-0 w-full">
                     <div class="totalitems">

@@ -183,6 +183,8 @@ class MartController extends Controller
   public function cashier(Request $request){
     $categories = Category::all();
     $products = Product::query();
+    $transactions =  Transaction::with('product')->where('user_id', 4)->where('status', 'outcart')->orderBy('created_at', 'asc')->get();
+
 
     if($request->category){
         $category = Category::where("slug", $request->category)->first();
@@ -193,7 +195,50 @@ class MartController extends Controller
 
     $count_products = $products->count();
 
-    return view("mart.cashier", compact("products", "categories", "count_products"));
+    return view("mart.cashier", compact("products", "categories", "count_products", "transactions"));
+  }
+
+  public function cashierAddToOrderList(Request $request){
+    if ($request->ajax()) {
+        $product = Product::find($request->product_id);
+        $productPrice = $product->price;
+        // $productSummaryPrice = ($productPrice * $request->quantity);
+
+        $sameTransaction = Transaction::where('product_id', $request->product_id)
+            ->where('user_id', Auth::user()->id)
+            ->where('status', 'outcart')
+            ->first();
+
+        if($product->stock < $request->quantity){
+            return response()->json([
+                "message" => "failed, product stock is not enough"
+            ], 401);
+        } else {
+            if ($sameTransaction) {
+                $sumQuantity = 0;
+                $sumPrice = 0;
+                $sameTransaction->update([
+                    'quantity' => $sumQuantity,
+                    'price' => $sumPrice
+                ]);
+            } else {
+                Transaction::create([
+                    "user_id" => Auth::user()->id,
+                    "product_id" => $product->id,
+                    "status" => "outcart",
+                    "order_id" => "INV-" . Auth::user()->id . now()->format('dmYHis'),
+                    "quantity" => 0,
+                    "price" => 0,
+                ]);
+            }
+
+            return response()->json([
+                "message" => "success",
+                "data" => $product
+            ]);
+        }
+
+    }
   }
 
 
