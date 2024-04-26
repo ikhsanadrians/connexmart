@@ -231,7 +231,7 @@
                     <h1>Order #INV_1234567890</h1>
                 </div>
                 <div class="clock text-slate-400 font-normal">
-                    <p>07.22</p>
+                    <p id="clock-text">07.22</p>
                 </div>
             </div>
             <div class="pickup flex justify-center p-4 items-center gap-2 border-b-[1.8px] border-slate-200">
@@ -305,13 +305,6 @@
     <script type="module" src="{{ asset('javascript/script/admin.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
     <script type="module" src="{{ asset('javascript/script/cashier.js') }}"></script>
-
-    <script>
-        setInterval(() => {
-            const currentTime = moment().add(1, 'minute').format('HH:mm');
-            console.log(currentTime);
-        }, 60000);
-    </script>
 </body>
 
 </html>
