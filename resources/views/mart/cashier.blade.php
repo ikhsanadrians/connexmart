@@ -10,7 +10,7 @@
     @vite('resources/css/app.css')
 </head>
 
-<body class="overflow-hidden">
+<body class="preload overflow-hidden">
     <div class="cashiers-wrappers flex w-full h-full">
         <div class="cashier-control h-full w-full lg:w-[67%] px-4 py-2 relative overflow-hidden">
             <div class="left-control py-4 px-4 flex items-center justify-between">
@@ -93,7 +93,8 @@
                                         <p class="text-sm">{{ $product->stock }}</p>
                                     </div>
                                 </div>
-                                <div data-price="{{ $product->price }}" class="product-price">
+                                <div data-stock="{{ $product->stock }}" data-price="{{ $product->price }}"
+                                    class="product-price">
                                     <p class="text-sm font-medium text-[#303fe2]">{{ format_to_rp($product->price) }}
                                     </p>
                                 </div>
@@ -250,23 +251,24 @@
                 <div class="item-list cashier-items-list overflow-y-auto h-[80%]">
                     @foreach ($transactions as $transaction)
                         <div
-                            class="item flex items-center justify-between border-b-[1.8px] border-slate-200 border-dashed p-4">
+                            class="pickup-item flex items-center justify-between border-b-[1.8px] border-slate-200 border-dashed p-4">
                             <div class="item-desc">
                                 <div class="desc-name font-medium">
                                     <p>{{ $transaction->product->name }}</p>
                                 </div>
                                 <div class="desc-price text-zinc-400">
-                                    {{ format_to_rp($transaction->product->price) }} x {{ $transaction->quantity }}
+                                    {{ format_to_rp($transaction->product->price) }} x <span
+                                        class="order-quantity-count">{{ $transaction->quantity }}</span>
                                 </div>
                             </div>
                             <div class="item-qtycontrol">
-                                <div
+                                <div data-transid="{{ $transaction->id }}"
                                     class="input-quantity flex border-slate-300 border-[1.3px] w-fit px-2 py-1 rounded-md">
-                                    <button id="decrease">-</button>
-                                    <input type="number" value="1"
+                                    <button class="decrease">-</button>
+                                    <input type="number" value="{{ $transaction->quantity }}"
                                         class="input-of-quantity w-12 text-center focus:outline-none px-1"
-                                        min="1" id="value_quantity" max="20">
-                                    <button id="increase">+</button>
+                                        min="1" id="value_quantity" max="{{ $transaction->product->stock }}">
+                                    <button class="increase">+</button>
                                 </div>
                             </div>
                         </div>
@@ -297,8 +299,10 @@
     </div>
 
 
+    @include('components.cartmessagemodal')
     <script type="module" src="{{ asset('javascript/lib/jquery.min.js') }}"></script>
     <script type="module" src="{{ asset('javascript/script/admin.js') }}"></script>
+    <script type="module" src="{{ asset('javascript/script/core.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
     <script type="module" src="{{ asset('javascript/script/cashier.js') }}"></script>
 </body>

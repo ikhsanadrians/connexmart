@@ -202,6 +202,7 @@ class MartController extends Controller
     if ($request->ajax()) {
         $product = Product::find($request->product_id);
         $productPrice = $product->price;
+        $transaction_id = "";
         // $productSummaryPrice = ($productPrice * $request->quantity);
 
         $sameTransaction = Transaction::where('product_id', $request->product_id)
@@ -221,8 +222,10 @@ class MartController extends Controller
                     'quantity' => $sumQuantity,
                     'price' => $sumPrice
                 ]);
+
+                $transaction_id = $sameTransaction->id;
             } else {
-                Transaction::create([
+                $transaction = Transaction::create([
                     "user_id" => Auth::user()->id,
                     "product_id" => $product->id,
                     "status" => "outcart",
@@ -230,17 +233,44 @@ class MartController extends Controller
                     "quantity" => 0,
                     "price" => 0,
                 ]);
+
+                $transaction_id = $transaction->id;
             }
+
 
             return response()->json([
                 "message" => "success",
-                "data" => $product
+                "data" => $transaction_id,
             ]);
+
+
         }
 
     }
   }
 
+  public function cashierQuantityUpdate(Request $request){
+
+      if ($request->ajax()) {
+        $quantityToUpdate = Transaction::where('id', $request->transaction_id)
+            ->where('user_id', Auth::user()->id)
+            ->first();
+
+        if($request->quantity >= $quantityToUpdate->product->stock){
+            return response()->json(["message" => "Tidak Dapat Menambahkan, Stok Habis!"], 401);
+        }
+
+        if($request->type == "delete"){
+            $quantityToUpdate->delete();
+            $message = "Berhasil Menghapus Produk!";
+        } else {
+            $quantityToUpdate->update(['quantity' => $request->quantity]);
+            $message = "Berhasil Memperbarui Produk!";
+        }
+
+        return response()->json(["message" => $message, "data" => $quantityToUpdate]);
+    }
+  }
 
   public function martlogout()
   {

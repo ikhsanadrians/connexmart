@@ -114,6 +114,7 @@ Route::prefix('mart')->group(function () {
         Route::get('/entrytransaction', [MartController::class, 'entrytransaction'])->name('mart.entrytransaction');
         Route::get('/cashier',[MartController::class,'cashier'])->name("mart.cashier");
         Route::post('/cashier/addorder',[MartController::class, 'cashierAddToOrderList'])->name("mart.cashier.addorder");
+        Route::put('/cashier/quantityupdate', [MartController::class, 'cashierQuantityUpdate'])->name("mart.cashier.quantityupdate");
         Route::get('/logout', [MartController::class, 'martlogout'])->name('mart.logout');
     });
 
