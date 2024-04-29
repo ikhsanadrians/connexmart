@@ -37,8 +37,7 @@
                                     stroke-miterlimit="10" stroke-linecap="round" />
                             </svg>
                             <input placeholder="Cari Produk Disini" type="text"
-                                class="rounded-lg pl-10 py-2 w-full focus:outline-none border-[#303fe2]/40 border-[1.9px]">
-
+                                class="product-search rounded-lg pl-10 py-2 w-full focus:outline-none border-[#303fe2]/40 border-[1.9px]">
                         </div>
                         <div class="filter bg-[#303fe2] p-2 flex items-center justify-center rounded-lg">
                             <svg width="23" height="19" viewBox="0 0 23 19" fill="none"
@@ -265,7 +264,10 @@
                                 <div data-transid="{{ $transaction->id }}"
                                     class="input-quantity flex border-slate-300 border-[1.3px] w-fit px-2 py-1 rounded-md">
                                     <button class="decrease">-</button>
-                                    <input type="number" value="{{ $transaction->quantity }}"
+                                    <input type="number" data-productid="{{ $transaction->product->id }}"
+                                        data-singleprice="{{ $transaction->product->price }}"
+                                        value="{{ $transaction->quantity }}"
+                                        id="product-{{ $transaction->product->id }}"
                                         class="input-of-quantity w-12 text-center focus:outline-none px-1"
                                         min="1" id="value_quantity" max="{{ $transaction->product->stock }}">
                                     <button class="increase">+</button>
@@ -282,7 +284,8 @@
                                 <p>Total</p>
                             </div>
                             <div class="item-qty">
-                                <p>Rp145.000 (3)</p>
+                                <p><span class="order-price-info mr-1"></span>(<span class="order-qty-info">3</span>)
+                                </p>
                             </div>
                         </div>
                     </div>

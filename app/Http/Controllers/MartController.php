@@ -203,7 +203,7 @@ class MartController extends Controller
         $product = Product::find($request->product_id);
         $productPrice = $product->price;
         $transaction_id = "";
-        // $productSummaryPrice = ($productPrice * $request->quantity);
+        $productSummaryPrice = ($productPrice * $request->quantity);
 
         $sameTransaction = Transaction::where('product_id', $request->product_id)
             ->where('user_id', Auth::user()->id)
@@ -216,8 +216,8 @@ class MartController extends Controller
             ], 401);
         } else {
             if ($sameTransaction) {
-                $sumQuantity = 0;
-                $sumPrice = 0;
+                $sumQuantity = $sameTransaction->quantity += $request->quantity;
+                $sumPrice = $sumQuantity * $product->price;
                 $sameTransaction->update([
                     'quantity' => $sumQuantity,
                     'price' => $sumPrice
@@ -230,8 +230,8 @@ class MartController extends Controller
                     "product_id" => $product->id,
                     "status" => "outcart",
                     "order_id" => "INV-" . Auth::user()->id . now()->format('dmYHis'),
-                    "quantity" => 0,
-                    "price" => 0,
+                    "quantity" => $request->quantity,
+                    "price" => $productSummaryPrice,
                 ]);
 
                 $transaction_id = $transaction->id;
