@@ -38,6 +38,30 @@ function calculateTotal(type) {
     console.log(orderListId)
 }
 
+function checkIfOrderEmpty() {
+    const itemList = $(".item-list")
+    if (orderListId.length < 1) {
+        itemList.append(`
+        <div class="empty-cart flex justify-center items-center h-full">
+                            <div class="ecart-wrappers flex flex-col justify-center items-center gap-3">
+                                <svg class="fill-gray-400" xmlns="http://www.w3.org/2000/svg" width="58"
+                                    height="58" fill="currentColor" class="bi bi-bag-x-fill" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                        d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0M6.854 8.146a.5.5 0 1 0-.708.708L7.293 10l-1.147 1.146a.5.5 0 0 0 .708.708L8 10.707l1.146 1.147a.5.5 0 0 0 .708-.708L8.707 10l1.147-1.146a.5.5 0 0 0-.708-.708L8 9.293z" />
+                                </svg>
+                                <div class="hint-text">
+                                    <p class="text-center font-semibold text-slate-600">Tidak ada item ditambahkan</p>
+                                    <p class="text-center text-slate-400 text-sm">Klik icon tambah untuk
+                                        menambahkan</p>
+                                </div>
+                            </div>
+                        </div>
+        `)
+    } else {
+        $(".empty-cart").remove()
+    }
+}
+
 
 $("#recordsPerPage").on("change", function (event) {
     const urlParams = new URLSearchParams(window.location.search);
@@ -63,7 +87,7 @@ setInterval(updateClock, 60000);
 
 
 
-$(".add").on('click', function (event) {
+$(document).on("click", ".add", function (event) {
     const currentUrl = "/mart/cashier/addorder"
     const itemList = $(".item-list")
     const products = $(event.currentTarget).closest(".product-card")
@@ -114,6 +138,7 @@ $(".add").on('click', function (event) {
             itemList.scrollTop($(".item-list")[0].scrollHeight);
             calculateTotal("price")
             calculateTotal("quantity")
+            checkIfOrderEmpty()
         },
         error: function (error) {
             return
@@ -139,10 +164,106 @@ function updateQuantity(transactionId, quantity, type) {
         }
     });
 }
+let debounceTimer;
+$(".product-search").on("input", function (event) {
 
-$(".product-search").on("change", function (event) {
+    const urlParams = new URLSearchParams(window.location.search);
+    let category = urlParams.get("category")
 
-})
+    clearTimeout(debounceTimer);
+    $(".loader").removeClass("!hidden")
+
+    const productListContainer = $(".product-list");
+
+    debounceTimer = setTimeout(() => {
+        $.ajax({
+            url: '/mart/cashier/search',
+            method: "post",
+            dataType: "json",
+            data: {
+                "searchValue": event.target.value,
+                "category": category,
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (response) {
+                productListContainer.empty();
+
+                if (response.data == "empty") {
+                    $(".loader").addClass("!hidden")
+                    productListContainer.append(`
+                    <div id="data-notfound" class="absolute gap-4 inset-0 top-24  mx-auto my-auto w-fit h-fit">
+                        <div class="flex flex-col justify-center items-center">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="58" height="58" fill="currentColor" class="bi bi-box-seam-fill fill-gray-400" viewBox="0 0 16 16">
+                              <path fill-rule="evenodd" d="M15.528 2.973a.75.75 0 0 1 .472.696v8.662a.75.75 0 0 1-.472.696l-7.25 2.9a.75.75 0 0 1-.557 0l-7.25-2.9A.75.75 0 0 1 0 12.331V3.669a.75.75 0 0 1 .471-.696L7.443.184l.01-.003.268-.108a.75.75 0 0 1 .558 0l.269.108.01.003zM10.404 2 4.25 4.461 1.846 3.5 1 3.839v.4l6.5 2.6v7.922l.5.2.5-.2V6.84l6.5-2.6v-.4l-.846-.339L8 5.961 5.596 5l6.154-2.461z"/>
+                           </svg>
+                           <p class="text-center font-semibold text-slate-600 mt-3">
+                             Tidak Menemukan Produk!
+                           </p>
+                        </div>
+                    </div>
+                    `)
+                } else {
+                    $("#data-notfound").remove()
+                    response.data.forEach((result) => {
+                        productListContainer.append(`
+                        <div id="${result.id}"
+                        class="product-card p-3 rounded-lg border-[1.7px] h-fit max-h-auto border-[#303fe2]/50">
+                        <div class="top-product w-full">
+                            <div class="name-stock flex justify-between">
+                                <div data-name="${result.name}" class="product-name">
+                                    <h1 class="text-sm font-medium text-[#303fe2]">${result.name}</h1>
+                                </div>
+                                <div class="stock flex gap-1 items-center">
+                                    <svg width="11" height="11" viewBox="0 0 11 11" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M10.0357 0.267853H1.46429L0.75 3.83928V7.05357H10.75V3.83928L10.0357 0.267853ZM9.76786 3.83928H7.17857C7.17857 4.21816 7.02806 4.58152 6.76015 4.84943C6.49224 5.11734 6.12888 5.26785 5.75 5.26785C5.37112 5.26785 5.00776 5.11734 4.73985 4.84943C4.47194 4.58152 4.32143 4.21816 4.32143 3.83928H1.73214L2.22321 1.20535H9.27678L9.76786 3.83928ZM7.17857 7.76785C7.17857 8.14673 7.02806 8.5101 6.76015 8.778C6.49224 9.04591 6.12888 9.19642 5.75 9.19642C5.37112 9.19642 5.00776 9.04591 4.73985 8.778C4.47194 8.5101 4.32143 8.14673 4.32143 7.76785H0.75V10.9821H10.75V7.76785H7.17857Z"
+                                            fill="#6B6B6B" />
+                                    </svg>
+                                    <p class="text-sm">${result.stock}</p>
+                                </div>
+                            </div>
+                            <div data-stock="${result.stock}" data-price="${result.price}"
+                                class="product-price">
+                                <p class="text-sm font-medium text-[#303fe2]">${rupiah(result.price)}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="bottom-product flex justify-end">
+                            <div class="add">
+                                <svg width="176" height="20" viewBox="0 0 176 20" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <g clip-path="url(#clip0_108_765)">
+                                        <path
+                                            d="M166.25 0.625C161.012 0.625 156.75 4.88675 156.75 10.125C156.75 15.3632 161.012 19.625 166.25 19.625C171.488 19.625 175.75 15.3632 175.75 10.125C175.75 4.88675 171.488 0.625 166.25 0.625ZM169.904 10.8558H166.981V13.7788C166.981 13.9727 166.904 14.1585 166.767 14.2956C166.63 14.4326 166.444 14.5096 166.25 14.5096C166.056 14.5096 165.87 14.4326 165.733 14.2956C165.596 14.1585 165.519 13.9727 165.519 13.7788V10.8558H162.596C162.402 10.8558 162.216 10.7788 162.079 10.6417C161.942 10.5047 161.865 10.3188 161.865 10.125C161.865 9.93119 161.942 9.74531 162.079 9.60827C162.216 9.47122 162.402 9.39423 162.596 9.39423H165.519V6.47115C165.519 6.27734 165.596 6.09147 165.733 5.95442C165.87 5.81738 166.056 5.74038 166.25 5.74038C166.444 5.74038 166.63 5.81738 166.767 5.95442C166.904 6.09147 166.981 6.27734 166.981 6.47115V9.39423H169.904C170.098 9.39423 170.284 9.47122 170.421 9.60827C170.558 9.74531 170.635 9.93119 170.635 10.125C170.635 10.3188 170.558 10.5047 170.421 10.6417C170.284 10.7788 170.098 10.8558 169.904 10.8558Z"
+                                            fill="#303FE2" />
+                                    </g>
+                                    <defs>
+                                        <clipPath id="clip0_108_765">
+                                            <rect width="175.75" height="19" fill="white"
+                                                transform="translate(0 0.625)" />
+                                        </clipPath>
+                                    </defs>
+                                </svg>
+
+                            </div>
+                        </div>
+                    </div>
+                        `);
+                        $(".loader").addClass("!hidden")
+                    });
+                }
+
+
+            },
+            error: function (error) {
+                $(".loader").addClass("!hidden")
+            }
+        });
+        // console.log(event.target.value);
+    }, 300);
+});
+
 
 $(document).on("click", ".decrease", function (event) {
     const decreaseWrapper = $(event.target).parent();
@@ -163,6 +284,7 @@ $(document).on("click", ".decrease", function (event) {
         orderListId = orderListId.filter((id) => id !== productId)
     }
 
+    checkIfOrderEmpty()
     calculateTotal("quantity")
     calculateTotal("price")
 });
@@ -188,17 +310,18 @@ $(document).on("click", ".increase", function (e) {
     }
     calculateTotal("quantity")
     calculateTotal("price")
-
-
+    checkIfOrderEmpty()
 
 });
 
 
-$(document).on('input', '.cart-input-quantity', function (e) {
+$(document).on('input', '.input-of-quantity', function (e) {
     let qtyInputValue = $(e.target).val()
     let qtyInputWrapper = $(e.target).parent()
     let qtyInputParsed = qtyInputValue.replace(/[^\d]|,|\.| /g, '')
+    let qtyPickupItemInfo = qtyInputWrapper.closest(".pickup-item").find(".order-quantity-count")
     const transactionId = qtyInputWrapper.attr("data-transid")
+
 
     if (qtyInputParsed.length === 1 && qtyInputParsed[0] === '0' || qtyInputParsed === "") {
         $(e.target).val("")
@@ -208,7 +331,7 @@ $(document).on('input', '.cart-input-quantity', function (e) {
     if (qtyInputParsed >= 1) {
         $(e.target).val(qtyInputParsed)
         $.ajax({
-            url: '/cart/quantityupdate',
+            url: '/mart/cashier/quantityupdate',
             method: 'put',
             dataType: 'json',
             data: {
@@ -219,7 +342,9 @@ $(document).on('input', '.cart-input-quantity', function (e) {
             success: function (data) {
                 calculateTotal('quantity')
                 calculateTotal('price')
+                checkIfOrderEmpty()
                 loadModalMessage(data.message)
+                qtyPickupItemInfo.text(qtyInputParsed);
             },
             error: function (error) {
 

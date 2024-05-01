@@ -185,7 +185,6 @@ class MartController extends Controller
     $products = Product::query();
     $transactions =  Transaction::with('product')->where('user_id', 4)->where('status', 'outcart')->orderBy('created_at', 'asc')->get();
 
-
     if($request->category){
         $category = Category::where("slug", $request->category)->first();
         $products->where("category_id", $category->id);
@@ -270,6 +269,32 @@ class MartController extends Controller
 
         return response()->json(["message" => $message, "data" => $quantityToUpdate]);
     }
+  }
+
+
+  public function search(Request $request){
+      $products = "";
+
+      if($request->category != null){
+        $category = Category::where("slug", $request->category)->first();
+        $products = Product::where("category_id", $category->id)->where("name", "LIKE" , "%" . $request->searchValue . "%")->get();
+      } else {
+          $products = Product::where("name", "LIKE" , "%" . $request->searchValue . "%")->get();
+      }
+
+
+      if(count($products) == 0){
+         return response()->json([
+            "message" => "cannot found product",
+            "data" => "empty"
+         ]);
+      }
+
+      return response()->json([
+         "message" => "success, get data",
+         "data" => $products
+      ]);
+
   }
 
   public function martlogout()

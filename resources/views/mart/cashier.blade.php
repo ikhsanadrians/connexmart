@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Admin</title>
+    <title>Cashier - TenizenMart</title>
     @vite('resources/css/app.css')
 </head>
 
@@ -71,9 +71,10 @@
                     </svg>
                 </div>
             </div>
-            <div class="h-[73vh] max-h-screen">
+            <div id="cashier-left" class="h-[73vh] max-h-screen relative">
+                <div class="loader absolute inset-0 m-auto !hidden"></div>
                 <div
-                    class="product-list cashier-prod-list grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6 px-4 overflow-y-scroll h-[80%] pb-16">
+                    class="product-list relative w-full cashier-prod-list grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6 px-4 overflow-y-scroll h-[80%] pb-16">
                     @foreach ($products as $product)
                         <div id="{{ $product->id }}"
                             class="product-card p-3 rounded-lg border-[1.7px] h-full max-h-auto border-[#303fe2]/50">
@@ -248,33 +249,51 @@
             </div>
             <div class="pickup-items h-[73vh]">
                 <div class="item-list cashier-items-list overflow-y-auto h-[80%]">
-                    @foreach ($transactions as $transaction)
-                        <div
-                            class="pickup-item flex items-center justify-between border-b-[1.8px] border-slate-200 border-dashed p-4">
-                            <div class="item-desc">
-                                <div class="desc-name font-medium">
-                                    <p>{{ $transaction->product->name }}</p>
+                    @if (count($transactions))
+                        @foreach ($transactions as $transaction)
+                            <div
+                                class="pickup-item flex items-center justify-between border-b-[1.8px] border-slate-200 border-dashed p-4">
+                                <div class="item-desc">
+                                    <div class="desc-name font-medium">
+                                        <p>{{ $transaction->product->name }}</p>
+                                    </div>
+                                    <div class="desc-price text-zinc-400">
+                                        {{ format_to_rp($transaction->product->price) }} x <span
+                                            class="order-quantity-count">{{ $transaction->quantity }}</span>
+                                    </div>
                                 </div>
-                                <div class="desc-price text-zinc-400">
-                                    {{ format_to_rp($transaction->product->price) }} x <span
-                                        class="order-quantity-count">{{ $transaction->quantity }}</span>
+                                <div class="item-qtycontrol">
+                                    <div data-transid="{{ $transaction->id }}"
+                                        class="input-quantity flex border-slate-300 border-[1.3px] w-fit px-2 py-1 rounded-md">
+                                        <button class="decrease">-</button>
+                                        <input type="number" data-productid="{{ $transaction->product->id }}"
+                                            data-singleprice="{{ $transaction->product->price }}"
+                                            value="{{ $transaction->quantity }}"
+                                            id="product-{{ $transaction->product->id }}"
+                                            class="input-of-quantity w-12 text-center focus:outline-none px-1"
+                                            min="1" id="value_quantity"
+                                            max="{{ $transaction->product->stock }}">
+                                        <button class="increase">+</button>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="item-qtycontrol">
-                                <div data-transid="{{ $transaction->id }}"
-                                    class="input-quantity flex border-slate-300 border-[1.3px] w-fit px-2 py-1 rounded-md">
-                                    <button class="decrease">-</button>
-                                    <input type="number" data-productid="{{ $transaction->product->id }}"
-                                        data-singleprice="{{ $transaction->product->price }}"
-                                        value="{{ $transaction->quantity }}"
-                                        id="product-{{ $transaction->product->id }}"
-                                        class="input-of-quantity w-12 text-center focus:outline-none px-1"
-                                        min="1" id="value_quantity" max="{{ $transaction->product->stock }}">
-                                    <button class="increase">+</button>
+                        @endforeach
+                    @else
+                        <div class="empty-cart flex justify-center items-center h-full">
+                            <div class="ecart-wrappers flex flex-col justify-center items-center gap-3">
+                                <svg class="fill-gray-400" xmlns="http://www.w3.org/2000/svg" width="58"
+                                    height="58" fill="currentColor" class="bi bi-bag-x-fill" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                        d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0M6.854 8.146a.5.5 0 1 0-.708.708L7.293 10l-1.147 1.146a.5.5 0 0 0 .708.708L8 10.707l1.146 1.147a.5.5 0 0 0 .708-.708L8.707 10l1.147-1.146a.5.5 0 0 0-.708-.708L8 9.293z" />
+                                </svg>
+                                <div class="hint-text">
+                                    <p class="text-center font-semibold text-slate-600">Tidak ada item ditambahkan</p>
+                                    <p class="text-center text-slate-400 text-sm">Klik icon tambah untuk
+                                        menambahkan</p>
                                 </div>
                             </div>
                         </div>
-                    @endforeach
+                    @endif
                 </div>
                 <div class="bottom-controls stick bottom-0 w-full">
                     <div class="totalitems">

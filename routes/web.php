@@ -112,9 +112,12 @@ Route::prefix('mart')->group(function () {
         Route::put('/goods/update', [MartController::class, 'goodsupdate'])->name('mart.updategoods');
         Route::delete('/goods', [MartController::class, 'goodsdelete'])->name('mart.deletegoods');
         Route::get('/entrytransaction', [MartController::class, 'entrytransaction'])->name('mart.entrytransaction');
-        Route::get('/cashier',[MartController::class,'cashier'])->name("mart.cashier");
-        Route::post('/cashier/addorder',[MartController::class, 'cashierAddToOrderList'])->name("mart.cashier.addorder");
-        Route::put('/cashier/quantityupdate', [MartController::class, 'cashierQuantityUpdate'])->name("mart.cashier.quantityupdate");
+        Route::prefix("/cashier")->group(function(){
+            Route::get('/',[MartController::class,'cashier'])->name("mart.cashier");
+            Route::post('/addorder',[MartController::class, 'cashierAddToOrderList'])->name("mart.cashier.addorder");
+            Route::put('/quantityupdate', [MartController::class, 'cashierQuantityUpdate'])->name("mart.cashier.quantityupdate");
+            Route::post('/search',[MartController::class,'search'])->name("mart.cashier.search");
+        });
         Route::get('/logout', [MartController::class, 'martlogout'])->name('mart.logout');
     });
 
