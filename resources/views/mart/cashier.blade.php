@@ -309,7 +309,7 @@
                         </div>
                     </div>
                     <div class="button-group-cashier mt-4 grid grid-cols-2 gap-2 px-4 pt-1 pb-3">
-                        <button class="border-[1.8px] border-[#303fe2] text-[#303fe2] p-2 rounded-lg">Clear
+                        <button class="clear-order border-[1.8px] border-[#303fe2] text-[#303fe2] p-2 rounded-lg">Clear
                             Order</button>
                         <button class="bg-[#303fe2] text-white p-2 rounded-lg">Proses</button>
                     </div>

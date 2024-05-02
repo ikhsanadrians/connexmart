@@ -38,25 +38,28 @@ function calculateTotal(type) {
     console.log(orderListId)
 }
 
+
+function orderListEmptyShow() {
+    return `<div class="empty-cart flex justify-center items-center h-full">
+    <div class="ecart-wrappers flex flex-col justify-center items-center gap-3">
+        <svg class="fill-gray-400" xmlns="http://www.w3.org/2000/svg" width="58"
+            height="58" fill="currentColor" class="bi bi-bag-x-fill" viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+                d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0M6.854 8.146a.5.5 0 1 0-.708.708L7.293 10l-1.147 1.146a.5.5 0 0 0 .708.708L8 10.707l1.146 1.147a.5.5 0 0 0 .708-.708L8.707 10l1.147-1.146a.5.5 0 0 0-.708-.708L8 9.293z" />
+        </svg>
+        <div class="hint-text">
+            <p class="text-center font-semibold text-slate-600">Tidak ada item ditambahkan</p>
+            <p class="text-center text-slate-400 text-sm">Klik icon tambah untuk
+                menambahkan</p>
+        </div>
+    </div>
+</div>`
+}
+
 function checkIfOrderEmpty() {
     const itemList = $(".item-list")
     if (orderListId.length < 1) {
-        itemList.append(`
-        <div class="empty-cart flex justify-center items-center h-full">
-                            <div class="ecart-wrappers flex flex-col justify-center items-center gap-3">
-                                <svg class="fill-gray-400" xmlns="http://www.w3.org/2000/svg" width="58"
-                                    height="58" fill="currentColor" class="bi bi-bag-x-fill" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd"
-                                        d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0M6.854 8.146a.5.5 0 1 0-.708.708L7.293 10l-1.147 1.146a.5.5 0 0 0 .708.708L8 10.707l1.146 1.147a.5.5 0 0 0 .708-.708L8.707 10l1.147-1.146a.5.5 0 0 0-.708-.708L8 9.293z" />
-                                </svg>
-                                <div class="hint-text">
-                                    <p class="text-center font-semibold text-slate-600">Tidak ada item ditambahkan</p>
-                                    <p class="text-center text-slate-400 text-sm">Klik icon tambah untuk
-                                        menambahkan</p>
-                                </div>
-                            </div>
-                        </div>
-        `)
+        itemList.append(orderListEmptyShow)
     } else {
         $(".empty-cart").remove()
     }
@@ -347,11 +350,34 @@ $(document).on('input', '.input-of-quantity', function (e) {
                 qtyPickupItemInfo.text(qtyInputParsed);
             },
             error: function (error) {
-
                 loadModalMessage("Kamu tidak bisa menambahkan produk karena stoknya habis.")
             }
         })
     }
 })
+
+$(".clear-order").on("click", function () {
+    if (orderListId.length > 0) {
+        $.ajax({
+            url: '/mart/cashier/clearorder',
+            method: "post",
+            dataType: "json",
+            data: {
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (response) {
+                $(".item-list").empty()
+                orderListId.pop()
+                console.log(orderListId)
+                checkIfOrderEmpty()
+                $(".item-list").append(orderListEmptyShow)
+                loadModalMessage("Berhasil menghapus semua order list")
+            },
+            error: function (error) {
+                loadModalMessage("Tidak bisa melakukan clear order")
+            }
+        })
+    }
+});
 
 

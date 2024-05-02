@@ -297,6 +297,18 @@ class MartController extends Controller
 
   }
 
+
+  public function clearOrder(Request $request){
+    $transactions = Transaction::where('user_id', 4)->where("status", "outcart")->get();
+
+    foreach ($transactions as $transaction) {
+        $transaction->delete();
+    }
+
+    return response()->json(["message" => "All transactions have been cleared."]);
+
+  }
+
   public function martlogout()
   {
     Auth::logout();

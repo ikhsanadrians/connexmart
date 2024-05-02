@@ -117,6 +117,7 @@ Route::prefix('mart')->group(function () {
             Route::post('/addorder',[MartController::class, 'cashierAddToOrderList'])->name("mart.cashier.addorder");
             Route::put('/quantityupdate', [MartController::class, 'cashierQuantityUpdate'])->name("mart.cashier.quantityupdate");
             Route::post('/search',[MartController::class,'search'])->name("mart.cashier.search");
+            Route::post('/clearorder',[MartController::class,'clearorder'])->name("mart.cashier.clearorder");
         });
         Route::get('/logout', [MartController::class, 'martlogout'])->name('mart.logout');
     });
