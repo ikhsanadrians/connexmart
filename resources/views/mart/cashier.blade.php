@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" />
+    <link rel="icon" type="image/png" href="{{ asset('images/static/tenizenmart.png') }}">
     <title>Cashier - TenizenMart</title>
     @vite('resources/css/app.css')
 </head>
@@ -100,13 +103,13 @@
                                 </div>
                             </div>
                             <div class="bottom-product flex justify-end">
-                                <div class="add">
-                                    <svg width="176" height="20" viewBox="0 0 176 20" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
+                                <button class="add group">
+                                    <svg class="text-[#303fe2] group-focus:text-blue-400" width="176" height="20"
+                                        viewBox="0 0 176 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <g clip-path="url(#clip0_108_765)">
                                             <path
                                                 d="M166.25 0.625C161.012 0.625 156.75 4.88675 156.75 10.125C156.75 15.3632 161.012 19.625 166.25 19.625C171.488 19.625 175.75 15.3632 175.75 10.125C175.75 4.88675 171.488 0.625 166.25 0.625ZM169.904 10.8558H166.981V13.7788C166.981 13.9727 166.904 14.1585 166.767 14.2956C166.63 14.4326 166.444 14.5096 166.25 14.5096C166.056 14.5096 165.87 14.4326 165.733 14.2956C165.596 14.1585 165.519 13.9727 165.519 13.7788V10.8558H162.596C162.402 10.8558 162.216 10.7788 162.079 10.6417C161.942 10.5047 161.865 10.3188 161.865 10.125C161.865 9.93119 161.942 9.74531 162.079 9.60827C162.216 9.47122 162.402 9.39423 162.596 9.39423H165.519V6.47115C165.519 6.27734 165.596 6.09147 165.733 5.95442C165.87 5.81738 166.056 5.74038 166.25 5.74038C166.444 5.74038 166.63 5.81738 166.767 5.95442C166.904 6.09147 166.981 6.27734 166.981 6.47115V9.39423H169.904C170.098 9.39423 170.284 9.47122 170.421 9.60827C170.558 9.74531 170.635 9.93119 170.635 10.125C170.635 10.3188 170.558 10.5047 170.421 10.6417C170.284 10.7788 170.098 10.8558 169.904 10.8558Z"
-                                                fill="#303FE2" />
+                                                fill="currentColor" />
                                         </g>
                                         <defs>
                                             <clipPath id="clip0_108_765">
@@ -116,7 +119,7 @@
                                         </defs>
                                     </svg>
 
-                                </div>
+                                </button>
                             </div>
                         </div>
                     @endforeach
@@ -230,7 +233,7 @@
         <div class="cashier-order border-l-[1.8px] h-screen lg:block hidden w-[33%] border-slate-200">
             <div class="numbers-clock flex items-center justify-between border-b-[1.8px]  py-6 px-3  pb-4">
                 <div class="number-order font-medium">
-                    <h1>Order #INV_1234567890</h1>
+                    <h1>List Order</h1>
                 </div>
                 <div class="clock text-slate-400 font-normal">
                     <p id="clock-text">07.22</p>
@@ -322,6 +325,8 @@
 
 
     @include('components.cartmessagemodal')
+    @include('components.choseepaymentmethodcashier')
+    @include('components.backdrop')
     <script type="module" src="{{ asset('javascript/lib/jquery.min.js') }}"></script>
     <script type="module" src="{{ asset('javascript/script/admin.js') }}"></script>
     <script type="module" src="{{ asset('javascript/script/core.js') }}"></script>

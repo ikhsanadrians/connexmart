@@ -22,6 +22,7 @@
                         class="h-12 lg:block hidden">
                     <p class="font-semibold text-lg text-[#303fe2]">
                         TenizenMart</p>
+
                 </a>
                 <div class="checkout-title flex items-center">
                     <a href="{{ route('cart.index') }}" class="pr-2">

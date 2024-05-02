@@ -20,7 +20,7 @@
             </div>
             <div class="product-detail flex items-center justify-between w-full pr-4">
                 <div class="product-name flex flex-col">
-                    <p class="font-semibold" id="success-product-name">{{ $product->name }}</p>
+                    <p class="font-semibold" id="success-product-name">{{ Str::limit($product->name, 50) }}</p>
                     <p class="quantity text-sm text-gray-500">Jumlah:<span id="dekstop-quantity-product"
                             class="pl-1 text-black"></span></p>
                     <p class="total-price text-sm text-gray-500">Total:<span id="dekstop-total-price"

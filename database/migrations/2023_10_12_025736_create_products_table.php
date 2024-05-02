@@ -21,7 +21,8 @@ return new class extends Migration
             $table->text("photo");
             $table->text("desc");
             $table->softDeletes();
-            $table->foreignId("category_id")->constrained();
+            $table->foreignId("category_id")->constrained()->onDelete("cascade");
+            $table->foreignId("merk_id")->nullable()->constrained()->onDelete("cascade");
             $table->string("stand",2);
             $table->timestamps();
         });

@@ -118,6 +118,8 @@ Route::prefix('mart')->group(function () {
             Route::put('/quantityupdate', [MartController::class, 'cashierQuantityUpdate'])->name("mart.cashier.quantityupdate");
             Route::post('/search',[MartController::class,'search'])->name("mart.cashier.search");
             Route::post('/clearorder',[MartController::class,'clearorder'])->name("mart.cashier.clearorder");
+            Route::post('/proceed',[MartController::class,'cashierProceed'])->name("mart.cashier.proceed");
+            Route::get('/proceed/{checkout_code}',[MartController::class,'cashierProceedIndex'])->name("mart.cashier.proceedIndex");
         });
         Route::get('/logout', [MartController::class, 'martlogout'])->name('mart.logout');
     });

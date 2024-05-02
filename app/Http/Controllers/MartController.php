@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Transaction;
-
+use App\Models\UserCheckout;
 
 class MartController extends Controller
 {
@@ -306,6 +306,43 @@ class MartController extends Controller
     }
 
     return response()->json(["message" => "All transactions have been cleared."]);
+
+  }
+
+  public function cashierProceed(Request $request){
+        if($request->ajax()){
+             $checkout_code = now()->format("dmYHis") . Auth::user()->id . substr(uniqid(), 0, 3);
+             $data = UserCheckout::create([
+                  "checkout_code" => $checkout_code,
+                  "user_id" => Auth::user()->id,
+                  "product_list" => json_encode($request->product_list),
+                  "total_quantity" => $request->total_quantity,
+                  "total_price" => $request->total_price,
+                  "status" => "pending"
+             ]);
+
+             return response()->json([
+                "message" => "success, checkout user",
+                "checkout_code" => $data->checkout_code
+             ]);
+        }
+  }
+
+
+
+  public function cashierProceedIndex(string $checkout_code){
+      $checkouts = UserCheckout::where("checkout_code", $checkout_code)->first();
+      if(!$checkouts || $checkouts->status == "ordered") return view("errors.404");
+      $product_list = json_decode($checkouts->product_list);
+
+      $transactions = Transaction::whereIn("id", $product_list)->with('product')->where("user_id", Auth::user()->id)->get();
+
+      foreach($transactions as $transaction){
+          $transaction->totalPricePerTransaction = ($transaction->product->price * $transaction->quantity);
+      }
+
+
+      return view("mart.cashierproceed", compact("transactions", "checkouts"));
 
   }
 
