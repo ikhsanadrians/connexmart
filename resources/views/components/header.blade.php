@@ -12,6 +12,8 @@
                     <p class="lg:hidden block font-medium text-zinc-700">Keranjangmu</p>
                 @elseif(Route::is('checkout'))
                     <p class="lg:hidden block font-medium text-zinc-700">Checkout</p>
+                @elseif(Route::is('scanner'))
+                    <p class="lg:hidden block font-medium text-zinc-700">Scan Untuk Bayar</p>
                 @endif
             </div>
 
@@ -51,9 +53,11 @@
                     favorite
                 </span>
             @else
+              @if(!Route::is('scanner'))
                 <span class="material-symbols-rounded text-[#303fe2] ml-2 text-[32px] lg:hidden block">
                     notifications
                 </span>
+              @endif
             @endif
 
         </div>

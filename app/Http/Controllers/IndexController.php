@@ -63,6 +63,11 @@ class IndexController extends Controller
     }
 
 
+public function scanner(){
+        return view("scanner");
+    }
+
+
 
     public function profile(){
        $transactions =  Transaction::with('product')->where('user_id', Auth::user()->id)->where('user_id',Auth::user()->id)->orderBy('created_at','desc')->get();

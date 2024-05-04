@@ -25,8 +25,13 @@
     <script type="module" src="{{ asset('javascript/script/cart.js') }}"></script>
     <script type="module" src="{{ asset('javascript/script/topup.js') }}"></script>
     <script type="module" src="{{ asset('javascript/script/detail.js') }}"></script>
-    @include('components.footer')
-    @include('components.mobilebottomnav')
+    <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+    <script type="module" src="{{ asset('javascript/script/scanner.js') }}"></script>
+
+    @if(!Route::is('scanner'))
+       @include('components.mobilebottomnav')
+       @include('components.footer')
+    @endif
     @if (Route::is('show.product'))
         @include('components.cartmessagemodal')
         @include('components.chooseqtymodal')
@@ -35,6 +40,7 @@
     @elseif(Route::is('cart.index'))
         @include('components.cartmessagemodal')
     @endif
+
 </body>
 
 </html>

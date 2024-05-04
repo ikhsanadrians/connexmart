@@ -78,10 +78,19 @@
                         </p>
                     </div>
                     <div class="action-mobile flex items-center gap-1 text-sm justify-center lg:hidden">
-                        <a href="{{ route('topup.index') }}"
+                        <a href="{{ route('scanner') }}" id="reader"
                             class="top-up bg-white py-2 px-3 text-blue-500 rounded-2xl flex-col flex justify-center items-center">
                             <span class="material-symbols-rounded">
                                 arrow_upward
+                            </span>
+                            <p class="text-xs">
+                                Bayar
+                            </p>
+                        </a>
+                        <a href="{{ route('topup.index') }}"
+                            class="top-up bg-white py-2 px-3 text-blue-500 rounded-2xl flex-col flex justify-center items-center">
+                            <span class="material-symbols-rounded">
+                                add
                             </span>
                             <p class="text-xs">
                                 Top Up
@@ -90,7 +99,7 @@
                         <div
                             class="transfer bg-white py-2 px-3 text-blue-500 rounded-2xl flex-col flex justify-center items-center">
                             <span class="material-symbols-rounded">
-                                add
+                                start
                             </span>
                             <p class="text-xs">
                                 Transfer

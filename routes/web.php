@@ -32,6 +32,7 @@ Route::middleware('user')->group(function(){
     Route::get('/profile', [IndexController::class, 'profile'])->name('profile');
     Route::get('/transaction', [IndexController::class, 'transaction'])->name('transaction');
     Route::get('/wishlist', [IndexController::class, 'wishlist'])->name('wishlist');
+    Route::get('/scan',[IndexController::class, 'scanner'])->name('scanner');
     Route::prefix('cart')->group(function () {
         Route::get('/', [TransactionController::class, 'index'])->name('cart.index');
         Route::post('/', [TransactionController::class, 'sentToCart'])->name('cart.proceed');

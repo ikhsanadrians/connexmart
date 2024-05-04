@@ -2,12 +2,13 @@ import rupiah from "./utils/rupiahFormater.js";
 
 
 $(document).ready(function () {
-    calculateTotal("price")
-    calculateTotal("quantity")
+    calculateTotal("price");
+    calculateTotal("quantity");
 })
 
-
 let orderListId = []
+let totalPrices = 0
+let totalQty = 0
 
 function loadModalMessage(messageText) {
     $("#modal-message").removeClass("hidden-items")
@@ -31,12 +32,16 @@ function calculateTotal(type) {
     if (type === 'price') {
         $(".order-price-info").text(rupiah(total));
         $(".order-price-info").attr("data-prices", total)
+        totalPrices = total
     } else if (type === 'quantity') {
         $(".order-qty-info").text(total);
+        totalQty = total
     }
 
-    console.log(orderListId)
+    console.log(`Total QTY : ${totalQty} ,  Total Pric : ${totalPrices}`)
 }
+
+
 
 
 function orderListEmptyShow() {
@@ -368,7 +373,6 @@ $(".clear-order").on("click", function () {
             success: function (response) {
                 $(".item-list").empty()
                 orderListId.pop()
-                console.log(orderListId)
                 checkIfOrderEmpty()
                 $(".item-list").append(orderListEmptyShow)
                 loadModalMessage("Berhasil menghapus semua order list")
@@ -380,4 +384,118 @@ $(".clear-order").on("click", function () {
     }
 });
 
+const toggleCashierModalPayment = (option) => {
+    $(".chosee-paymentmethod").toggleClass("hidden", !option);
+    $(".backdrop").toggleClass("hidden", !option);
 
+    if (option) {
+        const RupiahAmounts = generateCloseRupiahAmounts(totalPrices)
+
+        RupiahAmounts.forEach((value, index) => {
+            $(".rupiah-amounts").append(`<div id="cash-${index + 1}" data-cashnominal="${value}" class="n-${index + 1} nominal text-center cursor-pointer border-slate-300 border-[1.3px] w-full px-4 py-3 rounded-md">${rupiah(value)}</div>`)
+        })
+
+    } else {
+        $(".rupiah-amounts").empty()
+    }
+
+}
+
+
+$(".proceed").on("click", function () {
+    toggleCashierModalPayment(true)
+})
+
+$(".back-cpm").on("click", function () {
+    toggleCashierModalPayment(false)
+})
+
+let currentPaymentMethod = ""
+let currentNominals = ""
+
+$(document).on("click", ".nominal", function (event) {
+    $(".nominal").removeClass("selected-payment");
+    $(".rupiah-check").addClass("hidden");
+
+    if (!$(event.target).hasClass("cash-amount-input")) {
+        $(".cash-amount-input").val("")
+        $(".cash-amount-input").removeClass("ring-2")
+        $(event.target).addClass("selected-payment");
+        currentPaymentMethod = event.target.id
+        currentNominals = $(event.target).attr("data-cashnominal")
+    }
+
+
+})
+
+
+
+$(".cash-amount-input").on("input", function (event) {
+    let inputVal = $(this).val();
+    inputVal = inputVal.replace(/[^0-9]/g, '');
+    inputVal = inputVal.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    $(this).val(inputVal);
+
+    if ($(this).val().length > 0 && parseInt($(this).val().replace(/\./g, '')) >= totalPrices) {
+        $(this).addClass("ring-2");
+        $(".rupiah-check").removeClass("hidden")
+        currentPaymentMethod = $(this).attr("id");
+        currentNominals = parseInt($(this).val().replace(/\./g, ''));
+    } else {
+        $(this).removeClass("ring-2");
+        $(".rupiah-check").addClass("hidden");
+    }
+})
+
+function generateCloseRupiahAmounts(baseAmount) {
+    const rupiahDenominations = [];
+    for (let i = 5000; i <= 1000000; i += 5000) {
+        rupiahDenominations.push(i);
+    }
+    const closestDenominations = rupiahDenominations.filter(denomination => denomination >= baseAmount);
+    let amounts = [baseAmount];
+    for (let i = 0; i < closestDenominations.length && amounts.length < 3; i++) {
+        amounts.push(closestDenominations[i]);
+    }
+    return amounts;
+}
+
+$(".next-confirm").on("click", function () {
+    if (currentPaymentMethod == "tenbank") {
+        $(".hint-content").empty()
+        $(".hint-content").append(`
+        <div class="qrcode flex flex-col justify-center items-start px-4 py-4">
+        <div class="grid grid-cols-2 gap-8">
+            <div class="qrcode-part">
+                <div class="qrcode-img h-72 w-72">
+                    <img src="https://store-images.s-microsoft.com/image/apps.45636.14177013144315603.a8104893-cc8d-42c3-a3a3-47afada8e1a7.d13fc2cc-4bab-4ce4-9168-db7a3f25bd3d?h=464"
+                        class="h-full w-full object-cover">
+                </div>
+            </div>
+            <div class="hint mt-4 pr-2 lg:pr-4">
+                <h1 class="text-4xl font-bold">RP. 89.600</h1>
+                <h1 class="font-semibold mt-2 text-sm">
+                    Pembayaran Untuk TenizenMart
+                </h1>
+                <ul>
+                    <li>
+                        <p class="text-sm text-slate-600">1. Scan Menggunakan TenizenBank Wallet pada homepage
+                            Website
+                            mu</p>
+                    </li>
+                    <li class="mt-2">
+                        <p class="text-sm text-slate-600">2. Masukan Nominal yang tertera</p>
+                    </li>
+                    <li class="mt-2">
+                        <p class="text-sm text-slate-600">3. Masukan PIN</p>
+                    </li>
+                    <li class="mt-2">
+                        <p class="text-sm text-slate-600">4. Pesananmu berhasil terkonfirmasi</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+        `)
+    }
+})

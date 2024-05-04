@@ -306,7 +306,8 @@
                                 <p>Total</p>
                             </div>
                             <div class="item-qty">
-                                <p><span class="order-price-info mr-1"></span>(<span class="order-qty-info">3</span>)
+                                <p><span class="order-price-info mr-1" id="order-price-payment-total"></span>(<span
+                                        class="order-qty-info">3</span>)
                                 </p>
                             </div>
                         </div>
@@ -314,7 +315,7 @@
                     <div class="button-group-cashier mt-4 grid grid-cols-2 gap-2 px-4 pt-1 pb-3">
                         <button class="clear-order border-[1.8px] border-[#303fe2] text-[#303fe2] p-2 rounded-lg">Clear
                             Order</button>
-                        <button class="bg-[#303fe2] text-white p-2 rounded-lg">Proses</button>
+                        <button class="proceed bg-[#303fe2] text-white p-2 rounded-lg">Proses</button>
                     </div>
                 </div>
             </div>

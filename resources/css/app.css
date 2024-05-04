@@ -202,6 +202,11 @@ th {
 }
 
 
+.selected-payment {
+    @apply bg-[#303fe2] text-white font-medium border-none
+}
+
+
 
 
 
@@ -215,6 +220,18 @@ th {
     top: 10px;
     right: 10px;
     transform: rotate(180deg); /* Rotate the arrow 180 degrees */
+}
+.scan {
+    animation: scan-effect 6s infinite;
+}
+
+@keyframes scan-effect {
+    0%, 100% {
+        transform: translateY(-3px);
+    }
+    50% {
+        transform: translateY(440px);
+    }
 }
 
 
