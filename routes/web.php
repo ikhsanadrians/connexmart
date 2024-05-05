@@ -33,7 +33,11 @@ Route::middleware('user')->group(function(){
     Route::get('/transaction', [IndexController::class, 'transaction'])->name('transaction');
     Route::get('/wishlist', [IndexController::class, 'wishlist'])->name('wishlist');
     Route::get('/scan',[IndexController::class, 'scanner'])->name('scanner');
+    Route::post('/scan/send',[IndexController::class,'scannerSend'])->name('scanner.send');
+    Route::put('/scan/confirm',[IndexController::class,'scannerConfirm'])->name('scanner.confirm');
+
     Route::prefix('cart')->group(function () {
+
         Route::get('/', [TransactionController::class, 'index'])->name('cart.index');
         Route::post('/', [TransactionController::class, 'sentToCart'])->name('cart.proceed');
         Route::delete('/',[TransactionController::class,'cart_delete'])->name('cart.product.delete');
@@ -46,6 +50,7 @@ Route::middleware('user')->group(function(){
         Route::put("/checkout/updatepaymentmethod", [TransactionController::class, "addPaymentMethod"])->name("checkout.update.paymentmethod");
         Route::put("/checkout/pay", [TransactionController::class, "checkoutEntry"])->name("checkout.pay");
         Route::get("/checkout/{checkout_code}/success", [TransactionController::class, "checkoutSuccess"])->name("checkout.success");
+
     });
 
 });
@@ -121,6 +126,7 @@ Route::prefix('mart')->group(function () {
             Route::post('/clearorder',[MartController::class,'clearorder'])->name("mart.cashier.clearorder");
             Route::post('/proceed',[MartController::class,'cashierProceed'])->name("mart.cashier.proceed");
             Route::get('/proceed/{checkout_code}',[MartController::class,'cashierProceedIndex'])->name("mart.cashier.proceedIndex");
+            Route::get('/example/streamed/{checkout_code}', [MartController::class, 'streamedResponseExample'])->name('mart.example.streamed');
         });
         Route::get('/logout', [MartController::class, 'martlogout'])->name('mart.logout');
     });

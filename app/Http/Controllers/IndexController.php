@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
 use App\Models\Transaction;
+use App\Models\UserCheckout;
 use Illuminate\Support\Facades\File;
 
 class IndexController extends Controller
@@ -63,8 +64,33 @@ class IndexController extends Controller
     }
 
 
-public function scanner(){
-        return view("scanner");
+    public function scanner(){
+            return view("scanner");
+    }
+
+    public function scannerSend(Request $request){
+        if($request->ajax()){
+           $transaction = UserCheckout::where("checkout_code", $request->checkout_code)->first();
+
+           return response()->json([
+               "message" => "Success, get transactions",
+               "data" => $transaction
+            ]);
+       }
+    }
+
+    public function scannerConfirm(Request $request){
+        if($request->ajax()){
+            $transaction = UserCheckout::where("checkout_code", $request->checkout_code)->first();
+            $updatedTransaction = $transaction->update([
+                "status" => "ordered"
+            ]);
+
+            return response()->json([
+                "message" => "Success, confirm transactions",
+                "data" => $updatedTransaction
+            ]);
+        }
     }
 
 

@@ -4,9 +4,11 @@ import rupiah from "./utils/rupiahFormater.js";
 $(document).ready(function () {
     calculateTotal("price");
     calculateTotal("quantity");
+    loadCurrentTransIdList()
 })
 
 let orderListId = []
+let transactionListId = []
 let totalPrices = 0
 let totalQty = 0
 
@@ -59,6 +61,13 @@ function orderListEmptyShow() {
         </div>
     </div>
 </div>`
+}
+
+
+function loadCurrentTransIdList() {
+    $(".input-quantity").each((index, transaction) => {
+        if (!transactionListId.includes($(transaction).attr("data-transid"))) transactionListId.push($(transaction).attr("data-transid"))
+    })
 }
 
 function checkIfOrderEmpty() {
@@ -147,6 +156,7 @@ $(document).on("click", ".add", function (event) {
             calculateTotal("price")
             calculateTotal("quantity")
             checkIfOrderEmpty()
+            loadCurrentTransIdList()
         },
         error: function (error) {
             return
@@ -290,6 +300,8 @@ $(document).on("click", ".decrease", function (event) {
         $(this).closest(".pickup-item").remove();
         updateQuantity(transactionId, qtyUpdatedValue, "delete");
         orderListId = orderListId.filter((id) => id !== productId)
+        transactionListId = transactionListId.filter((id) => id !== transactionId)
+        loadCurrentTransIdList()
     }
 
     checkIfOrderEmpty()
@@ -461,19 +473,34 @@ function generateCloseRupiahAmounts(baseAmount) {
 }
 
 $(".next-confirm").on("click", function () {
+    const currentUrl = "/mart/cashier/proceed"
+    const totalQuantity = totalQty
+    const totalPrice = totalPrices
+
     if (currentPaymentMethod == "tenbank") {
-        $(".hint-content").empty()
-        $(".hint-content").append(`
-        <div class="qrcode flex flex-col justify-center items-start px-4 py-4">
+        $.ajax({
+            method: "post",
+            url: currentUrl,
+            dataType: "json",
+            data: {
+                "product_list": transactionListId,
+                "total_price": totalPrice,
+                "total_quantity": totalQuantity,
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (data) {
+                $(".hint-content").empty()
+                $(".hint-content").append(`
+                <div class="qrcode flex flex-col justify-center items-start px-4 py-4">
         <div class="grid grid-cols-2 gap-8">
             <div class="qrcode-part">
                 <div class="qrcode-img h-72 w-72">
-                    <img src="https://store-images.s-microsoft.com/image/apps.45636.14177013144315603.a8104893-cc8d-42c3-a3a3-47afada8e1a7.d13fc2cc-4bab-4ce4-9168-db7a3f25bd3d?h=464"
+                    <img src="data:image/png;base64,${data.qrCodeData}"
                         class="h-full w-full object-cover">
                 </div>
             </div>
             <div class="hint mt-4 pr-2 lg:pr-4">
-                <h1 class="text-4xl font-bold">RP. 89.600</h1>
+                <h1 class="text-3xl font-bold">RP. 89.600</h1>
                 <h1 class="font-semibold mt-2 text-sm">
                     Pembayaran Untuk TenizenMart
                 </h1>
@@ -496,6 +523,68 @@ $(".next-confirm").on("click", function () {
             </div>
         </div>
     </div>
-        `)
+                 `)
+                startEventChecking(data.checkoutCode);
+                console.log(data)
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        })
     }
 })
+
+function startEventChecking(code) {
+    const currentUrl = `/mart/cashier/example/streamed/${code}`;
+    let eventSource = new EventSource(currentUrl);
+
+    eventSource.onmessage = function (event) {
+        try {
+            let checkout = JSON.parse(event.data);
+
+            if (checkout.status == "ordered") {
+                loadModalMessage("Scan Berhasil");
+                $(".hint-content").empty()
+                $(".hint-content").append(`<div class="flex justify-center items-center"><span id="loader" class="loader hidden-items mt-12"></span></div>`)
+                setTimeout(() => {
+                    $("#loader").remove();
+                    $(".hint-content").append(`<div class="success-scanning flex justify-center items-center mt-5">
+                    <div class="wrappers flex flex-col items-center gap-3">
+                        <div
+                            class="icon-check bg-gradient-to-r from-[#303fe2] to-blue-500 h-24 w-24 text-center flex items-center justify-center rounded-full">
+                            <span
+                                class="material-symbols-rounded pointer-events-none select-none text-[55px] text-white font-bold">
+                                done
+                            </span>
+                        </div>
+                        <div class="title">
+                            <h1 class="text-2xl font-semibold">Pembayaran Berhasil</h1>
+                            <div class="payment-total text-center mt-6">
+                                <p class="text-center text-slate-600">Jumlah</p>
+                                <h1 class="font-semibold text-xl" id="payment-totalprice">${rupiah(checkout.total_price)}</h1>
+                            </div>
+                            <div class="payment-total text-center mt-4">
+                                <p class="text-center text-slate-600">Dikirim Oleh</p>
+                                <h1 class="font-semibold text-xl" id="payment-sender">${checkout.user_id}</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="button absolute bottom-8 right-8">
+                        <div
+                            class="detail-button cursor-pointer bg-[#303fe2] text-white px-8 py-2 rounded-lg flex items-center gap-1">
+                            Detail
+                            <span class="material-symbols-rounded">
+                                arrow_forward
+                            </span>
+                        </div>
+                    </div>
+                 </div>`
+                    )
+                }, 2000);
+                eventSource.close();
+            }
+        } catch (error) {
+            return;
+        }
+    };
+}

@@ -1,8 +1,8 @@
 @extends('layouts.master')
 @section('content')
-    <div class="scanner flex flex-col justify-center  overflow-y-hidden bg-slate-100 h-full pb-16">
+    <div class="scanner flex flex-col justify-center  overflow-y-hidden h-full pb-16">
         <div class="preview flex justify-center relative overflow-hidden">
-            <div class="video-preview overflow-hidden h-[30rem]">
+            <div class="video-preview overflow-hidden h-[26rem]">
                 <video id="preview" class="object-cover"></video>
             </div>
             <div class="scan-effect scan absolute h-48 opacity-30 overflow-hidden">
@@ -26,6 +26,8 @@
             <p class="text-center text-sm font-medium">Ketik Kode Manual</p>
            </div>
         </div>
+
+        <p class="text-center mt-2 text-slate-300 absolute bottom-4 left-5">TenizenBank Scanner V 0.1</p>
     </div>
     @include('components.modalsuccesscan')
 @endsection

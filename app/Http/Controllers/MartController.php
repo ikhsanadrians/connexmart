@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Transaction;
 use App\Models\UserCheckout;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+
 
 class MartController extends Controller
 {
@@ -321,10 +324,15 @@ class MartController extends Controller
                   "status" => "pending"
              ]);
 
+             $qrCodeData = QrCode::format('png')->margin(1)->size(512)->generate($checkout_code);
+             $formatedBase64QrCode = base64_encode($qrCodeData);
+
+
              return response()->json([
-                "message" => "success, checkout user",
-                "checkout_code" => $data->checkout_code
-             ]);
+                "qrCodeData" => $formatedBase64QrCode,
+                "checkoutCode" => $checkout_code
+              ]);
+
         }
   }
 
@@ -345,6 +353,23 @@ class MartController extends Controller
       return view("mart.cashierproceed", compact("transactions", "checkouts"));
 
   }
+
+
+  public function streamedResponseExample(string $checkout_code) {
+    $checkout = UserCheckout::where("checkout_code", $checkout_code)->first();
+
+    $response = new StreamedResponse(function() use ($checkout) {
+        echo "data: " . json_encode($checkout) . "\n\n";
+        ob_flush();
+        flush();
+    });
+
+    $response->headers->set('Content-Type', 'text/event-stream');
+    $response->headers->set('Cache-Control', 'no-cache');
+    $response->headers->set('Connection', 'keep-alive');
+
+    return $response;
+}
 
   public function martlogout()
   {

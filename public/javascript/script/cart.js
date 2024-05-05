@@ -34,7 +34,7 @@ function calculateTotal(type) {
 }
 
 function checkIfCheckboxAll() {
-    const checkboxCheckoutAtStorage = Object.keys(localStorage).filter(key => key !== "payment_method");
+    const checkboxCheckoutAtStorage = Object.keys(localStorage).filter(key => key !== "payment_method" && key !== "HTML5_QRCODE_DATA");
 
     $("#checkallproduct").prop("checked", (checkboxCheckoutAtStorage.length === checkboxCheckout.length && (localStorage.length >= 1 && checkboxCheckout.length >= 1)));
     $("#checkproductall-dekstop").prop("checked", (checkboxCheckoutAtStorage.length === checkboxCheckout.length && (localStorage.length >= 1 && checkboxCheckout.length >= 1)));
@@ -236,7 +236,7 @@ $('.cart-input-quantity').on("input", function (e) {
     }
 })
 
- 
+
 
 
 function openModal() {

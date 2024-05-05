@@ -1,11 +1,68 @@
 let currentCameraPosition = 1;
 let scanner = new Instascan.Scanner({ video: document.getElementById('preview'), mirror: false });
 let camerasAvailable = [];
+let checkoutCode = "";
+
+
+const rupiah = (number) => {
+    return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR"
+    }).format(number).replace(/,00$/, '');
+}
+
+
+function scannerGetValue(content) {
+    const currentUrl = '/scan/send'
+    $.ajax({
+        url: currentUrl,
+        method: 'post',
+        dataType: 'json',
+        data: {
+            "checkout_code": content,
+            _token: $('meta[name="csrf-token"]').attr('content'),
+        },
+        success: function (response) {
+            $("#success-scan").removeClass("hidden-items").addClass("visible-items");
+            $("#transaction-price").text(rupiah(response.data.total_price))
+            $("#transaction-code").text(response.data.checkout_code)
+            $("#transaction-timestamp").text(response.data.updated_at)
+            $("#transaction")
+        },
+        error: function (error) {
+            return
+        }
+    });
+}
+
+
+function scannerConfirm() {
+    const currentUrl = '/scan/confirm'
+    $.ajax({
+        url: currentUrl,
+        method: 'put',
+        dataType: 'json',
+        data: {
+            "checkout_code": checkoutCode,
+            _token: $('meta[name="csrf-token"]').attr('content'),
+        },
+        success: function (response) {
+            alert("Berhasil Bosku")
+        },
+        error: function (error) {
+            return
+        }
+    });
+}
 
 scanner.addListener('scan', function (content, image) {
-    $("#success-scan").removeClass("hidden-items").addClass("visible-items");
-    $(".scanner-text").text(content);
+    scannerGetValue(content)
+    checkoutCode = content
 });
+
+$(".scanner-confirm-button").on("click", function () {
+    scannerConfirm()
+})
 
 Instascan.Camera.getCameras().then(function (cameras) {
     camerasAvailable = cameras;

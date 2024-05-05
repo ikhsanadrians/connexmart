@@ -29,8 +29,8 @@
     <script type="module" src="{{ asset('javascript/script/scanner.js') }}"></script>
 
     @if(!Route::is('scanner'))
-       @include('components.mobilebottomnav')
-       @include('components.footer')
+    @include('components.footer')
+    @include('components.mobilebottomnav')
     @endif
     @if (Route::is('show.product'))
         @include('components.cartmessagemodal')
