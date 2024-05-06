@@ -64,37 +64,6 @@ class IndexController extends Controller
     }
 
 
-    public function scanner(){
-            return view("scanner");
-    }
-
-    public function scannerSend(Request $request){
-        if($request->ajax()){
-           $transaction = UserCheckout::where("checkout_code", $request->checkout_code)->first();
-
-           return response()->json([
-               "message" => "Success, get transactions",
-               "data" => $transaction
-            ]);
-       }
-    }
-
-    public function scannerConfirm(Request $request){
-        if($request->ajax()){
-            $transaction = UserCheckout::where("checkout_code", $request->checkout_code)->first();
-            $updatedTransaction = $transaction->update([
-                "status" => "ordered"
-            ]);
-
-            return response()->json([
-                "message" => "Success, confirm transactions",
-                "data" => $updatedTransaction
-            ]);
-        }
-    }
-
-
-
     public function profile(){
        $transactions =  Transaction::with('product')->where('user_id', Auth::user()->id)->where('user_id',Auth::user()->id)->orderBy('created_at','desc')->get();
 

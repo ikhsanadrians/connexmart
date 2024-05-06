@@ -23,14 +23,25 @@ function scannerGetValue(content) {
             _token: $('meta[name="csrf-token"]').attr('content'),
         },
         success: function (response) {
-            $("#success-scan").removeClass("hidden-items").addClass("visible-items");
-            $("#transaction-price").text(rupiah(response.data.total_price))
-            $("#transaction-code").text(response.data.checkout_code)
-            $("#transaction-timestamp").text(response.data.updated_at)
-            $("#transaction")
+            if (response.data == "balance_not_enough") {
+                $(".content-confirm").empty();
+                $(".content-confirm").append(`
+                 <div class="balance-ntenough mt-3">
+                   <h1 class="text-xl font-semibold">Maaf, Saldo anda tidak mencukupi untuk melakukan transaksi ini</h1>
+                   <p class="mt-1">Silahkan melakukan TopUp terlebih dahulu, di Bank Tenizen lantai 1</p>
+                  </div>`
+                )
+            } else {
+                $("#success-scan").removeClass("hidden-items").addClass("visible-items");
+                $("#transaction-price").text(rupiah(response.data.total_price))
+                $("#transaction-code").text(response.data.checkout_code)
+                $("#transaction-timestamp").text(response.data.updated_at)
+                $("#transaction-qty").text(response.data.total_quantity)
+            }
         },
         error: function (error) {
-            return
+            $("#success-scan").removeClass("hidden-items").addClass("visible-items");
+            $("#transaction-code").text(error)
         }
     });
 }
@@ -46,8 +57,25 @@ function scannerConfirm() {
             "checkout_code": checkoutCode,
             _token: $('meta[name="csrf-token"]').attr('content'),
         },
+        statusCode: {
+            401: function (response) {
+                $(".content-confirm").empty();
+                $(".content-confirm").append(`
+                    <div class="balance-ntenough mt-3">
+                        <h1 class="text-xl font-semibold">${response.responseJSON.message}</h1>
+                        <p class="mt-1">Silahkan melakukan TopUp terlebih dahulu, di Bank Tenizen lantai 1</p>
+                    </div>
+                `);
+                loadModalMessage("Saldo Tidak Mencukupi!");
+            }
+        },
         success: function (response) {
-            alert("Berhasil Bosku")
+            $(".content-confirm").empty();
+            $(".content-confirm").append(`
+            <div class="balance-ntenough mt-3">
+              <h1 class="text-xl font-semibold">Pembayaran Berhasil</h1>
+              <p class="mt-1">Ceritanya Pembayaran Berhasil</p>
+            </div>`)
         },
         error: function (error) {
             return

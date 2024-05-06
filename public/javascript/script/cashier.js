@@ -586,6 +586,7 @@ function startEventChecking(code) {
                     $(".hint-content").append(displaySuccessPayment(checkout))
                 }, 2000);
                 eventSource.close();
+                window.location.href = `/mart/cashier/${checkout.checkout_code}/success`
             }
         } catch (error) {
             return;

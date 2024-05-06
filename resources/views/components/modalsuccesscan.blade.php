@@ -15,36 +15,40 @@
                 </span>
             </button>
         </div>
-        <div class="scanner-content mt-3">
-            <div class="scanner-price">
-                <h1 id="transaction-price" class="text-3xl font-semibold"></h1>
+        <div class="content-confirm">
+            <div class="scanner-content mt-3">
+                <div class="scanner-price">
+                    <h1 id="transaction-price" class="text-3xl font-semibold"></h1>
+                </div>
+                <div class="scanner-message mt-1 text-slate-500">
+                    <p>
+                        Pembayaran Pembelian TenizenMart
+                    </p>
+                </div>
+                <div class="scanner-code mt-2">
+                    <label for="" class="text-sm text-slate-500 font-medium">Kode Transaksi</label>
+                    <h1 id="transaction-code" class="text-xl font-semibold"></h1>
+                </div>
+                <div class="scanner-timestamp">
+                    <label for="" class="text-sm text-slate-500 font-medium">Tanggal Transaksi</label>
+                    <h1 id="transaction-timestamp" class="text-xl font-semibold"></h1>
+                </div>
+                <div class="scanner-qty">
+                    <label for="" class="text-sm text-slate-500 font-medium">Kuantitas</label>
+                    <h1 id="transaction-qty" class="text-xl font-semibold"></h1>
+                </div>
             </div>
-            <div class="scanner-message mt-1 text-slate-500">
-                <p>
-                    Pembayaran Pembelian TenizenMart
-                </p>
-            </div>
-            <div class="scanner-code mt-2">
-                <label for="" class="text-sm text-slate-500 font-medium">Kode Transaksi</label>
-                <h1 id="transaction-code" class="text-xl font-semibold"></h1>
-            </div>
-            <div class="scanner-timestamp">
-                <label for="" class="text-sm text-slate-500 font-medium">Tanggal Transaksi</label>
-                <h1 id="transaction-timestamp" class="text-xl font-semibold"></h1>
-            </div>
-            <div class="scanner-qty">
-                <label for="" class="text-sm text-slate-500 font-medium">Kuantitas</label>
-                <h1 id="transaction-qty" class="text-xl font-semibold"></h1>
+            <div class="scanner-confirm-button cursor-pointer flex justify-end mt-2">
+                <div
+                    class="button bg-[#303fe2] text-white py-3 px-5 font-medium rounded-3xl flex items-center gap-1 w-fit">
+                    Konfirmasi
+                    <span class="material-symbols-rounded">
+                        verified_user
+                    </span>
+                </div>
             </div>
         </div>
-        <div class="scanner-confirm-button cursor-pointer flex justify-end mt-2">
-            <div class="button bg-[#303fe2] text-white py-3 px-5 font-medium rounded-3xl flex items-center gap-1 w-fit">
-                Konfirmasi
-                <span class="material-symbols-rounded">
-                    verified_user
-                </span>
-            </div>
-        </div>
+
     </div>
 
 </div>

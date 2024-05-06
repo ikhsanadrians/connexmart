@@ -67,7 +67,6 @@
                         <div
                             class="card mt-2 lg:mt-3 @if (!$loop->last) border-b-[1.2px] border-gray-200 @endif rounded-lg relative py-4 px-5 shadow-sm bg-white">
                             <div class="detailandcheckbox flex items-start gap-3">
-
                                 <div class="product-detail flex items-start gap-3">
                                     <div class="product-images">
                                         <div class="img h-16 w-16 rounded-lg overflow-hidden">

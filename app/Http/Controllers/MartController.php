@@ -371,6 +371,23 @@ class MartController extends Controller
     return $response;
 }
 
+public function cashierSuccessDetail(string $checkout_code){
+      $checkouts = UserCheckout::where("checkout_code", $checkout_code)->first();
+
+      if(!$checkouts) return view("errors.404");
+
+      $product_list = json_decode($checkouts->product_list);
+
+      $transactions = Transaction::whereIn("id", $product_list)->with('product')->where("user_id", Auth::user()->id)->get();
+
+      foreach($transactions as $transaction){
+        $transaction->totalPricePerTransaction = ($transaction->product->price * $transaction->quantity);
+    }
+
+
+      return view("mart.cashiersuccess", compact("transactions","checkouts"));
+  }
+
   public function martlogout()
   {
     Auth::logout();

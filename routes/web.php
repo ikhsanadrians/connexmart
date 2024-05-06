@@ -5,6 +5,7 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BankController;
 use App\Http\Controllers\MartController;
+use App\Http\Controllers\ScannerController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,9 +33,9 @@ Route::middleware('user')->group(function(){
     Route::get('/profile', [IndexController::class, 'profile'])->name('profile');
     Route::get('/transaction', [IndexController::class, 'transaction'])->name('transaction');
     Route::get('/wishlist', [IndexController::class, 'wishlist'])->name('wishlist');
-    Route::get('/scan',[IndexController::class, 'scanner'])->name('scanner');
-    Route::post('/scan/send',[IndexController::class,'scannerSend'])->name('scanner.send');
-    Route::put('/scan/confirm',[IndexController::class,'scannerConfirm'])->name('scanner.confirm');
+    Route::get('/scan',[ScannerController::class, 'scanner'])->name('scanner');
+    Route::post('/scan/send',[ScannerController::class,'scannerSend'])->name('scanner.send');
+    Route::put('/scan/confirm',[ScannerController::class,'scannerConfirm'])->name('scanner.confirm');
 
     Route::prefix('cart')->group(function () {
 
@@ -125,8 +126,8 @@ Route::prefix('mart')->group(function () {
             Route::post('/search',[MartController::class,'search'])->name("mart.cashier.search");
             Route::post('/clearorder',[MartController::class,'clearorder'])->name("mart.cashier.clearorder");
             Route::post('/proceed',[MartController::class,'cashierProceed'])->name("mart.cashier.proceed");
-            Route::get('/proceed/{checkout_code}',[MartController::class,'cashierProceedIndex'])->name("mart.cashier.proceedIndex");
-            Route::get('/stream/{checkout_code}', [MartController::class, 'streamedResponseCheckout'])->name('mart.stream.checkout');
+            Route::get('/stream/{checkout_code}', [MartController::class, 'streamResponseCheckout'])->name('mart.stream.checkout');
+            Route::get('/{checkout_code}/success',[MartController::class, 'cashierSuccessDetail'])->name('mart.cashier.proceedSuccess');
         });
         Route::get('/logout', [MartController::class, 'martlogout'])->name('mart.logout');
     });

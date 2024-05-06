@@ -216,11 +216,11 @@ class TransactionController extends Controller
             $address = Auth::user()->address;
 
              if($request->payment_method == "tb-1" || $request->payment_method == "tb-2"){
-                $user_wallet = Auth::user()->wallet;
+                $user_wallet = Wallet::where("user_id", Auth::user()->id)->first();
                 $user_checkout = UserCheckout::where("checkout_code", $checkoutCode)->where("user_id", Auth::user()->id)->first();
                 $total_price = $user_checkout->total_price;
 
-                if($user_wallet < $total_price){
+                if($user_wallet->credit < $total_price){
                    return response()->json([
                        "message" => "failed, wallet not enough"
                    ],401);
@@ -254,13 +254,15 @@ class TransactionController extends Controller
                     "address_order" => $address
                 ]);
 
-                $updatedBalanceCredit = $user_wallet->credit -= $total_price;
-                $updatedBalanceDebit = $user_wallet->debit += $total_price;
+
+                $updatedBalanceCredit = ($user_wallet->credit -= $total_price);
+                $updatedBalanceDebit =  ($user_wallet->debit += $total_price);
 
                 $user_wallet->update([
                     "credit" => $updatedBalanceCredit,
                     "debit" => $updatedBalanceDebit
                 ]);
+
 
                 return response()->json([
                     "message" => "success, checkout",
