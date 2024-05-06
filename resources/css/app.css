@@ -245,3 +245,12 @@ th {
     }
 }
 
+
+
+.icon-check {
+    @apply bg-gradient-to-r from-[#303fe2] to-blue-500 h-24 w-24  text-center flex items-center justify-center rounded-full
+}
+
+.icon-check > span {
+    @apply pointer-events-none select-none text-[55px] text-white font-bold
+}

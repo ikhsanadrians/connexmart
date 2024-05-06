@@ -1,5 +1,5 @@
 <div
-    class="chosee-paymentmethod fixed lg:top-16 bottom-0  z-50 w-full lg:w-[45%]  bg-white  h-fit lg:h-4/5 -translate-x-1/2 left-1/2 shadow-lg overflow-hidden lg:rounded-xl rounded-t-xl">
+    class="chosee-paymentmethod hidden fixed lg:top-16 bottom-0  z-50 w-full lg:w-[45%]  bg-white  h-fit lg:h-4/5 -translate-x-1/2 left-1/2 shadow-lg overflow-hidden lg:rounded-xl rounded-t-xl">
     <div class="wrappers flex items-center justify-between py-4 px-4 lg:px-8 border-b-[1.5px] gap-4">
         <div class="back-and-title flex items-center gap-4">
             <div class="back-cpm cursor-pointer">

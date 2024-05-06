@@ -355,7 +355,7 @@ class MartController extends Controller
   }
 
 
-  public function streamedResponseExample(string $checkout_code) {
+  public function streamResponseCheckout(string $checkout_code) {
     $checkout = UserCheckout::where("checkout_code", $checkout_code)->first();
 
     $response = new StreamedResponse(function() use ($checkout) {

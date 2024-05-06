@@ -490,40 +490,40 @@ $(".next-confirm").on("click", function () {
             },
             success: function (data) {
                 $(".hint-content").empty()
-                $(".hint-content").append(`
-                <div class="qrcode flex flex-col justify-center items-start px-4 py-4">
-        <div class="grid grid-cols-2 gap-8">
-            <div class="qrcode-part">
-                <div class="qrcode-img h-72 w-72">
-                    <img src="data:image/png;base64,${data.qrCodeData}"
-                        class="h-full w-full object-cover">
-                </div>
-            </div>
-            <div class="hint mt-4 pr-2 lg:pr-4">
-                <h1 class="text-3xl font-bold">RP. 89.600</h1>
-                <h1 class="font-semibold mt-2 text-sm">
-                    Pembayaran Untuk TenizenMart
-                </h1>
-                <ul>
-                    <li>
-                        <p class="text-sm text-slate-600">1. Scan Menggunakan TenizenBank Wallet pada homepage
-                            Website
-                            mu</p>
-                    </li>
-                    <li class="mt-2">
-                        <p class="text-sm text-slate-600">2. Masukan Nominal yang tertera</p>
-                    </li>
-                    <li class="mt-2">
-                        <p class="text-sm text-slate-600">3. Masukan PIN</p>
-                    </li>
-                    <li class="mt-2">
-                        <p class="text-sm text-slate-600">4. Pesananmu berhasil terkonfirmasi</p>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-                 `)
+                addLoader()
+                setTimeout(() => {
+                    $("#loader").parent().remove();
+                    $(".hint-content").append(`
+                    <div class="qrcode flex flex-col justify-center items-start px-4 py-4">
+                        <div class="grid grid-cols-2 gap-8">
+                            <div class="qrcode-part">
+                                <div class="qrcode-img h-72 w-72">
+                                    <img src="data:image/png;base64,${data.qrCodeData}" class="h-full w-full object-cover">
+                                </div>
+                            </div>
+                            <div class="hint mt-4 pr-2 lg:pr-4">
+                                <h1 class="text-3xl font-bold">RP. 89.600</h1>
+                                <h1 class="font-semibold mt-2 text-sm">Pembayaran Untuk TenizenMart</h1>
+                                <ul>
+                                    <li>
+                                        <p class="text-sm text-slate-600">1. Scan Menggunakan TenizenBank Wallet pada homepage Website mu</p>
+                                    </li>
+                                    <li class="mt-2">
+                                        <p class="text-sm text-slate-600">2. Masukan Nominal yang tertera</p>
+                                    </li>
+                                    <li class="mt-2">
+                                        <p class="text-sm text-slate-600">3. Masukan PIN</p>
+                                    </li>
+                                    <li class="mt-2">
+                                        <p class="text-sm text-slate-600">4. Pesananmu berhasil terkonfirmasi</p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    `)
+                }, 2000)
+
                 startEventChecking(data.checkoutCode);
                 console.log(data)
             },
@@ -533,9 +533,44 @@ $(".next-confirm").on("click", function () {
         })
     }
 })
+function displaySuccessPayment(checkout) {
+    return `
+    <div class="success-scanning flex justify-center items-center mt-5">
+        <div class="wrappers flex flex-col items-center gap-3">
+            <div class="icon-check">
+                <span class="material-symbols-rounded">done</span>
+            </div>
+            <div class="title">
+                <h1 class="text-2xl font-semibold text-center">Pembayaran Berhasil</h1>
+                <div class="payment-total text-center mt-6">
+                    <p class="text-center text-slate-600">Jumlah</p>
+                    <h1 class="font-semibold text-xl" id="payment-totalprice">${rupiah(checkout.total_price)}</h1>
+                </div>
+                <div class="payment-total text-center mt-4">
+                    <p class="text-center text-slate-600">Dikirim Oleh</p>
+                    <h1 class="font-semibold text-xl" id="payment-sender">${checkout.user_id}</h1>
+                </div>
+            </div>
+        </div>
+        <div class="button absolute bottom-8 right-8">
+            <div class="detail-button cursor-pointer bg-[#303fe2] text-white px-8 py-2 rounded-lg flex items-center gap-1">
+                Detail
+                <span class="material-symbols-rounded">arrow_forward</span>
+            </div>
+        </div>
+    </div>
+    `;
+}
+
+
+function addLoader() {
+    $(".hint-content").append(`<div class="flex justify-center items-center"><span id="loader" class="loader hidden-items mt-12"></span></div>`)
+}
+
+
 
 function startEventChecking(code) {
-    const currentUrl = `/mart/cashier/example/streamed/${code}`;
+    const currentUrl = `/mart/cashier/stream/${code}`;
     let eventSource = new EventSource(currentUrl);
 
     eventSource.onmessage = function (event) {
@@ -545,41 +580,10 @@ function startEventChecking(code) {
             if (checkout.status == "ordered") {
                 loadModalMessage("Scan Berhasil");
                 $(".hint-content").empty()
-                $(".hint-content").append(`<div class="flex justify-center items-center"><span id="loader" class="loader hidden-items mt-12"></span></div>`)
+                addLoader()
                 setTimeout(() => {
-                    $("#loader").remove();
-                    $(".hint-content").append(`<div class="success-scanning flex justify-center items-center mt-5">
-                    <div class="wrappers flex flex-col items-center gap-3">
-                        <div
-                            class="icon-check bg-gradient-to-r from-[#303fe2] to-blue-500 h-24 w-24 text-center flex items-center justify-center rounded-full">
-                            <span
-                                class="material-symbols-rounded pointer-events-none select-none text-[55px] text-white font-bold">
-                                done
-                            </span>
-                        </div>
-                        <div class="title">
-                            <h1 class="text-2xl font-semibold">Pembayaran Berhasil</h1>
-                            <div class="payment-total text-center mt-6">
-                                <p class="text-center text-slate-600">Jumlah</p>
-                                <h1 class="font-semibold text-xl" id="payment-totalprice">${rupiah(checkout.total_price)}</h1>
-                            </div>
-                            <div class="payment-total text-center mt-4">
-                                <p class="text-center text-slate-600">Dikirim Oleh</p>
-                                <h1 class="font-semibold text-xl" id="payment-sender">${checkout.user_id}</h1>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="button absolute bottom-8 right-8">
-                        <div
-                            class="detail-button cursor-pointer bg-[#303fe2] text-white px-8 py-2 rounded-lg flex items-center gap-1">
-                            Detail
-                            <span class="material-symbols-rounded">
-                                arrow_forward
-                            </span>
-                        </div>
-                    </div>
-                 </div>`
-                    )
+                    $("#loader").parent().remove();
+                    $(".hint-content").append(displaySuccessPayment(checkout))
                 }, 2000);
                 eventSource.close();
             }

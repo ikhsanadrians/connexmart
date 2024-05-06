@@ -126,7 +126,7 @@ Route::prefix('mart')->group(function () {
             Route::post('/clearorder',[MartController::class,'clearorder'])->name("mart.cashier.clearorder");
             Route::post('/proceed',[MartController::class,'cashierProceed'])->name("mart.cashier.proceed");
             Route::get('/proceed/{checkout_code}',[MartController::class,'cashierProceedIndex'])->name("mart.cashier.proceedIndex");
-            Route::get('/example/streamed/{checkout_code}', [MartController::class, 'streamedResponseExample'])->name('mart.example.streamed');
+            Route::get('/stream/{checkout_code}', [MartController::class, 'streamedResponseCheckout'])->name('mart.stream.checkout');
         });
         Route::get('/logout', [MartController::class, 'martlogout'])->name('mart.logout');
     });
