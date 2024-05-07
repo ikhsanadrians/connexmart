@@ -10,6 +10,26 @@ const rupiah = (number) => {
         currency: "IDR"
     }).format(number).replace(/,00$/, '');
 }
+$(document).ready(function () {
+    isDesktop()
+})
+
+function isDesktop() {
+    const md = new MobileDetect(navigator.userAgent)
+    if (!md.mobile()) {
+        $(".scanner").empty().append(`
+        <div class="container w-full mx-auto flex justify-center pt-16">
+            <div class="col flex flex-col items-center">
+                <img src="../../images/static/tenizenmart.png" alt="" class="h-16">
+                <h1 class="text-2xl text-center lg:text-3xl w-4/5 font-semibold mt-8">Waduh, sepertinya perangkat mu tidak support</h1>
+                <p class="mt-2 text-lg lg:text-xl">Kembali ke <a href="{{ route('home') }}"
+                        class="underline underline-offset-2 hover:text-2xl duration-200">Homepage</a></p>
+            </div>
+         </div>
+          `)
+    }
+
+}
 
 
 function scannerGetValue(content) {

@@ -19,7 +19,6 @@
             <p class="mt-2 text-lg lg:text-xl">Kembali ke <a href="{{ route('home') }}"
                     class="underline underline-offset-2 hover:text-2xl duration-200">Homepage</a></p>
         </div>
-
     </div>
 </body>
 

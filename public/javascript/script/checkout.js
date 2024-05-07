@@ -235,7 +235,7 @@ function removeProductChecked() {
 function payCheckout() {
     const url = window.location.href;
     const checkoutCode = url.substring(url.lastIndexOf('/') + 1);
-    const paymentMethod = $("#payment-method-box").attr("data-paymentmethod")
+    const paymentMethod = $("#payment-method-box").attr("data-latestpaymentmethod")
 
     $.ajax({
         url: '/cart/checkout/pay',
@@ -248,7 +248,8 @@ function payCheckout() {
         },
         success: function (data) {
             removeProductChecked()
-            window.location.href = "/cart/checkout/" + checkoutCode + "/success";
+            // window.location.href = "/cart/checkout/" + checkoutCode + "/success";
+            console.log(data)
         },
         error: function (error) {
             loadModalMessage("Gagal Membayar")

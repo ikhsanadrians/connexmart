@@ -266,6 +266,7 @@ class TransactionController extends Controller
 
                 return response()->json([
                     "message" => "success, checkout",
+                    "type" => "tb"
                 ]);
 
              }
@@ -303,6 +304,8 @@ class TransactionController extends Controller
 
              return response()->json([
                 "message" => "success, checkout",
+                "type" => "no_tb",
+                "req" => $request->payment_method
 
              ]);
 

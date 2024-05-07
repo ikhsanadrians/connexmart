@@ -26,11 +26,12 @@
     <script type="module" src="{{ asset('javascript/script/topup.js') }}"></script>
     <script type="module" src="{{ asset('javascript/script/detail.js') }}"></script>
     <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+    <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/mobile-detect/1.4.5/mobile-detect.min.js"></script>
     <script type="module" src="{{ asset('javascript/script/scanner.js') }}"></script>
 
-    @if(!Route::is('scanner'))
-    @include('components.footer')
-    @include('components.mobilebottomnav')
+    @if (!Route::is('scanner'))
+        @include('components.footer')
+        @include('components.mobilebottomnav')
     @endif
     @if (Route::is('show.product'))
         @include('components.cartmessagemodal')
