@@ -388,6 +388,37 @@ public function cashierSuccessDetail(string $checkout_code){
       return view("mart.cashiersuccess", compact("transactions","checkouts"));
   }
 
+
+  public function transactions() {
+    $userCheckouts = UserCheckout::whereIn("status", ["ordered","taken","canceled"])->get();
+
+    foreach($userCheckouts as $userCheckout) {
+        $productList = json_decode($userCheckout->product_list);
+        $transactions = Transaction::with("product")->where("status", "checkedout")
+            ->whereIn("id", $productList)
+            ->get();
+
+            $userCheckout->products = $transactions;
+    }
+
+
+    return view("mart.transactions", compact("userCheckouts"));
+
+}
+
+ public function transaction_detail(string $checkout_code){
+     $userCheckouts = UserCheckout::where("checkout_code", $checkout_code)->first();
+     $productListCheckout = json_decode($userCheckouts->product_list);
+     $transactions = Transaction::whereIn("id", $productListCheckout)->with("product")->get();
+
+     foreach($transactions as $transaction){
+        $transaction->totalPricePerTransaction = ($transaction->product->price * $transaction->quantity);
+     }
+
+     return view("mart.transactiondetail", compact("userCheckouts", "transactions"));
+ }
+
+
   public function martlogout()
   {
     Auth::logout();

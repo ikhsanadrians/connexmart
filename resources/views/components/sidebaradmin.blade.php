@@ -157,7 +157,7 @@
 
                 Tambah Kategori
             </a>
-            <a href="{{ route('entry.index') }}"
+            <a href="{{ route('mart.transactions') }}"
                 class="flex hover:bg-slate-300 hover:text-[#003034] rounded transition text-sm items-center gap-3 px-3 py-2 @if (request()->routeIs('entry.index')) bg-gradient-to-r from-gray-200 to-white text-[#003034] rounded-md font-semibold @endif">
                 <svg width="21" height="16" viewBox="0 0 21 16" fill="none"
                     xmlns="http://www.w3.org/2000/svg">
@@ -176,7 +176,6 @@
                         fill="white" stroke="white" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round" />
                 </svg>
-
                 Daftar Transaksi
             </a>
             <a href="{{ route('mart.cashier') }}"

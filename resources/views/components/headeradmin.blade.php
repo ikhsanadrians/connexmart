@@ -6,7 +6,8 @@
                     <img src="{{ asset('images/static/tenizenmart.png') }}" alt="connexmart"
                         class="h-8 @if (Route::is('home')) block @else lg:block hidden @endif">
                     <p class="font-semibold text-xl text-[#303fe2] lg:block hidden">
-                        TenizenMart</p>
+                        TenizenMart
+                    </p>
                 </a>
             </div>
         </div>

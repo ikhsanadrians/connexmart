@@ -20,4 +20,8 @@ class UserCheckout extends Model
         "address_order"
     ];
 
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
 }

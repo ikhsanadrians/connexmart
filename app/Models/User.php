@@ -64,6 +64,10 @@ class User extends Authenticatable
         return $this->belongsTo(Roles::class,'role_id');
     }
 
+    public function userCheckouts(){
+        return $this->hasMany(UserCheckout::class);
+    }
+
 
 
 }

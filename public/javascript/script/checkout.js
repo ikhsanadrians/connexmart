@@ -248,8 +248,7 @@ function payCheckout() {
         },
         success: function (data) {
             removeProductChecked()
-            // window.location.href = "/cart/checkout/" + checkoutCode + "/success";
-            console.log(data)
+            window.location.href = "/cart/checkout/" + checkoutCode + "/success";
         },
         error: function (error) {
             loadModalMessage("Gagal Membayar")

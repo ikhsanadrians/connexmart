@@ -38,7 +38,6 @@ Route::middleware('user')->group(function(){
     Route::put('/scan/confirm',[ScannerController::class,'scannerConfirm'])->name('scanner.confirm');
 
     Route::prefix('cart')->group(function () {
-
         Route::get('/', [TransactionController::class, 'index'])->name('cart.index');
         Route::post('/', [TransactionController::class, 'sentToCart'])->name('cart.proceed');
         Route::delete('/',[TransactionController::class,'cart_delete'])->name('cart.product.delete');
@@ -118,7 +117,8 @@ Route::prefix('mart')->group(function () {
         Route::post('/goods', [MartController::class, 'goodpost'])->name('mart.addgoods');
         Route::put('/goods/update', [MartController::class, 'goodsupdate'])->name('mart.updategoods');
         Route::delete('/goods', [MartController::class, 'goodsdelete'])->name('mart.deletegoods');
-        Route::get('/entrytransaction', [MartController::class, 'entrytransaction'])->name('mart.entrytransaction');
+        Route::get('/transactions', [MartController::class, 'transactions'])->name('mart.transactions');
+        Route::get('/transaction/{checkout_code}',[MartController::class,'transaction_detail'])->name('mart.transaction.detail');
         Route::prefix("/cashier")->group(function(){
             Route::get('/',[MartController::class,'cashier'])->name("mart.cashier");
             Route::post('/addorder',[MartController::class, 'cashierAddToOrderList'])->name("mart.cashier.addorder");
