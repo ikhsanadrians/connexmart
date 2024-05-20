@@ -119,6 +119,7 @@ Route::prefix('mart')->group(function () {
         Route::delete('/goods', [MartController::class, 'goodsdelete'])->name('mart.deletegoods');
         Route::get('/transactions', [MartController::class, 'transactions'])->name('mart.transactions');
         Route::get('/transaction/{checkout_code}',[MartController::class,'transaction_detail'])->name('mart.transaction.detail');
+        Route::post('/transaction/search',[MartController::class,'transactions_search'])->name("mart.transactions.search");
         Route::prefix("/cashier")->group(function(){
             Route::get('/',[MartController::class,'cashier'])->name("mart.cashier");
             Route::post('/addorder',[MartController::class, 'cashierAddToOrderList'])->name("mart.cashier.addorder");

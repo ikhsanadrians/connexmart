@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" type="image/png" href="{{ asset('images/static/tenizenmart.png') }}">
+    <link rel="stylesheet" href="{{ asset('css/select2.css') }}">
     <title>Admin</title>
     @vite('resources/css/app.css')
 </head>
@@ -26,6 +27,8 @@
     <div class="backdrop hidden  bg-slate-900/70 fixed top-0 w-full h-full  z-40">
     </div>
     <script type="module" src="{{ asset('javascript/lib/jquery.min.js') }}"></script>
+    <script type="module" src="{{ asset('javascript/lib/select2.min.js') }}"></script>
+    <script type="module" src="{{ asset('javascript/script/transactions.js') }}"></script>
     <script type="module" src="{{ asset('javascript/script/admin.js') }}"></script>
 </body>
 
