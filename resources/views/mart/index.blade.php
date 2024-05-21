@@ -64,6 +64,11 @@
             </div>
         </div>
     </div>
+    {!! $charts->container() !!}
+
+    <script src="{{ $charts->cdn() }}"></script>
+
+    {{ $charts->script() }}
     {{-- <div class="grid grid-cols-2 gap-4 mt-8">
     <div class="notification bg-gradient-to-r shadow-md p-6 from-[#003034] to-gray-800 h-full  rounded-md">
         <div class="wrappers flex gap-8">

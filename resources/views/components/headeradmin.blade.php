@@ -10,6 +10,15 @@
                     </p>
                 </a>
             </div>
+            @if (Auth::user()->role_id == 3)
+                <div class="cashier-shift bg-[#303fe2] rounded-md px-6 text-white py-1">
+                    <p class="text-xs">Shift Berjalan</p>
+                    <p class="text-sm font-semibold">
+                        {{ $cashier_shifts->cashier_name }}
+                    </p>
+
+                </div>
+            @endif
         </div>
         <div class="flex">
             <div class="header-menu flex items-center gap-2 mx-4">

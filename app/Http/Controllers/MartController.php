@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Charts\TestingChart;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -15,7 +16,7 @@ use App\Models\CashierShift;
 use App\Models\UserCheckout;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-
+use ArielMejiaDev\LarapexCharts\LarapexChart;
 
 class MartController extends Controller
 {
@@ -24,7 +25,21 @@ class MartController extends Controller
         $products = Product::all();
         $categories = Category::all();
 
-        return view('mart.index', compact('products', 'categories'));
+        $charts = (new LarapexChart)->setType('area')
+        ->setTitle('Total Users Monthly')
+        ->setSubtitle('From January to March')
+        ->setXAxis([
+            'Jan', 'Feb', 'Mar'
+        ])
+        ->setDataset([
+            [
+                'name'  =>  'Active Users',
+                'data'  =>  [250, 700, 1200]
+            ]
+        ]);
+
+
+        return view('mart.index',  compact("products", "categories", "charts"));
     }
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\CashierShift;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +20,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        view()->composer('components.headeradmin', function($view){
+            $view->with('cashier_shifts', CashierShift::where("status","current")->first());
+        });
     }
 }
