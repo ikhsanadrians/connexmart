@@ -30,10 +30,22 @@ class MartController extends Controller
 
     public function goodsindex()
     {
-        $products = Product::all();
+        $products = Product::orderBy('created_at', 'desc')->paginate(50);
         $productcategories = Category::all();
 
-        return view('mart.goods', compact('products', 'productcategories'));
+        return view('mart.products.index', compact('products', 'productcategories'));
+    }
+
+    public function goodsAddIndex(){
+        $productcategories = Category::all();
+        return view("mart.products.add", compact("productcategories"));
+    }
+
+    public function goodsEditIndex(string $slug){
+        $productcategories = Category::all();
+        $product = Product::where("slug", $slug)->first();
+
+        return view("mart.products.edit", compact("product","productcategories"));
     }
 
     public function goodpost(Request $request)
@@ -50,7 +62,7 @@ class MartController extends Controller
         $goods = Product::create([
             'name' => $request->name,
             'price' => $request->price,
-            "barcode_number" => $request->barcode,
+            "barcode_number" => $request->barcode_number,
             'stock' => $request->stock,
             'photo' => $thumbnailPath,
             'desc' => $request->description,
@@ -63,10 +75,10 @@ class MartController extends Controller
         return redirect()->route('mart.goods');
     }
 
-    public function goodsupdate(Request $request)
+    public function goodsupdate(string $slug,Request $request)
     {
 
-        $goodsToUpdate = Product::find($request->product_id);
+        $goodsToUpdate = Product::find($slug);
 
         if ($request->hasFile('image')) {
             $imageThumbnail = $request->file('image')->move("images/", $request->file('image')->getClientOriginalName());
@@ -78,7 +90,7 @@ class MartController extends Controller
         $updateData = [
             "name" => $request->name,
             "price" => $request->price,
-            "barcode_number" => $request->barcode,
+            "barcode_number" => $request->barcode_number,
             "stock" => $request->stock,
             "desc" => $request->description,
             "category_id" => $request->category_id,
@@ -94,7 +106,7 @@ class MartController extends Controller
 
         alert()->success("Success", "Success Update Product");
 
-        return redirect()->back();
+        return redirect()->route('mart.goods');
     }
 
     public function goodsdelete(Request $request)
@@ -306,7 +318,7 @@ class MartController extends Controller
 
         $userCheckouts = UserCheckout::where("checkout_code", "LIKE" , "%" . $request->searchValue . "%")->get();
 
-        
+
 
         if(count($userCheckouts) == 0){
             return response()->json([
@@ -337,7 +349,7 @@ class MartController extends Controller
     {
         if ($request->ajax()) {
             $checkout_code = now()->format("dmYHis") . Auth::user()->id . substr(uniqid(), 0, 3);
-           
+
             $data = UserCheckout::create([
                 "checkout_code" => $checkout_code,
                 "user_id" => Auth::user()->id,
@@ -357,7 +369,7 @@ class MartController extends Controller
             ]);
         }
     }
- 
+
     // public function cashierProceedCash
     // ()
 
@@ -397,7 +409,7 @@ class MartController extends Controller
         return $response;
     }
 
-    
+
 
     public function cashierSuccessDetail(string $checkout_code)
     {
@@ -465,13 +477,13 @@ class MartController extends Controller
         return view("mart.transactiondetail", compact("userCheckouts", "transactions"));
     }
 
-     
+
     public function cashier_shift(){
         $cashierShift = CashierShift::where("status", "current")->first();
         return view("mart.cashiershift", compact("cashierShift"));
     }
 
-   
+
     public function cashier_shift_post(Request $request){
         $validator = $request->validate([
              "cashierName" => "required",
@@ -481,10 +493,10 @@ class MartController extends Controller
            "cashier_name" => $request->cashierName,
            "starting_cash" => $request->startCash,
            "starting_shift" => now(),
-           "status" => "current"       
+           "status" => "current"
         ]);
 
-        
+
         alert()->success("Sukses", "Sukses Memulai Shift Kasir");
 
         return redirect()->back();
@@ -505,9 +517,9 @@ class MartController extends Controller
 
     public function cashier_shift_history(){
        $cashierShifts = CashierShift::all();
-       return view("mart.cashiershifthistory", compact("cashierShifts")); 
+       return view("mart.cashiershifthistory", compact("cashierShifts"));
     }
-  
+
     public function cashierAddToOrderListBarcode(Request $request){
          if($request->ajax()){
             $product = Product::where("barcode_number", $request->barcode)->first();

@@ -141,56 +141,6 @@ $('.delete-btn').on('click', function (e) {
     }
 })
 
-$('.edit-goods-update-btn').on('click', function (e) {
-    openModalGoodsUpdate()
-
-    const productId = $(this).parent().parent().siblings().eq(0).data('productid')
-    const productThumbnail = $(this).parent().parent().siblings().eq(1).data('thumbnail')
-    const productName = $(this).parent().parent().siblings().eq(2).text()
-    const productPrice = $(this).parent().parent().siblings().eq(3).data('price')
-    const productStock = $(this).parent().parent().siblings().eq(4).text()
-    const productCategoryId = $(this).parent().parent().siblings().eq(5).data('categoryid')
-    const productDescription = $(this).parent().parent().siblings().eq(2).data('description')
-    const urlProductThumbnail = "http://127.0.0.1:8000/" + productThumbnail.replace(/\/mart\//, '/');
-
-    let categoryProductSelect = $(".category-select-goods");
-
-    categoryProductSelect.find('option').each(function () {
-        let value = $(this).val()
-        value == productCategoryId ? $(this).prop('selected', true) : $(this).prop('selected', false)
-    })
-
-    $('#goods-input').val(productName)
-    $('#goods-price').val(productPrice)
-    $('#goods-stock').val(productStock)
-    $('#product_id').val(productId)
-    $('#goods-description').val(productDescription)
-    $('#imgPreviewUpdate').attr('src', urlProductThumbnail)
-})
-
-$('#update-forms').on('submit', function () {
-    $('#product_id').val($('#product_id').val())
-
-    return true
-});
-
-
-
-$('#thumbnail-input').on('change', function (e) {
-    const file = this.files[0];
-    if (file) {
-        let reader = new FileReader();
-        reader.onload = function (event) {
-
-            $('.icons').addClass('hidden')
-            $('.img-previews').removeClass('hidden')
-            $('#imgPreview').attr('src', event.target.result);
-
-        }
-        reader.readAsDataURL(file);
-    }
-})
-
 
 const openModalCategory = (visible) => {
     $(".addcategorymodal").toggleClass("hidden", !visible);

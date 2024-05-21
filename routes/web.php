@@ -109,14 +109,19 @@ Route::prefix('mart')->group(function () {
 
     Route::middleware('mart')->group(function () {
         Route::get('/', [MartController::class, 'index'])->name('mart.index');
+
         Route::get('/goodscategory', [MartController::class, 'addcategory'])->name('mart.goods.category');
         Route::post('/addgoodscategory',[MartController::class, 'addcategorypost'])->name("mart.goods.category.post");
         Route::delete('/goodscategory', [MartController::class, 'deletegoodscategory'])->name("mart.goods.category.delete");
         Route::put('/goodscategory',[MartController::class, 'updategoodscategory'])->name("mart.goods.category.update");
-        Route::get('/goods', [MartController::class, 'goodsindex'])->name('mart.goods');
-        Route::post('/goods', [MartController::class, 'goodpost'])->name('mart.addgoods');
-        Route::put('/goods/update', [MartController::class, 'goodsupdate'])->name('mart.updategoods');
+
+        Route::get('/products', [MartController::class, 'goodsindex'])->name('mart.goods');
+        Route::get('/addproduct',[MartController::class, 'goodsAddIndex'])->name('mart.addgoodsview');
+        Route::post('/addproduct', [MartController::class, 'goodpost'])->name('mart.addgoods');
+        Route::get("/product/{slug}/edit", [MartController::class, 'goodsEditIndex'])->name("mart.editgoods");
+        Route::put('/goods/{slug}/update', [MartController::class, 'goodsupdate'])->name('mart.updategoods');
         Route::delete('/goods', [MartController::class, 'goodsdelete'])->name('mart.deletegoods');
+
         Route::get('/transactions', [MartController::class, 'transactions'])->name('mart.transactions');
         Route::get('/transaction/{checkout_code}',[MartController::class,'transaction_detail'])->name('mart.transaction.detail');
         Route::post('/transaction/search',[MartController::class,'transactions_search'])->name("mart.transactions.search");

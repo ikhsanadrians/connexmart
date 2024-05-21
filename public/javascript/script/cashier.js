@@ -652,27 +652,27 @@ function startEventChecking(code) {
 let barcode = ""
 let interval;
 
-$(document).on("keydown",(event) => { 
-    if(interval)
+$(document).on("keydown", (event) => {
+    if (interval)
         clearInterval(interval)
-    
-    if(event.code == "Enter"){
-        if(barcode)
+
+    if (event.code == "Enter") {
+        if (barcode)
             AddToListBarcode(barcode)
         barcode = ''
         return
     }
- 
-    if(event.code != "Shift")
+
+    if (event.code != "Shift")
         barcode += event.key
-    interval = setInterval(()=>barcode = '', 20)
+    interval = setInterval(() => barcode = '', 20)
 
 })
 
-function AddToListBarcode(scannedBarcode){
+function AddToListBarcode(scannedBarcode) {
     console.log(scannedBarcode)
     const currentUrl = "/mart/cashier/barcode/check"
-    const itemList = $(".item-list"); 
+    const itemList = $(".item-list");
 
     $.ajax({
         url: currentUrl,
