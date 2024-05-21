@@ -187,7 +187,7 @@
                 </svg>
                 Mode Kasir
             </a>
-            <a href="{{ route('mart.cashier') }}"
+            <a href="{{ route('mart.cashier.shift') }}"
                 class="flex hover:bg-slate-300 hover:text-[#003034] rounded transition text-sm items-center gap-3 px-3 py-2 @if (request()->routeIs('entry.index')) bg-gradient-to-r from-gray-200 to-white text-[#003034] rounded-md font-semibold @endif">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                     class="bi bi-cash-coin" viewBox="0 0 16 16">
@@ -199,7 +199,7 @@
                         d="M1 0a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h4.083q.088-.517.258-1H3a2 2 0 0 0-2-2V3a2 2 0 0 0 2-2h10a2 2 0 0 0 2 2v3.528c.38.34.717.728 1 1.154V1a1 1 0 0 0-1-1z" />
                     <path d="M9.998 5.083 10 5a2 2 0 1 0-3.132 1.65 6 6 0 0 1 3.13-1.567" />
                 </svg>
-                Kas Kasir
+               Kas / Shift Kasir
             </a>
             <a href="{{ route('mart.logout') }}"
                 class="transaction fixed bottom-4 hover:bg-slate-300 hover:text-[#003034] transition  rounded text-sm px-3 py-2 flex items-center gap-3 @if (request()->routeIs('logout')) bg-gradient-to-r from-gray-200 to-white text-[#003034] rounded-md font-semibold @endif">

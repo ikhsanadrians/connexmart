@@ -12,6 +12,7 @@ const rupiah = (number) => {
 }
 $(document).ready(function () {
     isDesktop()
+    checkCameraPermissionAndStart();
 })
 
 function isDesktop() {
@@ -112,16 +113,33 @@ $(".scanner-confirm-button").on("click", function () {
     scannerConfirm()
 })
 
-Instascan.Camera.getCameras().then(function (cameras) {
-    camerasAvailable = cameras;
-    if (camerasAvailable.length > 0) {
-        scanner.start(camerasAvailable[currentCameraPosition]);
-    } else {
-        console.error('No cameras found.');
-    }
-}).catch(function (e) {
-    console.error(e);
-});
+function checkCameraPermissionAndStart() {
+    // Cek izin kamera
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then(function () {
+            // Jika izin diberikan, dapatkan daftar kamera
+            Instascan.Camera.getCameras().then(function (cameras) {
+                camerasAvailable = cameras;
+                if (camerasAvailable.length > 0) {
+                    // Jika ada kamera yang tersedia, mulai scanner dengan kamera yang dipilih
+                    scanner.start(camerasAvailable[currentCameraPosition]);
+                } else {
+                    console.error('No cameras found.');
+                    $("#log").text("Ga Ada Kamera");
+                }
+            }).catch(function (error) {
+                // Tangani kesalahan saat mendapatkan daftar kamera
+                $("#log").text(error);
+                console.error('Error getting camera list:', error);
+            });
+        })
+        .catch(function (err) {
+            $("#log").text(err);
+            // Jika izin kamera belum diberikan, minta izin kamera
+            console.error('Error accessing camera:', err);
+        });
+}
+
 
 function changeCameraPosition(position) {
     currentCameraPosition = position;

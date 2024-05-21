@@ -120,6 +120,10 @@ Route::prefix('mart')->group(function () {
         Route::get('/transactions', [MartController::class, 'transactions'])->name('mart.transactions');
         Route::get('/transaction/{checkout_code}',[MartController::class,'transaction_detail'])->name('mart.transaction.detail');
         Route::post('/transaction/search',[MartController::class,'transactions_search'])->name("mart.transactions.search");
+        Route::get("/cashiershift", [MartController::class, 'cashier_shift'])->name("mart.cashier.shift");
+        Route::post("/cashiershift", [MartController::class, 'cashier_shift_post'])->name("mart.cashier.shift.post");
+        Route::put("/cashiershift/end",[MartController::class,'cashier_shift_end'])->name("mart.cashier.shift.end");
+        Route::get("/cashiershift/history",[MartController::class, 'cashier_shift_history'])->name("mart.cashier.shift.history");
         Route::prefix("/cashier")->group(function(){
             Route::get('/',[MartController::class,'cashier'])->name("mart.cashier");
             Route::post('/addorder',[MartController::class, 'cashierAddToOrderList'])->name("mart.cashier.addorder");
@@ -127,6 +131,7 @@ Route::prefix('mart')->group(function () {
             Route::post('/search',[MartController::class,'search'])->name("mart.cashier.search");
             Route::post('/clearorder',[MartController::class,'clearorder'])->name("mart.cashier.clearorder");
             Route::post('/proceed',[MartController::class,'cashierProceed'])->name("mart.cashier.proceed");
+            Route::post("/barcode/check",[MartController::class,'cashierAddToOrderListBarcode'])->name("mart.cashier.checkbarcode");
             Route::get('/stream/{checkout_code}', [MartController::class, 'streamResponseCheckout'])->name('mart.stream.checkout');
             Route::get('/{checkout_code}/success',[MartController::class, 'cashierSuccessDetail'])->name('mart.cashier.proceedSuccess');
         });

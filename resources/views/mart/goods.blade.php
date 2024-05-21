@@ -17,13 +17,24 @@
                 <form class="input mt-4 px-6" action="{{ route('mart.addgoods') }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
-                    <div class="username py-1">
-                        <label for="username">
-                            Nama Produk
-                        </label>
-                        <input data-userid="" id="username-input"
-                            class="w-full rounded-md focus:outline-none focus:ring-2 ring-[#003034] bg-gray-100 my-2 p-2"
-                            type="text" name="name" id="goods" placeholder="Masukan Nama Produk">
+                    <div class="username-and-barcode grid grid-cols-2 items-center gap-2">
+                        <div class="username py-1">
+                            <label for="username">
+                                Nama Produk
+                            </label>
+                            <input data-userid="" id="username-input"
+                                class="w-full rounded-md focus:outline-none focus:ring-2 ring-[#003034] bg-gray-100 my-2 p-2"
+                                type="text" name="name" id="goods" placeholder="Masukan Nama Produk">
+                        </div>
+                        <div class="barcode">
+                            <label for="barcode_code">
+                                Kode Barcode
+                            </label>
+                            <input data-barcodeid="" id="barcode-code"
+                                class="w-full rounded-md focus:outline-none focus:ring-2 ring-[#003034] bg-gray-100 my-2 p-2"
+                                type="text" name="barcode" id="barcode" placeholder="Masukan Barcode">
+                     
+                        </div>
                     </div>
                     <div class="grid grid-cols-3 gap-2">
                         <div class="py-1" id="price-input">

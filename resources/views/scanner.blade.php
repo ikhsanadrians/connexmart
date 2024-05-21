@@ -28,6 +28,7 @@
         </div>
 
         <p class="text-center mt-2 text-slate-300 absolute bottom-4 left-5">TenizenBank Scanner V 0.1</p>
+    <p id="log"></p>
     </div>
     @include('components.modalsuccesscan')
 @endsection

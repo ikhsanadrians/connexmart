@@ -531,6 +531,60 @@ $(".next-confirm").on("click", function () {
                 console.log(error)
             }
         })
+    } else {
+        $.ajax({
+            method: "post",
+            url: currentUrl,
+            dataType: "json",
+            data: {
+                "product_list": transactionListId,
+                "total_price": totalPrice,
+                "total_quantity": totalQuantity,
+                _token: $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (data) {
+                $(".hint-content").empty()
+                addLoader()
+                setTimeout(() => {
+                    $("#loader").parent().remove();
+                    $(".hint-content").append(`
+                    <div class="qrcode flex flex-col justify-center items-start px-4 py-4">
+                        <div class="grid grid-cols-2 gap-8">
+                            <div class="qrcode-part">
+                                <div class="qrcode-img h-72 w-72">
+                                    <img src="data:image/png;base64,${data.qrCodeData}" class="h-full w-full object-cover">
+                                </div>
+                            </div>
+                            <div class="hint mt-4 pr-2 lg:pr-4">
+                                <h1 class="text-3xl font-bold">RP. 89.600</h1>
+                                <h1 class="font-semibold mt-2 text-sm">Pembayaran Untuk TenizenMart</h1>
+                                <ul>
+                                    <li>
+                                        <p class="text-sm text-slate-600">1. Scan Menggunakan TenizenBank Wallet pada homepage Website mu</p>
+                                    </li>
+                                    <li class="mt-2">
+                                        <p class="text-sm text-slate-600">2. Masukan Nominal yang tertera</p>
+                                    </li>
+                                    <li class="mt-2">
+                                        <p class="text-sm text-slate-600">3. Masukan PIN</p>
+                                    </li>
+                                    <li class="mt-2">
+                                        <p class="text-sm text-slate-600">4. Pesananmu berhasil terkonfirmasi</p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    `)
+                }, 2000)
+
+                startEventChecking(data.checkoutCode);
+                console.log(data)
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        })
     }
 })
 function displaySuccessPayment(checkout) {
@@ -592,4 +646,81 @@ function startEventChecking(code) {
             return;
         }
     };
+}
+
+
+let barcode = ""
+let interval;
+
+$(document).on("keydown",(event) => { 
+    if(interval)
+        clearInterval(interval)
+    
+    if(event.code == "Enter"){
+        if(barcode)
+            AddToListBarcode(barcode)
+        barcode = ''
+        return
+    }
+ 
+    if(event.code != "Shift")
+        barcode += event.key
+    interval = setInterval(()=>barcode = '', 20)
+
+})
+
+function AddToListBarcode(scannedBarcode){
+    console.log(scannedBarcode)
+    const currentUrl = "/mart/cashier/barcode/check"
+    const itemList = $(".item-list"); 
+
+    $.ajax({
+        url: currentUrl,
+        method: "post",
+        dataType: 'json',
+        data: {
+            "barcode": scannedBarcode,
+            "quantity": 1,
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function (response) {
+            const existingItem = itemList.find(`#product-${response.data.id}`);
+
+            if (existingItem.length) {
+                const currentProductValue = parseInt(existingItem.val());
+                existingItem.parent().closest(".pickup-item").find(".order-quantity-count").text(currentProductValue + 1)
+                existingItem.val(currentProductValue + 1);
+            } else {
+                itemList.append(`
+                <div class="pickup-item flex items-center justify-between border-b-[1.8px] border-slate-200 border-dashed p-4">
+                    <div class="item-desc">
+                        <div class="desc-name font-medium">
+                            <p>${response.data.name}</p>
+                        </div>
+                        <div class="desc-price text-zinc-400">
+                            ${rupiah(response.data.price)} x <span class="order-quantity-count">1</span>
+                        </div>
+                    </div>
+                    <div class="item-qtycontrol">
+                        <div data-transid="${response.trans_id}" class="input-quantity flex border-slate-300 border-[1.3px] w-fit px-2 py-1 rounded-md">
+                            <button class="decrease">-</button>
+                            <input id="product-${response.data.id}" type="number" data-productid="${response.data.id}" data-singleprice="${response.data.price}" value="1" class="input-of-quantity w-12 text-center focus:outline-none px-1" min="1" id="value_quantity" max="${response.data.stock}">
+                            <button class="increase">+</button>
+                        </div>
+                    </div>
+                </div>
+                `);
+            }
+
+            loadModalMessage("Berhasil Menambahkan Produk")
+            itemList.scrollTop($(".item-list")[0].scrollHeight);
+            calculateTotal("price")
+            calculateTotal("quantity")
+            checkIfOrderEmpty()
+            loadCurrentTransIdList()
+        },
+        error: function (error) {
+            loadModalMessage("Scan Gagal, Produk Tidak Ditemukan!")
+        }
+    });
 }

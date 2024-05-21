@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Transaction;
+use App\Models\CashierShift;
 use App\Models\UserCheckout;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -49,6 +50,7 @@ class MartController extends Controller
         $goods = Product::create([
             'name' => $request->name,
             'price' => $request->price,
+            "barcode_number" => $request->barcode,
             'stock' => $request->stock,
             'photo' => $thumbnailPath,
             'desc' => $request->description,
@@ -76,6 +78,7 @@ class MartController extends Controller
         $updateData = [
             "name" => $request->name,
             "price" => $request->price,
+            "barcode_number" => $request->barcode,
             "stock" => $request->stock,
             "desc" => $request->description,
             "category_id" => $request->category_id,
@@ -334,6 +337,7 @@ class MartController extends Controller
     {
         if ($request->ajax()) {
             $checkout_code = now()->format("dmYHis") . Auth::user()->id . substr(uniqid(), 0, 3);
+           
             $data = UserCheckout::create([
                 "checkout_code" => $checkout_code,
                 "user_id" => Auth::user()->id,
@@ -353,6 +357,9 @@ class MartController extends Controller
             ]);
         }
     }
+ 
+    // public function cashierProceedCash
+    // ()
 
 
 
@@ -389,6 +396,8 @@ class MartController extends Controller
 
         return $response;
     }
+
+    
 
     public function cashierSuccessDetail(string $checkout_code)
     {
@@ -456,6 +465,98 @@ class MartController extends Controller
         return view("mart.transactiondetail", compact("userCheckouts", "transactions"));
     }
 
+     
+    public function cashier_shift(){
+        $cashierShift = CashierShift::where("status", "current")->first();
+        return view("mart.cashiershift", compact("cashierShift"));
+    }
+
+   
+    public function cashier_shift_post(Request $request){
+        $validator = $request->validate([
+             "cashierName" => "required",
+             "startCash" => "required"
+        ]);
+        CashierShift::create([
+           "cashier_name" => $request->cashierName,
+           "starting_cash" => $request->startCash,
+           "starting_shift" => now(),
+           "status" => "current"       
+        ]);
+
+        
+        alert()->success("Sukses", "Sukses Memulai Shift Kasir");
+
+        return redirect()->back();
+    }
+
+
+    public function cashier_shift_end(Request $request){
+         $cashierShift = CashierShift::where("id", $request->shift_id)->first();
+         $cashierShift->update([
+            "status" => "ended"
+         ]);
+
+         alert()->success("Sukses", "Sukses Menghentikan Shift Kasir");
+
+         return redirect()->back();
+
+    }
+
+    public function cashier_shift_history(){
+       $cashierShifts = CashierShift::all();
+       return view("mart.cashiershifthistory", compact("cashierShifts")); 
+    }
+  
+    public function cashierAddToOrderListBarcode(Request $request){
+         if($request->ajax()){
+            $product = Product::where("barcode_number", $request->barcode)->first();
+            $productPrice = $product->price;
+            $transaction_id = "";
+
+            $productSummaryPrice = ($productPrice * 1);
+
+            $sameTransaction = Transaction::where('product_id', $product->id)
+                ->where('user_id', Auth::user()->id)
+                ->where('status', 'outcart')
+                ->first();
+
+            if ($product->stock < $request->quantity) {
+                return response()->json([
+                    "message" => "failed, product stock is not enough"
+                ], 401);
+            } else {
+                if ($sameTransaction) {
+                    $sumQuantity = $sameTransaction->quantity += 1;
+                    $sumPrice = $sumQuantity * $product->price;
+                    $sameTransaction->update([
+                        'quantity' => $sumQuantity,
+                        'price' => $sumPrice
+                    ]);
+
+                    $transaction_id = $sameTransaction->id;
+                } else {
+                    $transaction = Transaction::create([
+                        "user_id" => Auth::user()->id,
+                        "product_id" => $product->id,
+                        "status" => "outcart",
+                        "order_id" => "INV-" . Auth::user()->id . now()->format('dmYHis'),
+                        "quantity" => 1,
+                        "price" => $productSummaryPrice,
+                    ]);
+
+                    $transaction_id = $transaction->id;
+                }
+
+
+                return response()->json([
+                    "message" => "success",
+                    "trans_id" => $transaction_id,
+                    "data" => $product,
+                ]);
+            }
+         }
+    }
 
     public function martlogout()
     {

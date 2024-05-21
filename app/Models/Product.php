@@ -20,6 +20,7 @@ class Product extends Model
         "price",
         "stock" ,
         "photo",
+        "barcode_number",
         "quantity_sold",
         "desc",
         "category_id",

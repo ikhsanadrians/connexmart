@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('slug');
             $table->double("price",5);
             $table->integer("stock");
-            $table->integer("quantity_sold");
+            $table->text("barcode_number")->nullable();
+            $table->integer("quantity_sold")->default(0);
             $table->text("photo");
             $table->text("desc");
             $table->softDeletes();
