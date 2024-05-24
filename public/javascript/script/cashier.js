@@ -397,20 +397,21 @@ $(".clear-order").on("click", function () {
 });
 
 const toggleCashierModalPayment = (option) => {
-    $(".chosee-paymentmethod").toggleClass("hidden", !option);
-    $(".backdrop").toggleClass("hidden", !option);
+    if (checkIfOrderListEmpty()) {
+        $(".chosee-paymentmethod").toggleClass("hidden", !option);
+        $(".backdrop").toggleClass("hidden", !option);
 
-    if (option) {
-        const RupiahAmounts = generateCloseRupiahAmounts(totalPrices)
+        if (option) {
+            const RupiahAmounts = generateCloseRupiahAmounts(totalPrices)
 
-        RupiahAmounts.forEach((value, index) => {
-            $(".rupiah-amounts").append(`<div id="cash-${index + 1}" data-cashnominal="${value}" class="n-${index + 1} nominal text-center cursor-pointer border-slate-300 border-[1.3px] w-full px-4 py-3 rounded-md">${rupiah(value)}</div>`)
-        })
+            RupiahAmounts.forEach((value, index) => {
+                $(".rupiah-amounts").append(`<div id="cash-${index + 1}" data-cashnominal="${value}" class="n-${index + 1} nominal text-center cursor-pointer border-slate-300 border-[1.3px] w-full px-4 py-3 rounded-md">${rupiah(value)}</div>`)
+            })
 
-    } else {
-        $(".rupiah-amounts").empty()
+        } else {
+            $(".rupiah-amounts").empty()
+        }
     }
-
 }
 
 
@@ -622,6 +623,15 @@ function addLoader() {
 }
 
 
+function checkIfOrderListEmpty() {
+    if (orderListId.length === 0) {
+        loadModalMessage("Tidak Dapat Memproses, Orderlist mu Kosong");
+        return false;
+    }
+    return true;
+}
+
+
 
 function startEventChecking(code) {
     const currentUrl = `/mart/cashier/stream/${code}`;
@@ -649,6 +659,7 @@ function startEventChecking(code) {
 }
 
 
+//scanner logic
 let barcode = ""
 let interval;
 

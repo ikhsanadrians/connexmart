@@ -43,12 +43,28 @@ class MartController extends Controller
     }
 
 
-    public function goodsindex()
+    public function goodsindex(Request $request)
     {
-        $products = Product::orderBy('created_at', 'desc')->paginate(50);
-        $productcategories = Category::all();
+        $products = Product::query();
 
-        return view('mart.products.index', compact('products', 'productcategories'));
+
+        if ($request->category) {
+            $category = Category::where("slug", $request->category)->first();
+            $products->where("category_id", $category->id);
+        }
+
+        if($request->sort){
+            $products->orderBy("created_at")
+        }
+
+
+        $products = $request->show == "all" ? $products->get() : $products->paginate($request->show ?? 50);
+
+
+        $productcategories = Category::all();
+        $count_products = count(Product::all());
+
+        return view('mart.products.index', compact('products', 'productcategories','count_products'));
     }
 
     public function goodsAddIndex(){

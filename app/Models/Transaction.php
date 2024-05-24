@@ -14,6 +14,7 @@ class Transaction extends Model
          "product_id",
          "status",
          "order_id",
+         "cashier_shifts_id",
          "price",
          "quantity"
     ];
@@ -24,5 +25,9 @@ class Transaction extends Model
 
     public function product(){
         return $this->belongsTo(Product::class)->withTrashed();
+    }
+
+    public function cashierShift(){
+        return $this->belongsTo(CashierShift::class);
     }
 }

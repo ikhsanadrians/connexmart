@@ -18,11 +18,16 @@ class UserCheckout extends Model
         "status",
         "payment_method",
         "cash_total",
-        "address_order"
+        "address_order",
+        "cashier_shifts_id",
     ];
 
     public function user(){
         return $this->belongsTo(User::class);
+    }
+
+    public function cashierShift(){
+        return $this->belongsTo(CashierShift::class);
     }
 
 }

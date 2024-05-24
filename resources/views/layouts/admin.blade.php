@@ -8,7 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" type="image/png" href="{{ asset('images/static/tenizenmart.png') }}">
     <link rel="stylesheet" href="{{ asset('css/select2.css') }}">
-    <title>Admin</title>
+    <title>TenizenMart | {{ meta_title_check(Auth::user()->role_id) }}</title>
     @vite('resources/css/app.css')
 </head>
 

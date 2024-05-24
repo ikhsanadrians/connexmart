@@ -19,4 +19,13 @@ class CashierShift extends Model
         "status"
     ];
 
+
+    public function transactions(){
+        return $this->hasMany(Transaction::class);
+    }
+
+    public function userCheckouts(){
+        return $this->hasMany(UserCheckout::class);
+    }
+
 }

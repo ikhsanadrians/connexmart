@@ -10,13 +10,12 @@
                     </p>
                 </a>
             </div>
-            @if (Auth::user()->role_id == 3)
+            @if (Auth::user()->role_id == 3 && $cashier_shifts)
                 <div class="cashier-shift bg-[#303fe2] rounded-md px-6 text-white py-1">
                     <p class="text-xs">Shift Berjalan</p>
                     <p class="text-sm font-semibold">
                         {{ $cashier_shifts->cashier_name }}
                     </p>
-
                 </div>
             @endif
         </div>

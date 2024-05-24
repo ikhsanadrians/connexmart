@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer("total_quantity")->nullable();
             $table->integer("total_price")->nullable();
             $table->enum("payment_method", ["tb-1","tb-2","bdk","cod"])->nullable();
+            $table->foreignId("cashier_shifts_id")->onDelete("cascade")->nullable();
             $table->text("address_order")->nullable();
             $table->integer("cash_total")->nullable();
             $table->enum("status", ["pending", "ordered", "taken", "canceled"]);
@@ -26,7 +27,7 @@ return new class extends Migration
         });
     }
 
-    /**    <title>TenizenMart</title>
+    /**
 
      * Reverse the migrations.
      */

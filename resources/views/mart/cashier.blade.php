@@ -126,7 +126,6 @@
                 </div>
                 <hr>
                 <div class="pagination-and-back  p-4">
-
                     <div
                         class="pagination flex flex-row justify-between w-full items-start lg:gap-0 gap-4 lg:items-center">
                         <div class="page-records flex items-center gap-4">

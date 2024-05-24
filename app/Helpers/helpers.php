@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
+
 if(!function_exists('format_to_rp')){
     function format_to_rp(int $number) : string {
         $result = "Rp " . number_format($number,0,'','.');
@@ -14,6 +16,25 @@ if(!function_exists('format_date_slug')){
         return $formattedDate;
     }
 }
+
+
+if(!function_exists('meta_title_check')){
+    function meta_title_check(string $role) : string {
+        $currentRole = "";
+        if(Auth::user()->role_id == 1){
+            $currentRole = "Admin";
+        } else if( Auth::user()->role_id == 2) {
+            $currentRole = "TenizenBank";
+        } else if ( Auth::user()->role_id == 3) {
+            $currentRole = "Kantin";
+        } else {
+            $currentRole = "";
+        }
+
+        return $currentRole;
+    }
+}
+
 
 
 ?>
