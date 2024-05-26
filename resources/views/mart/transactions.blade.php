@@ -1,4 +1,7 @@
 @extends('layouts.admin')
+@push('scripts')
+    <script type="module" src="{{ asset('javascript/script/transactions.js') }}"></script>
+@endpush
 @section('content')
     <div class="headers flex justify-between">
         <div class="title">

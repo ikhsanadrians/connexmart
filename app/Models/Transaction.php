@@ -16,7 +16,7 @@ class Transaction extends Model
          "order_id",
          "cashier_shifts_id",
          "price",
-         "quantity"
+         "quantity",
     ];
 
     public function user(){

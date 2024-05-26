@@ -28,8 +28,10 @@
     </div>
     <script type="module" src="{{ asset('javascript/lib/jquery.min.js') }}"></script>
     <script type="module" src="{{ asset('javascript/lib/select2.min.js') }}"></script>
-    <script type="module" src="{{ asset('javascript/script/transactions.js') }}"></script>
+    @stack('scripts')
     <script type="module" src="{{ asset('javascript/script/admin.js') }}"></script>
+    @include('components.confirmmodal')
+    @include('components.backdrop')
 </body>
 
 </html>

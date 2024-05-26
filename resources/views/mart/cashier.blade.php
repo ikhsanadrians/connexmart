@@ -131,7 +131,7 @@
                         <div class="page-records flex items-center gap-4">
                             <div class="record-per-inputs relative">
                                 <select name="recordsPerPage" id="recordsPerPage"
-                                    class="appearance-none bg-transparent text-sm focus:outline-none border-[1.8px] border-slate-200 py-1 pl-3 pr-6 rounded-md">
+                                    class="recordsPerPage appearance-none bg-transparent text-sm focus:outline-none border-[1.8px] border-slate-200 py-1 pl-3 pr-6 rounded-md">
                                     <option class="option" value="50">50 per Page</option>
                                     <option class="option" value="100">100 per Page</option>
                                     <option class="option" value="all">Show All</option>

@@ -160,7 +160,7 @@ $("#opengoodcategorymodal").on("click", function () {
     openModalCategory(true)
 })
 
-$(".edit-goods-categoty-update-btn").on("click", function () {
+$(document).on("click", ".edit-goods-categoty-update-btn", function () {
     const productname = $(this).parent().parent().siblings().eq(0).attr("data-name")
     const productId = $(this).attr('id')
 

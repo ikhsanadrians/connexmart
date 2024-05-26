@@ -113,14 +113,19 @@ Route::prefix('mart')->group(function () {
         Route::get('/goodscategory', [MartController::class, 'addcategory'])->name('mart.goods.category');
         Route::post('/addgoodscategory',[MartController::class, 'addcategorypost'])->name("mart.goods.category.post");
         Route::delete('/goodscategory', [MartController::class, 'deletegoodscategory'])->name("mart.goods.category.delete");
+        Route::post("/goodscategorydelete/{id}/",[MartController::class,'deletegoodscategoryfromsearch'])->name("mart.goods.category.deletefromsearch");
         Route::put('/goodscategory',[MartController::class, 'updategoodscategory'])->name("mart.goods.category.update");
+        Route::post("/goodscategory/search",[MartController::class,'goodscategorysearch'])->name("mart.goods.category.search");
+
 
         Route::get('/products', [MartController::class, 'goodsindex'])->name('mart.goods');
         Route::get('/addproduct',[MartController::class, 'goodsAddIndex'])->name('mart.addgoodsview');
         Route::post('/addproduct', [MartController::class, 'goodpost'])->name('mart.addgoods');
+        Route::get("/product/{slug}",[MartController::class,'goodshow'])->name("mart.detailgoods");
         Route::get("/product/{slug}/edit", [MartController::class, 'goodsEditIndex'])->name("mart.editgoods");
-        Route::put('/goods/{slug}/update', [MartController::class, 'goodsupdate'])->name('mart.updategoods');
-        Route::delete('/goods', [MartController::class, 'goodsdelete'])->name('mart.deletegoods');
+        Route::put('/product/{slug}/update', [MartController::class, 'goodsupdate'])->name('mart.updategoods');
+        Route::delete('/product', [MartController::class, 'goodsdelete'])->name('mart.deletegoods');
+        Route::post('/product/search',[MartController::class, 'goodssearch'])->name("mart.goods.search");
 
         Route::get('/transactions', [MartController::class, 'transactions'])->name('mart.transactions');
         Route::get('/transaction/{checkout_code}',[MartController::class,'transaction_detail'])->name('mart.transaction.detail');

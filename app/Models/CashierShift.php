@@ -13,6 +13,7 @@ class CashierShift extends Model
         "cashier_name",
         "starting_cash",
         "starting_shift",
+        "end_shift",
         "current_cash",
         "refund_cash",
         "sold_items",

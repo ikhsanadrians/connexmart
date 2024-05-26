@@ -1,4 +1,7 @@
 @extends('layouts.admin')
+@push('scripts')
+    <script type="module" src="{{ asset('javascript/script/category.js') }}"></script>
+@endpush
 @section('content')
     <div
         class="addcategorymodal hidden fixed z-50 w-3/5 h-3/4 bg-white -translate-x-1/2 left-1/2 shadow-lg overflow-hidden rounded-lg">
@@ -89,7 +92,8 @@
                 <path
                     d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
             </svg>
-            <input type="text" placeholder="Cari Kategori" class="pl-8 pr-4 py-2 rounded-md focus:outline-none">
+            <input id="search_category" type="text" placeholder="Cari Kategori"
+                class="pl-8 pr-4 py-2 rounded-md focus:outline-none">
         </div>
         <div
             class="filter bg-[#303fe2] text-white mt-2 p-[11px] hover:bg-slate-300 hover:text-[#003034] rounded transition cursor-pointer">
@@ -110,7 +114,7 @@
                     <th>Aksi</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="category">
                 @foreach ($categories as $key => $category)
                     <tr>
                         <td class="category-id" data-name="{{ $category->name }}" data-categoryid="{{ $category->id }}">
@@ -129,12 +133,13 @@
                                             d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z" />
                                     </svg>
                                 </button>
-                                <form action="{{ route('mart.goods.category.delete') }}" method="POST">
+                                <form class="delete-category" action="{{ route('mart.goods.category.delete') }}"
+                                    method="POST">
                                     @csrf
                                     @method('delete')
                                     <input type="hidden" name="category_id" value="{{ $category->id }}">
-                                    <button type="submit"
-                                        class="delete-btn-goods-update bg-gradient-to-r from-red-600 to-red-400 p-2 text-white rounded-md">
+                                    <button
+                                        class="delete-btn-category bg-gradient-to-r from-red-600 to-red-400 p-2 text-white rounded-md">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
                                             fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
                                             <path
@@ -149,4 +154,6 @@
             </tbody>
         </table>
     </div>
+
+    <script src="{{ asset('javascript/lib/jquery.min.js') }}"></script>
 @endsection

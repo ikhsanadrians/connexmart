@@ -80,7 +80,7 @@ function checkIfOrderEmpty() {
 }
 
 
-$("#recordsPerPage").on("change", function (event) {
+$(".recordsPerPage").on("change", function (event) {
     const urlParams = new URLSearchParams(window.location.search);
     urlParams.set('show', event.target.value);
     window.location.search = urlParams.toString();
@@ -159,7 +159,7 @@ $(document).on("click", ".add", function (event) {
             loadCurrentTransIdList()
         },
         error: function (error) {
-            return
+            loadModalMessage(error.responseJSON.message)
         }
     });
 })
@@ -731,7 +731,7 @@ function AddToListBarcode(scannedBarcode) {
             loadCurrentTransIdList()
         },
         error: function (error) {
-            loadModalMessage("Scan Gagal, Produk Tidak Ditemukan!")
+            loadModalMessage(error.responseJSON.message)
         }
     });
 }

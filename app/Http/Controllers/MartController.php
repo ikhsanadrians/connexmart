@@ -47,24 +47,29 @@ class MartController extends Controller
     {
         $products = Product::query();
 
-
         if ($request->category) {
             $category = Category::where("slug", $request->category)->first();
-            $products->where("category_id", $category->id);
+            if ($category) {
+                $products->where("category_id", $category->id);
+            }
         }
 
-        if($request->sort){
-            $products->orderBy("created_at")
+        if ($request->sort) {
+            $sortOrder = $request->sort === "oldfirst" ? "asc" : "desc";
+        } else {
+            $sortOrder = "desc";
         }
 
-
-        $products = $request->show == "all" ? $products->get() : $products->paginate($request->show ?? 50);
-
+        if ($request->show === "all") {
+            $products = $products->orderBy("created_at", $sortOrder)->get();
+        } else {
+            $products = $products->orderBy("created_at", $sortOrder)->paginate($request->show ?? 50);
+        }
 
         $productcategories = Category::all();
-        $count_products = count(Product::all());
+        $count_products = Product::count();
 
-        return view('mart.products.index', compact('products', 'productcategories','count_products'));
+        return view('mart.products.index', compact('products', 'productcategories', 'count_products'));
     }
 
     public function goodsAddIndex(){
@@ -104,6 +109,12 @@ class MartController extends Controller
         alert()->success('Success', 'Success Add New Product!');
 
         return redirect()->route('mart.goods');
+    }
+
+    public function goodshow(string $slug){
+        $product = Product::where("slug", $slug)->first();
+
+        return view("mart.products.show", compact("product"));
     }
 
     public function goodsupdate(string $slug,Request $request)
@@ -149,7 +160,7 @@ class MartController extends Controller
 
         alert()->success("Success", "Success Delete Product");
 
-        return redirect()->back();
+        return redirect()->route('mart.goods');
     }
 
     public function addcategory()
@@ -186,6 +197,15 @@ class MartController extends Controller
         return redirect()->back();
     }
 
+    public function deletegoodscategoryfromsearch(string $id){
+        $deletedCategory = Category::find($id);
+        $deletedCategory->delete();
+
+        alert()->success("Success", "Success Delete Category");
+
+        return redirect()->back();
+    }
+
 
     public function updategoodscategory(Request $request)
     {
@@ -205,6 +225,26 @@ class MartController extends Controller
         return redirect()->back();
     }
 
+
+    public function goodscategorysearch(Request $request){
+        $goodsCategory = null;
+
+        $goodsCategory = Category::where("name", "LIKE" , "%" . $request->searchValue . "%")
+                                 ->withCount('products')
+                                 ->get();
+
+        if(count($goodsCategory) == 0){
+            return response()->json([
+                "message" => "cannot found categories",
+                "data" => "empty"
+            ]);
+        }
+
+        return response()->json([
+            "message" => "success, get data",
+            "data" => $goodsCategory
+        ]);
+    }
 
     public function auth()
     {
@@ -251,11 +291,18 @@ class MartController extends Controller
             $productPrice = $product->price;
             $transaction_id = "";
             $productSummaryPrice = ($productPrice * $request->quantity);
+            $currentCashierShift = CashierShift::where("status","current")->first();
 
             $sameTransaction = Transaction::where('product_id', $request->product_id)
                 ->where('user_id', Auth::user()->id)
                 ->where('status', 'outcart')
                 ->first();
+
+            if(!$currentCashierShift){
+                return response()->json([
+                    "message" => "Tidak Dapat Memproses!, Anda Belum memulai shift"
+                ],401);
+            }
 
             if ($product->stock < $request->quantity) {
                 return response()->json([
@@ -276,6 +323,7 @@ class MartController extends Controller
                         "user_id" => Auth::user()->id,
                         "product_id" => $product->id,
                         "status" => "outcart",
+                        "cashier_shifts_id" => $currentCashierShift->id,
                         "order_id" => "INV-" . Auth::user()->id . now()->format('dmYHis'),
                         "quantity" => $request->quantity,
                         "price" => $productSummaryPrice,
@@ -537,7 +585,8 @@ class MartController extends Controller
     public function cashier_shift_end(Request $request){
          $cashierShift = CashierShift::where("id", $request->shift_id)->first();
          $cashierShift->update([
-            "status" => "ended"
+            "status" => "ended",
+            "end_shift" => now(),
          ]);
 
          alert()->success("Sukses", "Sukses Menghentikan Shift Kasir");
@@ -556,6 +605,19 @@ class MartController extends Controller
             $product = Product::where("barcode_number", $request->barcode)->first();
             $productPrice = $product->price;
             $transaction_id = "";
+            $currentCashierShift = CashierShift::where("status","current")->first();
+
+            if(!$currentCashierShift){
+                return response()->json([
+                    "message" => "Tidak Dapat Memproses!, Anda Belum memulai shift"
+                ],401);
+            }
+
+            if(!$product){
+                return response()->json([
+                    "message" => "Scan Gagal!, Produk Tidak Ditemukan"
+                ],401);
+            }
 
             $productSummaryPrice = ($productPrice * 1);
 
@@ -585,6 +647,7 @@ class MartController extends Controller
                         "status" => "outcart",
                         "order_id" => "INV-" . Auth::user()->id . now()->format('dmYHis'),
                         "quantity" => 1,
+                        "cashier_shifts_id" => $currentCashierShift->id,
                         "price" => $productSummaryPrice,
                     ]);
 
@@ -600,6 +663,28 @@ class MartController extends Controller
             }
          }
     }
+
+    public function goodssearch(Request $request){
+        if($request->ajax()){
+            $products = null;
+
+            $products = Product::where("name", "LIKE" , "%" . $request->searchValue . "%")->with('category')->get();
+
+            if(count($products) == 0){
+                return response()->json([
+                    "message" => "cannot found products",
+                    "data" => "empty"
+                ]);
+            }
+
+            return response()->json([
+                "message" => "success, get data",
+                "data" => $products
+            ]);
+        }
+
+    }
+
 
     public function martlogout()
     {

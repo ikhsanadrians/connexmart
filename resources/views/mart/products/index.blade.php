@@ -1,4 +1,7 @@
 @extends('layouts.admin')
+@push('scripts')
+    <script type="module" src="{{ asset('javascript/script/products.js') }}"></script>
+@endpush
 @section('content')
     <div class="headers flex justify-between">
         <h1 class="text-2xl font-bold">Tambah Produk / Barang</h1>
@@ -23,7 +26,8 @@
                 <path
                     d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
             </svg>
-            <input type="text" placeholder="Cari Barang" class="pl-8 pr-4 py-2 rounded-md focus:outline-none">
+            <input id="search_products" type="text" placeholder="Cari Barang"
+                class="pl-8 pr-4 py-2 rounded-md focus:outline-none">
         </div>
         <div
             class="filter bg-[#303fe2] text-white p-[11px] rounded-md hover:bg-slate-300 hover:text-[#003034] transition cursor-pointer">
@@ -37,7 +41,7 @@
             <select name="category" id="p_category" class="select-category py-2 px-3 rounded-md">
                 <option class="option-status" value="all">Semua Kategori</option>
                 @foreach ($productcategories as $productcategory)
-                    <option class="option-status" value="ordered">{{ $productcategory->name }}</option>
+                    <option class="option-status" value="{{ $productcategory->slug }}">{{ $productcategory->name }}</option>
                 @endforeach
             </select>
             <select name="transaction_sorting" id="t_sorting" class="select-transactions-sorting py-2 px-8 rounded-md">
@@ -59,10 +63,16 @@
                     <th>Aksi</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="product-container">
                 @foreach ($products as $key => $product)
                     <tr>
-                        <td class="product-id" data-productid="{{ $product->id }}">{{ $products->firstItem() + $key }}</td>
+                        <td class="product-id" data-productid="{{ $product->id }}">
+                            @if (!Request::get('show'))
+                                {{ $products->firstItem() + $key }}
+                            @else
+                                {{ $key + 1 }}
+                            @endif
+                        </td>
                         <td class="product-thumbnail flex justify-center border-none"
                             data-thumbnail="{{ $product->photo }}">
                             <div class="thumbnail overflow-hidden h-12 w-16">
@@ -82,6 +92,15 @@
                             {{ $product->category->name }}</td>
                         <td>
                             <div class="action-wrappers flex items-center gap-2 justify-center">
+                                <a href="{{ route('mart.detailgoods', $product->slug) }}"
+                                    class="bg-gradient-to-r from-green-600 to-green-400 p-2 text-white rounded-md">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                        fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
+                                        <path
+                                            d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
+                                    </svg>
+                                </a>
                                 <a href="{{ route('mart.editgoods', $product->slug) }}"
                                     class="bg-gradient-to-r from-yellow-600 to-yellow-400 p-2 text-white rounded-md">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
@@ -90,12 +109,13 @@
                                             d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z" />
                                     </svg>
                                 </a>
-                                <form action="{{ route('mart.deletegoods') }}" method="POST">
+                                <form class="delete-product" action="{{ route('mart.deletegoods', $product->id) }}"
+                                    method="POST">
                                     @csrf
                                     @method('delete')
                                     <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                    <button type="submit"
-                                        class="delete-btn-goods-update bg-gradient-to-r from-red-600 to-red-400 p-2 text-white rounded-md">
+                                    <button
+                                        class="delete-btn-goods bg-gradient-to-r from-red-600 to-red-400 p-2 text-white rounded-md">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
                                             fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
                                             <path
@@ -115,7 +135,7 @@
             <div class="page-records flex items-center gap-4">
                 <div class="record-per-inputs relative">
                     <select name="recordsPerPage" id="recordsPerPage"
-                        class="appearance-none bg-transparent text-sm focus:outline-none border-[1.8px] border-slate-200 py-1 pl-3 pr-6 rounded-md">
+                        class="recordsPerPage appearance-none bg-transparent text-sm focus:outline-none border-[1.8px] border-slate-200 py-1 pl-3 pr-6 rounded-md">
                         <option class="option" value="50">50 per Page</option>
                         <option class="option" value="100">100 per Page</option>
                         <option class="option" value="all">Show All</option>
@@ -128,7 +148,12 @@
 
                 </div>
                 <div class="showing-inputs text-sm lg:block hidden">
-                    Showing 1-24 of {{ $count_products }} records
+                    @if (Request::get('show') == 'all')
+                        Showing All of {{ $count_products }} records
+                    @else
+                        Showing {{ $products->firstItem() }} - {{ $products->lastItem() }} of {{ $count_products }}
+                        records
+                    @endif
                 </div>
             </div>
             @if (request('show') != 'all')
@@ -198,4 +223,6 @@
             @endif
         </div>
     </div>
+
+    <script src="{{ asset('javascript/lib/jquery.min.js') }}"></script>
 @endsection
