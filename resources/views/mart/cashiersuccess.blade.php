@@ -34,6 +34,11 @@
                     <div class="title mt-1">
                         <h1 class="font-medium">Transaksi Sukses</h1>
                     </div>
+                    <div class="checkout-time ml-8">
+                        <label for="" class="text-zinc-500 lg:text-base text-sm">Tanggal Waktu</label>
+                        <h1 class="font-medium text-base lg:text-lg">
+                            {{ $checkouts->created_at->translatedFormat('l, d F Y - H:i') }}</h1>
+                    </div>
                 </div>
             </div>
         </div>
@@ -55,7 +60,8 @@
                     </a>
                 </div>
                 <div class="option-right flex items-center gap-2">
-                    <div class="download flex items-center gap-2 bg-[#303fe2] text-white py-2 px-4 rounded-lg">
+                    <a href="{{ route('mart.cashier.downloadreceipt', $checkouts->checkout_code) }}"
+                        class="download flex items-center gap-2 bg-[#303fe2] text-white py-2 px-4 rounded-lg">
                         <p>
                             Download
                         </p>
@@ -64,8 +70,8 @@
                             <path
                                 d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1m-1 4v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 0 1 .708-.708L7.5 11.293V7.5a.5.5 0 0 1 1 0" />
                         </svg>
-                    </div>
-                    <div
+                    </a>
+                    <a href="{{ route('mart.cashier.printreceipt', $checkouts->checkout_code) }}"
                         class="print flex items-center gap-2 border-[#303fe2] border-[1.5px] text-[#303fe2] py-2 px-4 rounded-lg">
                         <p>
                             Print
@@ -77,7 +83,7 @@
                             <path
                                 d="M0 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2H2a2 2 0 0 1-2-2zm2.5 1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1" />
                         </svg>
-                    </div>
+                    </a>
                 </div>
             </div>
             <div class="data-and-list flex lg:flex-row flex-col gap-3">
@@ -89,12 +95,6 @@
                         <div class="checkout-code">
                             <label for="" class="text-zinc-500 lg:text-base text-sm">Kode Checkout</label>
                             <h1 class="font-medium text-base lg:text-lg">#{{ $checkouts->checkout_code }}</h1>
-                        </div>
-                        <hr>
-                        <div class="checkout-time">
-                            <label for="" class="text-zinc-500 lg:text-base text-sm">Tanggal Waktu</label>
-                            <h1 class="font-medium text-base lg:text-lg">
-                                {{ $checkouts->created_at->translatedFormat('l, d F Y - H:i') }}</h1>
                         </div>
                         <hr>
                         <div class="checkout-paymentmethod">
@@ -114,13 +114,18 @@
                         <hr>
                         <div class="checkout-totalpay">
                             <label for="" class="text-zinc-500 lg:text-base text-sm">Uang Tunai</label>
-                            <h1 class="font-medium text-base lg:text-lg">Rp 20.000</h1>
+                            <h1 class="font-medium text-base lg:text-lg">
+                                {{ format_to_rp($checkouts->cash_total) }}</h1>
                         </div>
                         <hr>
-                        <div class="change">
-                            <label for="" class="text-zinc-500 lg:text-base text-sm">Kembali</label>
-                            <h1 class="font-medium text-base lg:text-lg">Rp 3000</h1>
-                        </div>
+                        @if ($checkouts->payment_method == 'bdk')
+                            <div class="change">
+                                <label for="" class="text-zinc-500 lg:text-base text-sm">Kembali</label>
+                                <h1 class="font-medium text-base lg:text-lg">
+                                    {{ format_to_rp($checkouts->cash_return) }}
+                                </h1>
+                            </div>
+                        @endif
                     </div>
                 </div>
                 <div class="checkout-product-list w-full bg-white p-5 rounded-lg h-fit shadow-sm flex flex-col gap-2">
@@ -137,8 +142,8 @@
                                             <div class="product-images">
                                                 <div class="img h-16 w-16 rounded-lg overflow-hidden">
                                                     @if (!empty($transaction->product->photo) || File::exists(public_path($transaction->product->photo)))
-                                                        <img src="{{ asset('images/default/mart.png') }}" alt=""
-                                                            class="w-full h-full object-cover">
+                                                        <img src="{{ asset('images/default/mart.png') }}"
+                                                            alt="" class="w-full h-full object-cover">
                                                     @else
                                                         <img src="{{ asset($transaction->product->photo) }}"
                                                             alt="" class="w-full h-full object-cover">

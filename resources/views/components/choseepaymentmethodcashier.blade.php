@@ -58,7 +58,7 @@
             </div>
         </div>
         <div
-            class="next-confirm absolute bottom-6 right-6 bg-[#303fe2] text-white py-2 px-4 font-medium rounded-md flex items-center gap-2">
+            class="next-confirm absolute cursor-pointer bottom-6 right-6 bg-[#303fe2] text-white py-2 px-4 font-medium rounded-md flex items-center gap-2">
             Konfirmasi
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                 class="bi bi-arrow-right" viewBox="0 0 16 16">

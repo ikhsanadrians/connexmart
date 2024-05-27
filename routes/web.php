@@ -107,13 +107,14 @@ Route::prefix('bank')->group(function () {
 
 Route::prefix('mart')->group(function () {
 
+
     Route::middleware('mart')->group(function () {
         Route::get('/', [MartController::class, 'index'])->name('mart.index');
 
         Route::get('/goodscategory', [MartController::class, 'addcategory'])->name('mart.goods.category');
         Route::post('/addgoodscategory',[MartController::class, 'addcategorypost'])->name("mart.goods.category.post");
         Route::delete('/goodscategory', [MartController::class, 'deletegoodscategory'])->name("mart.goods.category.delete");
-        Route::post("/goodscategorydelete/{id}/",[MartController::class,'deletegoodscategoryfromsearch'])->name("mart.goods.category.deletefromsearch");
+        Route::get("/goodscategorydelete/{id}/",[MartController::class,'deletegoodscategoryfromsearch'])->name("mart.goods.category.deletefromsearch");
         Route::put('/goodscategory',[MartController::class, 'updategoodscategory'])->name("mart.goods.category.update");
         Route::post("/goodscategory/search",[MartController::class,'goodscategorysearch'])->name("mart.goods.category.search");
 
@@ -144,6 +145,8 @@ Route::prefix('mart')->group(function () {
             Route::post("/barcode/check",[MartController::class,'cashierAddToOrderListBarcode'])->name("mart.cashier.checkbarcode");
             Route::get('/stream/{checkout_code}', [MartController::class, 'streamResponseCheckout'])->name('mart.stream.checkout');
             Route::get('/{checkout_code}/success',[MartController::class, 'cashierSuccessDetail'])->name('mart.cashier.proceedSuccess');
+            Route::get('/{checkout_code}/download',[MartController::class, 'downloadReceipt'])->name("mart.cashier.downloadreceipt");
+            Route::get('/{checkout_code}/print',[MartController::class,'printReceipt'])->name("mart.cashier.printreceipt");
         });
         Route::get('/logout', [MartController::class, 'martlogout'])->name('mart.logout');
     });

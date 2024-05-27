@@ -168,6 +168,7 @@ return [
         RealRashid\SweetAlert\SweetAlertServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
         // SimpleSoftwareIO\QrCode\ServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
     ])->toArray(),

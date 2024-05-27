@@ -438,7 +438,6 @@ $(document).on("click", ".nominal", function (event) {
         currentNominals = $(event.target).attr("data-cashnominal")
     }
 
-
 })
 
 
@@ -484,6 +483,7 @@ $(".next-confirm").on("click", function () {
             url: currentUrl,
             dataType: "json",
             data: {
+                "payment_method": "tenbank",
                 "product_list": transactionListId,
                 "total_price": totalPrice,
                 "total_quantity": totalQuantity,
@@ -494,39 +494,28 @@ $(".next-confirm").on("click", function () {
                 addLoader()
                 setTimeout(() => {
                     $("#loader").parent().remove();
+                    $(".hint-content").empty()
                     $(".hint-content").append(`
                     <div class="qrcode flex flex-col justify-center items-start px-4 py-4">
-                        <div class="grid grid-cols-2 gap-8">
-                            <div class="qrcode-part">
-                                <div class="qrcode-img h-72 w-72">
-                                    <img src="data:image/png;base64,${data.qrCodeData}" class="h-full w-full object-cover">
-                                </div>
-                            </div>
-                            <div class="hint mt-4 pr-2 lg:pr-4">
-                                <h1 class="text-3xl font-bold">RP. 89.600</h1>
-                                <h1 class="font-semibold mt-2 text-sm">Pembayaran Untuk TenizenMart</h1>
-                                <ul>
-                                    <li>
-                                        <p class="text-sm text-slate-600">1. Scan Menggunakan TenizenBank Wallet pada homepage Website mu</p>
-                                    </li>
-                                    <li class="mt-2">
-                                        <p class="text-sm text-slate-600">2. Masukan Nominal yang tertera</p>
-                                    </li>
-                                    <li class="mt-2">
-                                        <p class="text-sm text-slate-600">3. Masukan PIN</p>
-                                    </li>
-                                    <li class="mt-2">
-                                        <p class="text-sm text-slate-600">4. Pesananmu berhasil terkonfirmasi</p>
-                                    </li>
-                                </ul>
+                    <div class="grid grid-cols-2 gap-8">
+                        <div class="qrcode-part">
+                            <div class="qrcode-img h-72 w-72">
+                                <img src="data:image/png;base64,${data.qrCodeData}" class="h-full w-full object-cover">
                             </div>
                         </div>
+                        <div class="hint mt-4 pr-2">
+                            <h1 class="font-semibold">Pembayaran Untuk TenizenMart</h1>
+                            <h1 class="text-3xl font-bold mt-2">${rupiah(data.checkoutDetail.total_price)}</h1>
+                            <p class="mt-4 bg-green-300 text-green-800 p-2 text-sm rounded-lg">Gunakan Scanner pada homepage
+                                TenizenMart untuk membayar
+                            </p>
+                        </div>
                     </div>
+                </div>
                     `)
                 }, 2000)
 
                 startEventChecking(data.checkoutCode);
-                console.log(data)
             },
             error: function (error) {
                 console.log(error)
@@ -538,6 +527,8 @@ $(".next-confirm").on("click", function () {
             url: currentUrl,
             dataType: "json",
             data: {
+                "payment_method": "cash",
+                "cash_amount": currentNominals,
                 "product_list": transactionListId,
                 "total_price": totalPrice,
                 "total_quantity": totalQuantity,
@@ -547,37 +538,8 @@ $(".next-confirm").on("click", function () {
                 $(".hint-content").empty()
                 addLoader()
                 setTimeout(() => {
-                    $("#loader").parent().remove();
-                    $(".hint-content").append(`
-                    <div class="qrcode flex flex-col justify-center items-start px-4 py-4">
-                        <div class="grid grid-cols-2 gap-8">
-                            <div class="qrcode-part">
-                                <div class="qrcode-img h-72 w-72">
-                                    <img src="data:image/png;base64,${data.qrCodeData}" class="h-full w-full object-cover">
-                                </div>
-                            </div>
-                            <div class="hint mt-4 pr-2 lg:pr-4">
-                                <h1 class="text-3xl font-bold">RP. 89.600</h1>
-                                <h1 class="font-semibold mt-2 text-sm">Pembayaran Untuk TenizenMart</h1>
-                                <ul>
-                                    <li>
-                                        <p class="text-sm text-slate-600">1. Scan Menggunakan TenizenBank Wallet pada homepage Website mu</p>
-                                    </li>
-                                    <li class="mt-2">
-                                        <p class="text-sm text-slate-600">2. Masukan Nominal yang tertera</p>
-                                    </li>
-                                    <li class="mt-2">
-                                        <p class="text-sm text-slate-600">3. Masukan PIN</p>
-                                    </li>
-                                    <li class="mt-2">
-                                        <p class="text-sm text-slate-600">4. Pesananmu berhasil terkonfirmasi</p>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    `)
-                }, 2000)
+                    window.location.href = `/mart/cashier/${data.checkoutDetail.checkout_code}/success`;
+                }, 1000)
 
                 startEventChecking(data.checkoutCode);
                 console.log(data)

@@ -137,7 +137,7 @@
                 Home
             </a>
             <a href="{{ route('mart.goods') }}"
-                class="flex hover:bg-slate-300 hover:text-[#003034] rounded transition text-sm items-center gap-3 px-3 py-2 @if (request()->routeIs('user.index')) bg-gradient-to-r from-gray-200 to-white text-[#003034] rounded-md font-semibold @endif">
+                class="flex hover:bg-slate-300 hover:text-[#003034] rounded transition text-sm items-center gap-3 px-3 py-2 @if (request()->routeIs('mart.goods')) bg-gradient-to-r from-gray-200 to-white text-[#003034] rounded-md font-semibold @endif">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                     class="bi bi-box-fill" viewBox="0 0 16 16">
                     <path fill-rule="evenodd"
@@ -151,28 +151,27 @@
                     xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M7.57031 9.40625H2.52344C2.16912 9.40625 1.82932 9.2655 1.57879 9.01496C1.32825 8.76443 1.1875 8.42462 1.1875 8.07031V3.02344C1.1875 2.66912 1.32825 2.32932 1.57879 2.07879C1.82932 1.82825 2.16912 1.6875 2.52344 1.6875H7.57031C7.92462 1.6875 8.26443 1.82825 8.51496 2.07879C8.7655 2.32932 8.90625 2.66912 8.90625 3.02344V8.07031C8.90625 8.42462 8.7655 8.76443 8.51496 9.01496C8.26443 9.2655 7.92462 9.40625 7.57031 9.40625ZM16.4766 9.40625H11.4297C11.0754 9.40625 10.7356 9.2655 10.485 9.01496C10.2345 8.76443 10.0938 8.42462 10.0938 8.07031V3.02344C10.0938 2.66912 10.2345 2.32932 10.485 2.07879C10.7356 1.82825 11.0754 1.6875 11.4297 1.6875H16.4766C16.8309 1.6875 17.1707 1.82825 17.4212 2.07879C17.6717 2.32932 17.8125 2.66912 17.8125 3.02344V8.07031C17.8125 8.42462 17.6717 8.76443 17.4212 9.01496C17.1707 9.2655 16.8309 9.40625 16.4766 9.40625ZM7.57031 18.3125H2.52344C2.16912 18.3125 1.82932 18.1717 1.57879 17.9212C1.32825 17.6707 1.1875 17.3309 1.1875 16.9766V11.9297C1.1875 11.5754 1.32825 11.2356 1.57879 10.985C1.82932 10.7345 2.16912 10.5938 2.52344 10.5938H7.57031C7.92462 10.5938 8.26443 10.7345 8.51496 10.985C8.7655 11.2356 8.90625 11.5754 8.90625 11.9297V16.9766C8.90625 17.3309 8.7655 17.6707 8.51496 17.9212C8.26443 18.1717 7.92462 18.3125 7.57031 18.3125ZM16.4766 18.3125H11.4297C11.0754 18.3125 10.7356 18.1717 10.485 17.9212C10.2345 17.6707 10.0938 17.3309 10.0938 16.9766V11.9297C10.0938 11.5754 10.2345 11.2356 10.485 10.985C10.7356 10.7345 11.0754 10.5938 11.4297 10.5938H16.4766C16.8309 10.5938 17.1707 10.7345 17.4212 10.985C17.6717 11.2356 17.8125 11.5754 17.8125 11.9297V16.9766C17.8125 17.3309 17.6717 17.6707 17.4212 17.9212C17.1707 18.1717 16.8309 18.3125 16.4766 18.3125Z"
-                        fill="white" />
+                        fill="currentColor" />
                 </svg>
-
-                Tambah Kategori
+                Kategori Produk
             </a>
             <a href="{{ route('mart.transactions') }}"
-                class="flex hover:bg-slate-300 hover:text-[#003034] rounded transition text-sm items-center gap-3 px-3 py-2 @if (request()->routeIs('entry.index')) bg-gradient-to-r from-gray-200 to-white text-[#003034] rounded-md font-semibold @endif">
-                <svg width="21" height="16" viewBox="0 0 21 16" fill="none"
+                class="flex hover:bg-slate-300 hover:text-[#003034] rounded transition text-sm items-center gap-3 px-3 py-2 @if (request()->routeIs('mart.transactions')) bg-gradient-to-r from-gray-200 to-white text-[#003034] rounded-md font-semibold @endif">
+                <svg width="21" height="16" viewBox="0 0 21 16" fill="currentColor"
                     xmlns="http://www.w3.org/2000/svg">
-                    <path d="M5.75 2.45834H20M5.75 8.00001H20M5.75 13.5417H20" stroke="white" stroke-width="2"
+                    <path d="M5.75 2.45834H20M5.75 8.00001H20M5.75 13.5417H20" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round" />
                     <path
                         d="M1.79167 3.25001C2.22889 3.25001 2.58333 2.89556 2.58333 2.45834C2.58333 2.02111 2.22889 1.66667 1.79167 1.66667C1.35444 1.66667 1 2.02111 1 2.45834C1 2.89556 1.35444 3.25001 1.79167 3.25001Z"
-                        fill="white" stroke="white" stroke-width="2" stroke-linecap="round"
+                        fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round" />
                     <path
                         d="M1.79167 8.79168C2.22889 8.79168 2.58333 8.43724 2.58333 8.00001C2.58333 7.56278 2.22889 7.20834 1.79167 7.20834C1.35444 7.20834 1 7.56278 1 8.00001C1 8.43724 1.35444 8.79168 1.79167 8.79168Z"
-                        fill="white" stroke="white" stroke-width="2" stroke-linecap="round"
+                        fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round" />
                     <path
                         d="M1.79167 14.3333C2.22889 14.3333 2.58333 13.9789 2.58333 13.5417C2.58333 13.1044 2.22889 12.75 1.79167 12.75C1.35444 12.75 1 13.1044 1 13.5417C1 13.9789 1.35444 14.3333 1.79167 14.3333Z"
-                        fill="white" stroke="white" stroke-width="2" stroke-linecap="round"
+                        fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round" />
                 </svg>
                 Daftar Transaksi
@@ -187,7 +186,7 @@
                 Mode Kasir
             </a>
             <a href="{{ route('mart.cashier.shift') }}"
-                class="flex hover:bg-slate-300 hover:text-[#003034] rounded transition text-sm items-center gap-3 px-3 py-2 @if (request()->routeIs('entry.index')) bg-gradient-to-r from-gray-200 to-white text-[#003034] rounded-md font-semibold @endif">
+                class="flex hover:bg-slate-300 hover:text-[#003034] rounded transition text-sm items-center gap-3 px-3 py-2 @if (request()->routeIs('mart.cashier.shift')) bg-gradient-to-r from-gray-200 to-white text-[#003034] rounded-md font-semibold @endif">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                     class="bi bi-cash-coin" viewBox="0 0 16 16">
                     <path fill-rule="evenodd"

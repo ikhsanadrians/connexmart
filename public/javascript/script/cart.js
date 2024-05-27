@@ -307,6 +307,7 @@ $('.add-to-cart').on('click', function (e) {
             $("#dekstop-total-price").text(productTotalPrice)
         },
         error: function (error) {
+            console.log(error)
             loadModalMessage("Kamu tidak bisa menambahkan produk karena stoknya habis.")
         }
     })

@@ -154,7 +154,7 @@ class TransactionController extends Controller
             $transaction->totalPricePerTransaction = ($transaction->product->price * $transaction->quantity);
         }
 
-
+                
         return view("checkout", compact("transactions", "checkouts"));
     }
 

@@ -17,6 +17,7 @@ use App\Models\UserCheckout;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use ArielMejiaDev\LarapexCharts\LarapexChart;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class MartController extends Controller
 {
@@ -427,30 +428,48 @@ class MartController extends Controller
     public function cashierProceed(Request $request)
     {
         if ($request->ajax()) {
-            $checkout_code = now()->format("dmYHis") . Auth::user()->id . substr(uniqid(), 0, 3);
+            if($request->payment_method == "tenbank"){
+                $checkout_code = now()->format("dmYHis") . Auth::user()->id . substr(uniqid(), 0, 3);
 
-            $data = UserCheckout::create([
-                "checkout_code" => $checkout_code,
-                "user_id" => Auth::user()->id,
-                "product_list" => json_encode($request->product_list),
-                "total_quantity" => $request->total_quantity,
-                "total_price" => $request->total_price,
-                "status" => "pending"
-            ]);
+                $data = UserCheckout::create([
+                    "checkout_code" => $checkout_code,
+                    "user_id" => Auth::user()->id,
+                    "product_list" => json_encode($request->product_list),
+                    "total_quantity" => $request->total_quantity,
+                    "total_price" => $request->total_price,
+                    "status" => "pending"
+                ]);
 
-            $qrCodeData = QrCode::format('png')->margin(1)->size(512)->generate($checkout_code);
-            $formatedBase64QrCode = base64_encode($qrCodeData);
+                $qrCodeData = QrCode::format('png')->margin(1)->size(512)->generate($checkout_code);
+                $formatedBase64QrCode = base64_encode($qrCodeData);
 
 
-            return response()->json([
-                "qrCodeData" => $formatedBase64QrCode,
-                "checkoutCode" => $checkout_code
-            ]);
+                return response()->json([
+                    "checkoutDetail" => $data,
+                    "qrCodeData" => $formatedBase64QrCode,
+                    "checkoutCode" => $checkout_code
+                ]);
+            } else if ($request->payment_method == "cash") {
+                $checkout_code = now()->format("dmYHis") . Auth::user()->id . substr(uniqid(), 0, 3);
+
+                $data = UserCheckout::create([
+                    "checkout_code" => $checkout_code,
+                    "payment_method" => "bdk",
+                    "user_id" => Auth::user()->id,
+                    "product_list" => json_encode($request->product_list),
+                    "total_quantity" => $request->total_quantity,
+                    "total_price" => $request->total_price,
+                    "cash_total" => $request->cash_amount,
+                    "status" => "ordered"
+                ]);
+
+
+                return response()->json([
+                    "checkoutDetail" => $data,
+                ]);
+            }
         }
     }
-
-    // public function cashierProceedCash
-    // ()
 
 
 
@@ -504,10 +523,47 @@ class MartController extends Controller
             $transaction->totalPricePerTransaction = ($transaction->product->price * $transaction->quantity);
         }
 
+        $total_cash = $checkouts->cash_total;
+        $total_price = $checkouts->total_price;
+        $cash_return = ($total_cash -= $total_price);
+
+        $checkouts->cash_return = $cash_return;
+
 
         return view("mart.cashiersuccess", compact("transactions", "checkouts"));
     }
 
+
+     public function downloadReceipt(string $checkout_code){
+        $data = UserCheckout::where("checkout_code", $checkout_code)->first();
+        if (!$data) {
+            abort(404, "Receipt data not found.");
+        }
+
+        $pdf = Pdf::loadView('mart.receipt.index', compact('data'));
+        return $pdf->download('invoice.pdf');
+    }
+
+    public function printReceipt(string $checkout_code){
+        $checkouts = UserCheckout::where("checkout_code", $checkout_code)->first();
+
+        if (!$checkouts) return view("errors.404");
+
+        $product_list = json_decode($checkouts->product_list);
+
+        $transactions = Transaction::whereIn("id", $product_list)->with('product')->where("user_id", Auth::user()->id)->get();
+
+        foreach ($transactions as $transaction) {
+            $transaction->totalPricePerTransaction = ($transaction->product->price * $transaction->quantity);
+        }
+
+        $total_cash = $checkouts->cash_total;
+        $total_price = $checkouts->total_price;
+        $cash_return = ($total_cash -= $total_price);
+
+        $checkouts->cash_return = $cash_return;
+        return view("mart.cashierreceipt", compact("checkouts", "transactions"));
+    }
 
     public function transactions(Request $request)
     {
@@ -596,7 +652,7 @@ class MartController extends Controller
     }
 
     public function cashier_shift_history(){
-       $cashierShifts = CashierShift::all();
+       $cashierShifts = CashierShift::orderBy('created_at','desc')->get();
        return view("mart.cashiershifthistory", compact("cashierShifts"));
     }
 

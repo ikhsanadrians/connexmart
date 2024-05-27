@@ -124,7 +124,7 @@ function checkCameraPermissionAndStart() {
                     // Jika ada kamera yang tersedia, mulai scanner dengan kamera yang dipilih
                     scanner.start(camerasAvailable[currentCameraPosition]);
                 } else {
-                    console.error('No cameras found.');
+                    // console.error('No cameras found.');
                     $("#log").text("Ga Ada Kamera");
                 }
             }).catch(function (error) {

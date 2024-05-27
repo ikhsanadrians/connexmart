@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CashierShift;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
@@ -59,8 +60,9 @@ class IndexController extends Controller
 
     public function showproduct(string $slug){
         $product = Product::where('slug', $slug)->first();
+        $cashierShift = CashierShift::where("status", "current")->first();
         $otherProducts = Product::paginate(4);
-        return view("detailproduct",compact("product","otherProducts"));
+        return view("detailproduct",compact("product","otherProducts","cashier_shifts"));
     }
 
 
