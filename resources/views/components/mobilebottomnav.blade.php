@@ -2,23 +2,30 @@
     class="mobilebtmnav lg:hidden block w-full sticky bottom-0 h-[67px] bg-white border-[1px] border-zinc-200 shadow-lg">
     @if (Route::is('show.product'))
         <div class="container mx-auto flex gap-2 items-center h-full justify-between px-3 py-2">
-            @if ($product->stock > 0)
-                <div id="open_cart"
-                    class="cursor pointer add-cart p-4 h-full w-fit rounded-3xl bg-[#303fe2]/5 flex items-center">
-                    <span class="material-symbols-rounded text-[#303fe2] cursor-pointer">
-                        shopping_cart
-                    </span>
-                </div>
-                <div id="open_cart_2"
-                    class="buy-now bg-gradient-to-r from-[#303fe2] to-blue-500 px-16 w-full h-full rounded-3xl flex flex-col items-center justify-center">
-                    <p class="text-white font-semibold text-sm">Beli Sekarang</p>
-                    <p class="text-sm text-white">{{ format_to_rp($product->price) }}</p>
-                </div>
+            @if ($cashier_shifts)
+                @if ($product->stock > 0)
+                    <div id="open_cart"
+                        class="cursor pointer add-cart p-4 h-full w-fit rounded-3xl bg-[#303fe2]/5 flex items-center">
+                        <span class="material-symbols-rounded text-[#303fe2] cursor-pointer">
+                            shopping_cart
+                        </span>
+                    </div>
+                    <div id="open_cart_2"
+                        class="buy-now bg-gradient-to-r from-[#303fe2] to-blue-500 px-16 w-full h-full rounded-3xl flex flex-col items-center justify-center">
+                        <p class="text-white font-semibold text-sm">Beli Sekarang</p>
+                        <p class="text-sm text-white">{{ format_to_rp($product->price) }}</p>
+                    </div>
+                @else
+                    <div
+                        class="buy-now cursor-not-allowed disabled-items px-16 w-full h-full rounded-3xl flex flex-col items-center justify-center">
+                        <p class="font-semibold text-white">Stok Habis</p>
+                    </div>
+                @endif
             @else
-                <div
-                    class="buy-now cursor-not-allowed disabled-items px-16 w-full h-full rounded-3xl flex flex-col items-center justify-center">
-                    <p class="font-semibold text-white">Stok Habis</p>
-                </div>
+                <button disabled
+                    class="disabled bg-gradient-to-r from-[#303fe2] to-blue-500 text-white py-3 px-4 text-sm w-full rounded-3xl font-semibold">
+                    Toko Sedang Tutup
+                </button>
             @endif
         </div>
     @elseif(Route::is('cart.index'))

@@ -253,11 +253,11 @@
                                     Tambah Ke Keranjang
                                 </button>
                             @else
-                                <button data-name="{{ $product->name }}" id="{{ $product->id }}"
-                                    class="bg-gradient-to-r from-[#303fe2] to-blue-500 text-white py-3 px-4 text-sm w-full rounded-3xl font-semibold">
-                                    Sedang Tutup
+                                <button disabled data-name="{{ $product->name }}" id="{{ $product->id }}"
+                                    class="disabled bg-gradient-to-r from-[#303fe2] to-blue-500 text-white py-3 px-4 text-sm w-full rounded-3xl font-semibold">
+                                    Toko Sedang Tutup
                                 </button>
-                            @endifg
+                            @endif
                         </div>
                     @else
                         <div class="mt-4 cursor-not-allowed">

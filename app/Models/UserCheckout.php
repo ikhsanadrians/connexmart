@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+//TODO: add refund_cash
 class UserCheckout extends Model
 {
     use HasFactory;

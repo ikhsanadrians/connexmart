@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 @section('content')
     <div class="headers flex justify-between">
-        <a href="{{ route('mart.transactions') }}"
+        <a href="javascript:history.back()"
             class="flex items-center gap-2 bg-[#303fe2] w-fit text-white py-2 px-4 rounded-lg">
             <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="currentColor" class="bi bi-arrow-left"
                 viewBox="0 0 16 16">
@@ -109,6 +109,18 @@
                                 <div class="total-price">
                                     <label class="text-sm font-semibold">Total Harga</label>
                                     <p>{{ format_to_rp($userCheckouts->total_price) }}</p>
+                                </div>
+                            </td>
+                            <td class="!border-none text-start">
+                                <div class="total-price">
+                                    <label class="text-sm font-semibold">Jumlah Cash</label>
+                                    <p>{{ format_to_rp($userCheckouts->cash_total) }}</p>
+                                </div>
+                            </td>
+                            <td class="!border-none text-start">
+                                <div class="total-price">
+                                    <label class="text-sm font-semibold">Kembali</label>
+                                    <p>{{ format_to_rp($userCheckouts->refund_cash) }}</p>
                                 </div>
                             </td>
                         </tr>

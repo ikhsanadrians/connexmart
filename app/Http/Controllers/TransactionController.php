@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CashierShift;
 use Illuminate\Http\Request;
 use App\Models\Transaction;
 use Illuminate\Support\Facades\Auth;
@@ -40,6 +41,13 @@ class TransactionController extends Controller
             $product = Product::find($request->product_id);
             $productPrice = $product->price;
             $productSummaryPrice = ($productPrice * $request->quantity);
+            $currentShift = CashierShift::where("status", "current")->first();
+
+            if(!$currentShift){
+                return response()->json([
+                    "message" => "failed, tidak dapat memulai transaksi shift tidak dimulai"
+                ]);
+            }
 
             $sameTransaction = Transaction::where('product_id', $request->product_id)
                 ->where('user_id', Auth::user()->id)
@@ -62,6 +70,7 @@ class TransactionController extends Controller
                     Transaction::create([
                         "user_id" => Auth::user()->id,
                         "product_id" => $product->id,
+                        "cashier_shifts_id" => $currentShift->id,
                         "status" => "outcart",
                         "order_id" => "INV-" . Auth::user()->id . now()->format('dmYHis'),
                         "quantity" => $request->quantity,
@@ -95,6 +104,8 @@ class TransactionController extends Controller
     {
 
         if ($request->ajax()) {
+            $currentShift = CashierShift::where("status", "current")->first();
+
 
             $quantityToUpdate = Transaction::where('id', $request->transaction_id)->where('user_id', Auth::user()->id)->first();
 
@@ -105,7 +116,8 @@ class TransactionController extends Controller
             }
 
             $quantityToUpdate->update([
-                'quantity' => $request->quantity
+                'quantity' => $request->quantity,
+                "cashier_shifts_id" => $currentShift->id,
             ]);
 
             return response()->json([
@@ -154,18 +166,20 @@ class TransactionController extends Controller
             $transaction->totalPricePerTransaction = ($transaction->product->price * $transaction->quantity);
         }
 
-                
+
         return view("checkout", compact("transactions", "checkouts"));
     }
 
 
     public function handleCheckout(Request $request){
         if($request->ajax()){
+            $currentShift = CashierShift::where("status", "current")->first();
 
             $checkout_code = now()->format('dmYHis') . Auth::user()->id . substr(uniqid(), 0, 3);
             $data = UserCheckout::create([
                 "checkout_code" => $checkout_code,
                 "user_id" => Auth::user()->id,
+                "current_shifts_id" => $currentShift->id,
                 "product_list" => json_encode($request->product_list),
                 "total_quantity" => $request->total_quantity,
                 "total_price" => $request->total_price,
@@ -251,7 +265,7 @@ class TransactionController extends Controller
                 $user_checkout->update([
                     "status" => "ordered",
                     "payment_method" => $latest_payment_method,
-                    "address_order" => $address
+                    "address_order" => $address,
                 ]);
 
 

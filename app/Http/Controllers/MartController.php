@@ -27,17 +27,17 @@ class MartController extends Controller
         $categories = Category::all();
 
         $charts = (new LarapexChart)->setType('area')
-        ->setTitle('Total Users Monthly')
-        ->setSubtitle('From January to March')
-        ->setXAxis([
-            'Jan', 'Feb', 'Mar'
-        ])
-        ->setDataset([
-            [
-                'name'  =>  'Active Users',
-                'data'  =>  [250, 700, 1200]
-            ]
-        ]);
+            ->setTitle('Total Users Monthly')
+            ->setSubtitle('From January to March')
+            ->setXAxis([
+                'Jan', 'Feb', 'Mar'
+            ])
+            ->setDataset([
+                [
+                    'name'  =>  'Active Users',
+                    'data'  =>  [250, 700, 1200]
+                ]
+            ]);
 
 
         return view('mart.index',  compact("products", "categories", "charts"));
@@ -73,16 +73,18 @@ class MartController extends Controller
         return view('mart.products.index', compact('products', 'productcategories', 'count_products'));
     }
 
-    public function goodsAddIndex(){
+    public function goodsAddIndex()
+    {
         $productcategories = Category::all();
         return view("mart.products.add", compact("productcategories"));
     }
 
-    public function goodsEditIndex(string $slug){
+    public function goodsEditIndex(string $slug)
+    {
         $productcategories = Category::all();
         $product = Product::where("slug", $slug)->first();
 
-        return view("mart.products.edit", compact("product","productcategories"));
+        return view("mart.products.edit", compact("product", "productcategories"));
     }
 
     public function goodpost(Request $request)
@@ -112,13 +114,14 @@ class MartController extends Controller
         return redirect()->route('mart.goods');
     }
 
-    public function goodshow(string $slug){
+    public function goodshow(string $slug)
+    {
         $product = Product::where("slug", $slug)->first();
 
         return view("mart.products.show", compact("product"));
     }
 
-    public function goodsupdate(string $slug,Request $request)
+    public function goodsupdate(string $slug, Request $request)
     {
 
         $goodsToUpdate = Product::find($slug);
@@ -198,7 +201,8 @@ class MartController extends Controller
         return redirect()->back();
     }
 
-    public function deletegoodscategoryfromsearch(string $id){
+    public function deletegoodscategoryfromsearch(string $id)
+    {
         $deletedCategory = Category::find($id);
         $deletedCategory->delete();
 
@@ -227,14 +231,15 @@ class MartController extends Controller
     }
 
 
-    public function goodscategorysearch(Request $request){
+    public function goodscategorysearch(Request $request)
+    {
         $goodsCategory = null;
 
-        $goodsCategory = Category::where("name", "LIKE" , "%" . $request->searchValue . "%")
-                                 ->withCount('products')
-                                 ->get();
+        $goodsCategory = Category::where("name", "LIKE", "%" . $request->searchValue . "%")
+            ->withCount('products')
+            ->get();
 
-        if(count($goodsCategory) == 0){
+        if (count($goodsCategory) == 0) {
             return response()->json([
                 "message" => "cannot found categories",
                 "data" => "empty"
@@ -292,17 +297,17 @@ class MartController extends Controller
             $productPrice = $product->price;
             $transaction_id = "";
             $productSummaryPrice = ($productPrice * $request->quantity);
-            $currentCashierShift = CashierShift::where("status","current")->first();
+            $currentCashierShift = CashierShift::where("status", "current")->first();
 
             $sameTransaction = Transaction::where('product_id', $request->product_id)
                 ->where('user_id', Auth::user()->id)
                 ->where('status', 'outcart')
                 ->first();
 
-            if(!$currentCashierShift){
+            if (!$currentCashierShift) {
                 return response()->json([
                     "message" => "Tidak Dapat Memproses!, Anda Belum memulai shift"
-                ],401);
+                ], 401);
             }
 
             if ($product->stock < $request->quantity) {
@@ -393,14 +398,15 @@ class MartController extends Controller
     }
 
 
-    public function transactions_search(Request $request){
+    public function transactions_search(Request $request)
+    {
         $userCheckouts = null;
 
-        $userCheckouts = UserCheckout::where("checkout_code", "LIKE" , "%" . $request->searchValue . "%")->get();
+        $userCheckouts = UserCheckout::where("checkout_code", "LIKE", "%" . $request->searchValue . "%")->get();
 
 
 
-        if(count($userCheckouts) == 0){
+        if (count($userCheckouts) == 0) {
             return response()->json([
                 "message" => "cannot found transactions",
                 "data" => "empty"
@@ -428,7 +434,16 @@ class MartController extends Controller
     public function cashierProceed(Request $request)
     {
         if ($request->ajax()) {
-            if($request->payment_method == "tenbank"){
+
+            $currentCashierShift = CashierShift::where("status", "current")->first();
+
+            if (!$currentCashierShift) {
+                return response()->json([
+                    "message" => "Tidak Dapat Memproses!, Anda Belum memulai shift"
+                ], 401);
+            }
+
+            if ($request->payment_method == "tenbank") {
                 $checkout_code = now()->format("dmYHis") . Auth::user()->id . substr(uniqid(), 0, 3);
 
                 $data = UserCheckout::create([
@@ -436,6 +451,7 @@ class MartController extends Controller
                     "user_id" => Auth::user()->id,
                     "product_list" => json_encode($request->product_list),
                     "total_quantity" => $request->total_quantity,
+                    "cashier_shifts_id" =>  $currentCashierShift->id,
                     "total_price" => $request->total_price,
                     "status" => "pending"
                 ]);
@@ -456,12 +472,50 @@ class MartController extends Controller
                     "checkout_code" => $checkout_code,
                     "payment_method" => "bdk",
                     "user_id" => Auth::user()->id,
+                    "cashier_shifts_id" =>  $currentCashierShift->id,
                     "product_list" => json_encode($request->product_list),
                     "total_quantity" => $request->total_quantity,
                     "total_price" => $request->total_price,
                     "cash_total" => $request->cash_amount,
                     "status" => "ordered"
                 ]);
+
+                $transaction_list = json_decode($data->product_list);
+                $transactions = Transaction::whereIn("id", $transaction_list)->where("user_id", Auth::user()->id)->get();
+
+                foreach ($transactions as $transaction) {
+                    $transaction->update([
+                        "status" => "taken",
+                        "order_id" => $checkout_code
+                    ]);
+                }
+
+
+                $starting_cash = $currentCashierShift->starting_cash;
+
+                $sold_items = $currentCashierShift->sold_items;
+                $current_cash = $currentCashierShift->current_cash;
+
+
+                $total_price = $request->total_price;
+                $cash_total = $request->cash_amount;
+
+                $refund_cash = $cash_total - $total_price;
+
+                //
+                $current_cash_with_starting_cash = $starting_cash + $current_cash;
+
+                $current_cash_with_starting_cash += $cash_total;
+
+                $currentCashierShift->current_cash = $current_cash_with_starting_cash;
+
+                $currentCashierShift->sold_items = $sold_items + $request->total_quantity;
+                $currentCashierShift->refund_cash = $currentCashierShift->refund_cash + $refund_cash;
+
+                $currentCashierShift->current_cash -= $refund_cash;
+
+
+                $currentCashierShift->save();
 
 
                 return response()->json([
@@ -534,7 +588,8 @@ class MartController extends Controller
     }
 
 
-     public function downloadReceipt(string $checkout_code){
+    public function downloadReceipt(string $checkout_code)
+    {
         $data = UserCheckout::where("checkout_code", $checkout_code)->first();
         if (!$data) {
             abort(404, "Receipt data not found.");
@@ -544,7 +599,8 @@ class MartController extends Controller
         return $pdf->download('invoice.pdf');
     }
 
-    public function printReceipt(string $checkout_code){
+    public function printReceipt(string $checkout_code)
+    {
         $checkouts = UserCheckout::where("checkout_code", $checkout_code)->first();
 
         if (!$checkouts) return view("errors.404");
@@ -581,8 +637,8 @@ class MartController extends Controller
             $userCheckouts->whereIn('status', ['ordered', 'taken', 'canceled']);
         }
 
-        if($request->sort){
-            if($request->sort == "oldfirst"){
+        if ($request->sort) {
+            if ($request->sort == "oldfirst") {
                 $userCheckouts->orderBy("updated_at", "asc");
             }
         }
@@ -609,26 +665,34 @@ class MartController extends Controller
             $transaction->totalPricePerTransaction = ($transaction->product->price * $transaction->quantity);
         }
 
+
+        $userCheckouts->refund_cash = $userCheckouts->cash_total - $userCheckouts->total_price;
+
+
         return view("mart.transactiondetail", compact("userCheckouts", "transactions"));
     }
 
 
-    public function cashier_shift(){
+    public function cashier_shift()
+    {
         $cashierShift = CashierShift::where("status", "current")->first();
+        // $current_cash = $cashierShift->starting_cash += $cashierShift->current_cash;
+        // $cashierShift->cash_current = $current_cash;
         return view("mart.cashiershift", compact("cashierShift"));
     }
 
 
-    public function cashier_shift_post(Request $request){
+    public function cashier_shift_post(Request $request)
+    {
         $validator = $request->validate([
-             "cashierName" => "required",
-             "startCash" => "required"
+            "cashierName" => "required",
+            "startCash" => "required"
         ]);
         CashierShift::create([
-           "cashier_name" => $request->cashierName,
-           "starting_cash" => $request->startCash,
-           "starting_shift" => now(),
-           "status" => "current"
+            "cashier_name" => $request->cashierName,
+            "starting_cash" => $request->startCash,
+            "starting_shift" => now(),
+            "status" => "current"
         ]);
 
 
@@ -638,41 +702,44 @@ class MartController extends Controller
     }
 
 
-    public function cashier_shift_end(Request $request){
-         $cashierShift = CashierShift::where("id", $request->shift_id)->first();
-         $cashierShift->update([
+    public function cashier_shift_end(Request $request)
+    {
+        $cashierShift = CashierShift::where("id", $request->shift_id)->first();
+        $cashierShift->update([
             "status" => "ended",
             "end_shift" => now(),
-         ]);
+        ]);
 
-         alert()->success("Sukses", "Sukses Menghentikan Shift Kasir");
+        alert()->success("Sukses", "Sukses Menghentikan Shift Kasir");
 
-         return redirect()->back();
-
+        return redirect()->back();
     }
 
-    public function cashier_shift_history(){
-       $cashierShifts = CashierShift::orderBy('created_at','desc')->get();
-       return view("mart.cashiershifthistory", compact("cashierShifts"));
+    public function cashier_shift_history()
+    {
+        $cashierShifts = CashierShift::orderBy('created_at', 'desc')->get();
+
+        return view("mart.cashiershifthistory", compact("cashierShifts"));
     }
 
-    public function cashierAddToOrderListBarcode(Request $request){
-         if($request->ajax()){
+    public function cashierAddToOrderListBarcode(Request $request)
+    {
+        if ($request->ajax()) {
             $product = Product::where("barcode_number", $request->barcode)->first();
             $productPrice = $product->price;
             $transaction_id = "";
-            $currentCashierShift = CashierShift::where("status","current")->first();
+            $currentCashierShift = CashierShift::where("status", "current")->first();
 
-            if(!$currentCashierShift){
+            if (!$currentCashierShift) {
                 return response()->json([
                     "message" => "Tidak Dapat Memproses!, Anda Belum memulai shift"
-                ],401);
+                ], 401);
             }
 
-            if(!$product){
+            if (!$product) {
                 return response()->json([
                     "message" => "Scan Gagal!, Produk Tidak Ditemukan"
-                ],401);
+                ], 401);
             }
 
             $productSummaryPrice = ($productPrice * 1);
@@ -717,16 +784,17 @@ class MartController extends Controller
                     "data" => $product,
                 ]);
             }
-         }
+        }
     }
 
-    public function goodssearch(Request $request){
-        if($request->ajax()){
+    public function goodssearch(Request $request)
+    {
+        if ($request->ajax()) {
             $products = null;
 
-            $products = Product::where("name", "LIKE" , "%" . $request->searchValue . "%")->with('category')->get();
+            $products = Product::where("name", "LIKE", "%" . $request->searchValue . "%")->with('category')->get();
 
-            if(count($products) == 0){
+            if (count($products) == 0) {
                 return response()->json([
                     "message" => "cannot found products",
                     "data" => "empty"
@@ -738,7 +806,15 @@ class MartController extends Controller
                 "data" => $products
             ]);
         }
+    }
 
+
+    public function cashier_shift_history_detail(string $id)
+    {
+        $cashierHistory = CashierShift::where("id", $id)->first();
+        $userCheckouts = UserCheckout::where("cashier_shifts_id", $id)->get();
+
+        return view("mart.cashiershifthistorydetail", compact("cashierHistory", "userCheckouts"));
     }
 
 

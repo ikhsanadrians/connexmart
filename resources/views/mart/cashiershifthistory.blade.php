@@ -102,7 +102,8 @@
                                 <td class="!border-none text-start">
                                     <div class="transactions">
                                         <label class="text-sm font-semibold">Daftar Transaksi</label>
-                                        <a href="" class="text-blue-600">
+                                        <a href="{{ route('mart.cashier.shift.history.detail', $cashierShift->id) }}"
+                                            class="text-blue-600">
                                             <p class="text-sm">
                                                 Lihat Daftar Transaksi
                                             </p>

@@ -135,6 +135,7 @@ Route::prefix('mart')->group(function () {
         Route::post("/cashiershift", [MartController::class, 'cashier_shift_post'])->name("mart.cashier.shift.post");
         Route::put("/cashiershift/end",[MartController::class,'cashier_shift_end'])->name("mart.cashier.shift.end");
         Route::get("/cashiershift/history",[MartController::class, 'cashier_shift_history'])->name("mart.cashier.shift.history");
+        Route::get("/cashiershift/history/{id}",[MartController::class,'cashier_shift_history_detail'])->name("mart.cashier.shift.history.detail");
         Route::prefix("/cashier")->group(function(){
             Route::get('/',[MartController::class,'cashier'])->name("mart.cashier");
             Route::post('/addorder',[MartController::class, 'cashierAddToOrderList'])->name("mart.cashier.addorder");
