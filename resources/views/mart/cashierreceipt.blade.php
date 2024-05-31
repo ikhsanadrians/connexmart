@@ -190,12 +190,12 @@
                 </div>
                 <div class="detail-row">
                     <div class="detail-title">Kasir</div>
-                    <div class="detail-value">Dani</div>
+                    <div class="detail-value">{{ $checkouts->cashierName }}</div>
                 </div>
-                <div class="detail-row">
+                {{-- <div class="detail-row">
                     <div class="detail-title">Jenis layanan</div>
-                    <div class="detail-value">Diantar</div>
-                </div>
+                    <div class="detail-value">{{ $checkouts->payment_method }}</div>
+                </div> --}}
             </div>
             <div class="items">
                 <div class="items-header">
@@ -224,22 +224,22 @@
                     </div>
                     <div class="total-row">
                         <div class="total-title">Kembali</div>
-                        <div class="total-value">{{ format_to_rp($checkouts->cash_return) }}</div>
+                        <div class="total-value">{{ format_to_rp($checkouts->refund_cash) }}</div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="footer">LAYANAN KONSUMEN<br />tenizenmart@smkn10jkt.sch</div>
+        <div class="footer">LAYANAN KONSUMEN<br />tenizenmart@smkn10jkt.sch.id</div>
     </div>
 </body>
 
 <script>
     const href = "/mart/cashier/" + window.location.pathname.split('/')[3] + "/success";
 
-    setTimeout(function() {
-        window.print();
-        window.location.href = href;
-    }, 1000);
+    // setTimeout(function() {
+    //     window.print();
+    //     window.location.href = href;
+    // }, 1000);
 </script>
 
 </html>

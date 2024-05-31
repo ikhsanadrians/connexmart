@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-//TODO: add refund_cash
+
 class UserCheckout extends Model
 {
     use HasFactory;
@@ -19,6 +19,7 @@ class UserCheckout extends Model
         "status",
         "payment_method",
         "cash_total",
+        "refund_cash",
         "address_order",
         "cashier_shifts_id",
     ];

@@ -56,7 +56,8 @@
 
     </div>
     <div class="carouse w-full h-96 rounded-lg shadow-sm overflow-hidden hidden lg:block">
-        <img class="w-full h-full object-cover" src="{{ asset('images/static/caroselrevisi.png') }}" alt="carousel">
+        <img class="w-full h-full object-fill aspect-auto" src="{{ asset('images/static/tenmart.poster.png') }}"
+            alt="carousel">
     </div>
     <div class="grid grid-cols-1 lg:mx-0 mx-4 lg:grid-cols-2 gap-4">
         <div
@@ -162,7 +163,7 @@
             @else
                 <div class="title text-white p-4 relative w-full h-full">
                     Login To Get Your Balance
-                    <p class="font-normal text-slate-100">To Get Your ConnexPay Account You Need Login!</p>
+                    <p class="font-normal text-slate-100">To Get Your TenizenPay Account You Need Login!</p>
                     <svg class="absolute bottom-4 right-0" xmlns="http://www.w3.org/2000/svg" width="46"
                         height="46" fill="currentColor" class="bi bi-wallet2" viewBox="0 0 16 16">
                         <path
@@ -172,8 +173,7 @@
             @endif
         </div>
         <div class="w-full mt-6 overflow-hidden rounded-md h-full lg:block hidden">
-            <img class="w-full h-full"
-                src="https://www.static-src.com/siva/asset/12_2023/Ranch-des-blm-5desKolaboarasi-800x400.jpg?w=392"
+            <img class="w-full h-full object-cover" src="{{ asset('images/static/tenizenmartpay2.png') }}"
                 alt="">
         </div>
     </div>
@@ -237,7 +237,7 @@
         <div class="product-list grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 mt-3 lg:px-0 px-4">
             @foreach ($products as $product)
                 <a href="{{ route('show.product', $product->slug) }}"
-                    class="product-card border-gray-200 bg-white overflow-hidden h-fit rounded-md shadow-md border-[1.5px] ">
+                    class="product-card border-gray-200 bg-white overflow-hidden h-auto rounded-md shadow-md border-[1.5px] ">
                     <div class="content-img w-full h-[170px] overflow-hidden">
                         @if (!empty($product->photo) && File::exists(public_path($product->photo)))
                             <img src="{{ asset($product->photo) }}" alt="" class="w-full h-full object-cover">

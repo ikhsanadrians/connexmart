@@ -32,6 +32,17 @@ public function scannerConfirm(Request $request){
         $user_wallet = Wallet::where("user_id", Auth::user()->id)->first();
         $total_price = $checkout->total_price;
 
+        $checkTransactions = Transaction::whereIn('id', $checkout->product_list)->get();
+
+        $checkTotalPrice = $checkTransactions->sum("price");
+        $checkTotalQty = $checkTransactions->sum("quantity");
+
+        if($checkTotalPrice != $request->total_price || $checkTotalQty != $request->total_quantity){
+            return response()->json([
+                  "message" => "Total harga atau Jumlah tidak Valid!"
+            ], 422);
+        }
+
         if($user_wallet->credit < $total_price){
             return response()->json([
                 "message" => "Maaf, Saldo anda tidak mencukupi untuk melakukan transaksi ini",

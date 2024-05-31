@@ -14,6 +14,12 @@
                     <p class="lg:hidden block font-medium text-zinc-700">Checkout</p>
                 @elseif(Route::is('scanner'))
                     <p class="lg:hidden block font-medium text-zinc-700">Scan Untuk Bayar</p>
+                @elseif(Route::is('profile'))
+                    <p class="lg:hidden block font-medium text-zinc-700">Profil</p>
+                @elseif(Route::is('wishlist'))
+                    <p class="lg:hidden block font-medium text-zinc-700">Favorit</p>
+                @elseif(Route::is('transaction'))
+                    <p class="lg:hidden block font-medium text-zinc-700">Transaksi</p>
                 @endif
             </div>
 
@@ -53,11 +59,11 @@
                     favorite
                 </span>
             @else
-              @if(!Route::is('scanner'))
-                <span class="material-symbols-rounded text-[#303fe2] ml-2 text-[32px] lg:hidden block">
-                    notifications
-                </span>
-              @endif
+                @if (!Route::is('scanner'))
+                    <span class="material-symbols-rounded text-[#303fe2] ml-2 text-[32px] lg:hidden block">
+                        notifications
+                    </span>
+                @endif
             @endif
 
         </div>

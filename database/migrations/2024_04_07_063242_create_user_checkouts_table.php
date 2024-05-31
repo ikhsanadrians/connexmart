@@ -22,6 +22,7 @@ return new class extends Migration
             $table->foreignId("cashier_shifts_id")->nullable()->constrained()->onDelete("cascade");
             $table->text("address_order")->nullable();
             $table->integer("cash_total")->nullable();
+            $table->integer("refund_cash")->nullable();
             $table->enum("status", ["pending", "ordered", "taken", "canceled"]);
             $table->timestamps();
         });

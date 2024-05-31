@@ -175,7 +175,27 @@ class TransactionController extends Controller
         if($request->ajax()){
             $currentShift = CashierShift::where("status", "current")->first();
 
+            if (!$currentShift) {
+                return response()->json([
+                    "message" => "Tidak Dapat Memproses!, Anda Belum memulai shift"
+                ], 401);
+            }
+
+
             $checkout_code = now()->format('dmYHis') . Auth::user()->id . substr(uniqid(), 0, 3);
+
+            $checkTransactions = Transaction::whereIn('id', $request->product_list)->get();
+
+            $checkTotalPrice = $checkTransactions->sum("price");
+            $checkTotalQty = $checkTransactions->sum("quantity");
+
+            if($checkTotalPrice != $request->total_price || $checkTotalQty != $request->total_quantity){
+                return response()->json([
+                      "message" => "Total harga atau Jumlah tidak Valid!"
+                ], 422);
+            }
+
+
             $data = UserCheckout::create([
                 "checkout_code" => $checkout_code,
                 "user_id" => Auth::user()->id,
@@ -228,6 +248,14 @@ class TransactionController extends Controller
             $checkoutCode = $request->checkout_code;
             $latest_payment_method = Auth::user()->latest_paymentmethod;
             $address = Auth::user()->address;
+
+            $currentShift = CashierShift::where("status", "current")->first();
+
+            if (!$currentShift) {
+                return response()->json([
+                    "message" => "Tidak Dapat Memproses!, Anda Belum memulai shift"
+                ], 401);
+            }
 
              if($request->payment_method == "tb-1" || $request->payment_method == "tb-2"){
                 $user_wallet = Wallet::where("user_id", Auth::user()->id)->first();

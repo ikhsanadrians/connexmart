@@ -99,7 +99,6 @@
         <div class="container mx-auto text-sm font-medium">
             <p class="flex items-center gap-1"> &copy {{ date('Y') }}<span
                     class="flex items-center gap-1">TenizenCode</span> x <span class="flex items-center gap-1">
-                    <img src="{{ asset('images/static/cnxgroup.png') }}" class="h-4 invert-[1] brightness-0">
                     Connexsoft
                 </span>
             </p>

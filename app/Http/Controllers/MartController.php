@@ -441,6 +441,17 @@ class MartController extends Controller
                 return response()->json([
                     "message" => "Tidak Dapat Memproses!, Anda Belum memulai shift"
                 ], 401);
+        }
+
+            $checkTransactions = Transaction::whereIn('id', $request->product_list)->get();
+
+            $checkTotalPrice = $checkTransactions->sum("price");
+            $checkTotalQty = $checkTransactions->sum("quantity");
+
+            if($checkTotalPrice != $request->total_price || $checkTotalQty != $request->total_quantity){
+                return response()->json([
+                      "message" => "Total harga atau Jumlah tidak Valid!"
+                ], 422);
             }
 
             if ($request->payment_method == "tenbank") {
@@ -468,6 +479,8 @@ class MartController extends Controller
             } else if ($request->payment_method == "cash") {
                 $checkout_code = now()->format("dmYHis") . Auth::user()->id . substr(uniqid(), 0, 3);
 
+                $refund_cash = $request->cash_amount - $request->total_price;
+
                 $data = UserCheckout::create([
                     "checkout_code" => $checkout_code,
                     "payment_method" => "bdk",
@@ -477,6 +490,7 @@ class MartController extends Controller
                     "total_quantity" => $request->total_quantity,
                     "total_price" => $request->total_price,
                     "cash_total" => $request->cash_amount,
+                    "refund_cash" => $refund_cash,
                     "status" => "ordered"
                 ]);
 
@@ -489,33 +503,6 @@ class MartController extends Controller
                         "order_id" => $checkout_code
                     ]);
                 }
-
-
-                $starting_cash = $currentCashierShift->starting_cash;
-
-                $sold_items = $currentCashierShift->sold_items;
-                $current_cash = $currentCashierShift->current_cash;
-
-
-                $total_price = $request->total_price;
-                $cash_total = $request->cash_amount;
-
-                $refund_cash = $cash_total - $total_price;
-
-                //
-                $current_cash_with_starting_cash = $starting_cash + $current_cash;
-
-                $current_cash_with_starting_cash += $cash_total;
-
-                $currentCashierShift->current_cash = $current_cash_with_starting_cash;
-
-                $currentCashierShift->sold_items = $sold_items + $request->total_quantity;
-                $currentCashierShift->refund_cash = $currentCashierShift->refund_cash + $refund_cash;
-
-                $currentCashierShift->current_cash -= $refund_cash;
-
-
-                $currentCashierShift->save();
 
 
                 return response()->json([
@@ -613,11 +600,10 @@ class MartController extends Controller
             $transaction->totalPricePerTransaction = ($transaction->product->price * $transaction->quantity);
         }
 
-        $total_cash = $checkouts->cash_total;
-        $total_price = $checkouts->total_price;
-        $cash_return = ($total_cash -= $total_price);
+        $cashier = CashierShift::where("status", "current")->first();
 
-        $checkouts->cash_return = $cash_return;
+        $checkouts->cashierName = $cashier->cashier_name;
+
         return view("mart.cashierreceipt", compact("checkouts", "transactions"));
     }
 
@@ -676,8 +662,9 @@ class MartController extends Controller
     public function cashier_shift()
     {
         $cashierShift = CashierShift::where("status", "current")->first();
-        // $current_cash = $cashierShift->starting_cash += $cashierShift->current_cash;
-        // $cashierShift->cash_current = $current_cash;
+
+
+
         return view("mart.cashiershift", compact("cashierShift"));
     }
 
@@ -719,7 +706,12 @@ class MartController extends Controller
     {
         $cashierShifts = CashierShift::orderBy('created_at', 'desc')->get();
 
-        return view("mart.cashiershifthistory", compact("cashierShifts"));
+        $cashierShiftDates = CashierShift::selectRaw('DATE_FORMAT(updated_at, "%d %M %Y") as formatted_date')
+        ->groupBy('formatted_date')
+        ->get();
+
+
+        return view("mart.cashiershifthistory", compact("cashierShifts", "cashierShiftDates"));
     }
 
     public function cashierAddToOrderListBarcode(Request $request)
