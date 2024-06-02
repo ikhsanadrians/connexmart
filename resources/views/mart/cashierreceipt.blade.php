@@ -8,11 +8,12 @@
     <style>
         body {
             margin: 0;
+            height: 100vh;
             font-family: Poppins, sans-serif;
         }
 
         .container {
-            width: 302px;
+            width: 320px;
             height: 100%;
             padding: 0 8px;
             background: white;
@@ -25,6 +26,17 @@
             align-items: flex-start;
             gap: 24px;
             height: fit-content;
+        }
+
+        .items-header {
+            width: 100%;
+        }
+
+        .header-title {
+            width: 100%;
+            display: flex; 
+            justify-content: space-between;
+            align-items: center;
         }
 
         .header {
@@ -57,7 +69,6 @@
             gap: 10px;
             width: 100%;
             height: 107px;
-            padding-bottom: 15px;
             border-bottom: 1px dotted #6B6B6B;
         }
 
@@ -120,6 +131,10 @@
             font-weight: 400;
             word-wrap: break-word;
         }
+    
+        .item-number {
+            font-size: 12px;
+        }
 
         .item-title {
             width: 130px;
@@ -166,6 +181,31 @@
             font-weight: 300;
             word-wrap: break-word;
         }
+
+        .items-table {
+            width: 100%;
+            padding:0px;
+            word-wrap: break-word;
+            font-size:16px;
+            margin-bottom: 5px;
+            border-bottom: 1px dotted #6B6B6B;
+        }
+
+        .items-table table {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        
+        .items-table table tr td {
+            padding-left: 10px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            padding-right: 10px;
+            text-align: start;
+        }
+
+
+
     </style>
 </head>
 
@@ -198,24 +238,29 @@
                 </div> --}}
             </div>
             <div class="items">
-                <div class="items-header">
-                    @foreach ($transactions as $transaction)
-                        <div class="item-row">
-                            <div class="item-title">{{ $transaction->product->name }}</div>
-                            <div class="item-nominals">
-                                <div class="item-price">{{ format_to_rp($transaction->product->price) }}
-                                    <span style="padding-left:3px;">
-                                        {{ $transaction->quantity }}
-                                    </span>
-                                </div>
-                                <div class="item-total">{{ format_to_rp($transaction->totalPricePerTransaction) }}</div>
-                            </div>
-                        </div>
-                    @endforeach
+                <div class="items-table">
+                    <table>
+                        <tr>
+                            <td>No</td>
+                            <td>Produk</td>
+                            <td>Satuan</td>
+                            <td>Qty</td>
+                            <td>Total</td>
+                        </tr>
+                        @foreach ($transactions as $key => $transaction)
+                        <tr>
+                                <td>{{ $key + 1 }}</td>
+                                <td style="padding-left:0px !important; padding-right: 0px !important;">{{ $transaction->product->name }}</td>
+                                <td>{{ format_number($transaction->product->price) }}</td>
+                                <td>{{ format_number($transaction->quantity) }}</td>
+                                <td>{{ format_number($transaction->totalPricePerTransaction) }}</td>
+                            </tr>
+                        @endforeach
+                    </table>
                 </div>
                 <div class="total">
                     <div class="total-row">
-                        <div class="total-title">Total</div>
+                        <div class="total-title">Total Transaksi</div>
                         <div class="total-value">{{ format_to_rp($checkouts->total_price) }}</div>
                     </div>
                     <div class="total-row">
@@ -229,17 +274,17 @@
                 </div>
             </div>
         </div>
-        <div class="footer">LAYANAN KONSUMEN<br />tenizenmart@smkn10jkt.sch.id</div>
+        <div class="footer" style="margin-bottom: 15px;">LAYANAN KONSUMEN<br />tenizenmart@smkn10jkt.sch.id</div>
     </div>
 </body>
 
 <script>
     const href = "/mart/cashier/" + window.location.pathname.split('/')[3] + "/success";
 
-    // setTimeout(function() {
-    //     window.print();
-    //     window.location.href = href;
-    // }, 1000);
+    setTimeout(function() {
+        window.print();
+        window.location.href = href;
+    }, 1000);
 </script>
 
 </html>

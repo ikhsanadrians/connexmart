@@ -69,9 +69,21 @@ $(".delete-btn-goods").on("click", function () {
 })
 
 
-$(".next-confirm").on("click", function () {
-    $(".delete-product").submit();
+$(".next-confirm").on("click", function (event) {
+    event.preventDefault();
     showModalConfirm(false)
+    $(".delete-product").submit();
+});
+
+$(".delete-product").on("submit", function (event) {
+    event.preventDefault();
+    var form = this; // Store the form reference
+
+    // Close the modal
+    showModalConfirm(false, function() {
+        // Submit the form after the modal is closed
+        form.submit();
+    });
 });
 
 

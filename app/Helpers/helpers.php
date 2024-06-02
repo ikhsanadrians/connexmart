@@ -9,6 +9,13 @@ if(!function_exists('format_to_rp')){
     }
 }
 
+if(!function_exists('format_number')){
+    function format_number(int $number) : string {
+        $result = number_format($number,0,'','.');
+        return $result;
+    }
+}
+
 if(!function_exists('format_date_slug')){
     function format_date_slug(string $date): string {
         $date = new \DateTime($date);

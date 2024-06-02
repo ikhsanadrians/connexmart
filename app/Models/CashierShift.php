@@ -12,6 +12,7 @@ class CashierShift extends Model
     protected $fillable = [
         "cashier_name",
         "starting_cash",
+        "starting_cash_added",
         "starting_shift",
         "end_shift",
         "current_cash",

@@ -158,7 +158,7 @@ class MartController extends Controller
     public function goodsdelete(Request $request)
     {
 
-        $deletedProduct = Product::find($request->product_id);
+        $deletedProduct = Product::where("id",$request->product_id)->first();
 
         $deletedProduct->delete();
 
@@ -445,14 +445,14 @@ class MartController extends Controller
 
             $checkTransactions = Transaction::whereIn('id', $request->product_list)->get();
 
-            $checkTotalPrice = $checkTransactions->sum("price");
-            $checkTotalQty = $checkTransactions->sum("quantity");
+            // $checkTotalPrice = $checkTransactions->sum("price");
+            // $checkTotalQty = $checkTransactions->sum("quantity");
 
-            if($checkTotalPrice != $request->total_price || $checkTotalQty != $request->total_quantity){
-                return response()->json([
-                      "message" => "Total harga atau Jumlah tidak Valid!"
-                ], 422);
-            }
+            // if($checkTotalPrice != $request->total_price || $checkTotalQty != $request->total_quantity){
+            //     return response()->json([
+            //           "message" => "Total harga atau Jumlah tidak Valid!"
+            //     ], 422);
+            // }
 
             if ($request->payment_method == "tenbank") {
                 $checkout_code = now()->format("dmYHis") . Auth::user()->id . substr(uniqid(), 0, 3);
@@ -502,7 +502,14 @@ class MartController extends Controller
                         "status" => "taken",
                         "order_id" => $checkout_code
                     ]);
-                }
+                }  
+
+                $currentCashierShift->sold_items += $request->total_quantity;
+                $currentCashierShift->refund_cash += $refund_cash;
+                $currentCashierShift->current_cash += $request->cash_amount;
+                $currentCashierShift->current_cash -= $request->refund_cash;
+               
+                $currentCashierShift->save();
 
 
                 return response()->json([
@@ -673,11 +680,12 @@ class MartController extends Controller
     {
         $validator = $request->validate([
             "cashierName" => "required",
-            "startCash" => "required"
+            "startCash" => "required",
         ]);
         CashierShift::create([
             "cashier_name" => $request->cashierName,
             "starting_cash" => $request->startCash,
+            "current_cash" => $request->startCash,
             "starting_shift" => now(),
             "status" => "current"
         ]);
@@ -804,9 +812,10 @@ class MartController extends Controller
     public function cashier_shift_history_detail(string $id)
     {
         $cashierHistory = CashierShift::where("id", $id)->first();
+        $userCheckoutsCount = UserCheckout::where("cashier_shifts_id", $cashierHistory->id)->count();
         $userCheckouts = UserCheckout::where("cashier_shifts_id", $id)->get();
 
-        return view("mart.cashiershifthistorydetail", compact("cashierHistory", "userCheckouts"));
+        return view("mart.cashiershifthistorydetail", compact("cashierHistory", "userCheckouts", "userCheckoutsCount"));
     }
 
 

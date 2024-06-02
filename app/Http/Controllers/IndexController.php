@@ -23,7 +23,8 @@ class IndexController extends Controller
     }
 
     public function transaction(){
-      return view('transaction');
+      $transactions = UserCheckout::where("user_id", Auth::user()->id)->get();
+      return view('transaction', compact('transactions'));
     }
 
 
@@ -71,6 +72,7 @@ class IndexController extends Controller
 
        return view('profile',compact('transactions'));
     }
+
 
     public function logout(){
         Auth::logout();

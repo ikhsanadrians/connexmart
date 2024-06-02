@@ -18,12 +18,12 @@
 
     <main class="px-0 flex">
         @include('components.sidebaradmin')
-        <div class="container w-full flex pl-3 lg:pl-[18rem] justify-center pt-8">
+        <div class="container flex pl-3 lg:pl-[18rem] w-[95%] justify-center pt-8">
             <div class="wrappers w-full lg:w-full">
                 @yield('content')
             </div>
         </div>
-    </main>
+</main>
     <div class="backdrop hidden  bg-slate-900/70 fixed top-0 w-full h-full  z-40">
     </div>
     <script type="module" src="{{ asset('javascript/lib/jquery.min.js') }}"></script>

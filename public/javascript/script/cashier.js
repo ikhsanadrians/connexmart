@@ -643,7 +643,7 @@ $(document).on("keydown", (event) => {
 })
 
 function AddToListBarcode(scannedBarcode) {
-    console.log(scannedBarcode)
+
     const currentUrl = "/mart/cashier/barcode/check"
     const itemList = $(".item-list");
 
@@ -676,8 +676,8 @@ function AddToListBarcode(scannedBarcode) {
                     </div>
                     <div class="item-qtycontrol">
                         <div data-transid="${response.trans_id}" class="input-quantity flex border-slate-300 border-[1.3px] w-fit px-2 py-1 rounded-md">
-                            <button class="decrease">-</button>
-                            <input id="product-${response.data.id}" type="number" data-productid="${response.data.id}" data-singleprice="${response.data.price}" value="1" class="input-of-quantity w-12 text-center focus:outline-none px-1" min="1" id="value_quantity" max="${response.data.stock}">
+                                <button class="decrease">-</button>
+                                <input id="product-${response.data.id}" type="number" data-productid="${response.data.id}" data-singleprice="${response.data.price}" value="1" class="input-of-quantity w-12 text-center focus:outline-none px-1" min="1" id="value_quantity" max="${response.data.stock}">
                             <button class="increase">+</button>
                         </div>
                     </div>

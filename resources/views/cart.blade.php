@@ -161,7 +161,7 @@
         @else
             <div class="empty-cart flex justify-center w-full items-center">
                 <div class="flex flex-col text-center pt-32">
-                    <img src="{{ asset('images/static/Empty-Cart.svg') }}" alt="empty" class="h-48">
+                    <img src="{{ asset('images/static/Empty-Cart.svg') }}" alt="empty" class="h-22 lg:h-48">
                     <h1 class="mt-8 font-bold text-2xl">Yah Keranjangmu saat ini Kosong</h1>
                 </div>
             </div>

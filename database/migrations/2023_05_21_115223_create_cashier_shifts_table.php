@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string("cashier_name");
             $table->integer("starting_cash");
+            $table->boolean("starting_cash_added")->default(false);
             $table->dateTime("starting_shift");
             $table->dateTime("end_shift")->nullable();
             $table->integer("current_cash")->default(0)->nullable();
