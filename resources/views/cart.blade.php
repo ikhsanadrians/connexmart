@@ -14,17 +14,12 @@
             <h1 class="text-2xl mt-4 font-semibold">Your Balance Is Not Enough For Doing This Transaction!</h1>
         </div>
     </div>
-
-
     <div class="container-cart flex h-full lg:flex-row flex-col gap-4 mb-24">
         @if (count($carts))
-            <div class="cart-list w-full lg:w-4/5 p-0 lg:p-2">
-                <div class="title px-3 mt-4 lg:block hidden">
-                    <h1 class="text-lg font-semibold">Keranjangmu</h1>
-                </div>
-                <div class="choose-all-product-wrapper w-full lg:block hidden">
+            <div class="cart-list w-full lg:w-4/5 p-0 lg:p-2 bg-white rounded-lg mt-6 shadow-md">
+                <div class="choose-all-product-wrapper w-full lg:block hidden mb-5 px-2">
                     <div class="choose-all-product flex justify-start pl-2 mt-4">
-                        <div class="checkbox-input flex items-center mt-1 gap-2 justify-center relative">
+                        <div class="checkbox-input flex items-center mt-1 gap-3 justify-center relative">
                             <input
                                 class="checkbox-checkout-all h-5 w-5 peer shrink-0 relative checked:fill-white rounded-md border-2 border-[#303fe2] focus:outline-none checked:bg-[#303fe2] disabled:border-[1.5px] disabled:border-gray-300 appearance-none"
                                 type="checkbox" name="checkproducts" id="checkproductall-dekstop">
@@ -71,7 +66,7 @@
                         </div>
                     @else
                         <div
-                            class="card my-3 @if (!$loop->last) border-b-[1.2px] rounded-md border-gray-200 @endif relative p-4 shadow-sm bg-white">
+                            class="card mt-3 @if (!$loop->last) border-b-[1.2px] border-gray-200 @endif relative p-4 bg-white">
                             <div class="detailandcheckbox flex items-start gap-3">
                                 <div class="checkbox-input flex items-center mt-1 justify-center relative">
                                     <input data-quantity="{{ $cart->quantity }}" data-price="{{ $cart->product->price }}"
@@ -139,7 +134,7 @@
                 @endforeach
             </div>
             <div class="price-list-balance w-2/5 mt-6 mb-8 lg:block hidden">
-                <div class="price-list bg-white sticky top-28 rounded-xl w-full p-6 shadow-sm">
+                <div class="price-list bg-white sticky top-28 rounded-xl w-full p-6 shadow-md">
                     <p class="text-lg font-semibold">Detail pesanan</p>
                     <div class="shopping-data flex items-center mt-4 text-gray-500 justify-between">
                         <p class="text-sm">Total Harga (<span data-qty="{{ $product_count }}"

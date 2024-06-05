@@ -384,6 +384,8 @@ $(".clear-order").on("click", function () {
             },
             success: function (response) {
                 $(".item-list").empty()
+                $("#order-price-payment-total").text(rupiah(0))
+                $(".order-qty-info").text(0)
                 orderListId.pop()
                 checkIfOrderEmpty()
                 $(".item-list").append(orderListEmptyShow)

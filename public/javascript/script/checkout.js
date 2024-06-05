@@ -6,7 +6,7 @@ $(document).ready(function () {
     checkCheckoutComplete()
 });
 
-let currentPaymentMethod = ""
+let currentPaymentMethod = $("") ?? ""
 
 function loadModalMessage(messageText) {
     $("#modal-message").removeClass("hidden-items")
@@ -63,6 +63,9 @@ function checkCheckoutComplete() {
 
 
 function loadPaymentMethodDesc() {
+
+    let paymentMethod = localStorage.getItem("payment_method")
+
     $(".extend-tenbank").click(() => {
         $(".expanded-payment").toggleClass("hidden");
         $(".arrow").toggleClass("rotate");
@@ -87,10 +90,22 @@ function loadPaymentMethodDesc() {
 
         const selectedPaymentMethod = paymentMethods[e.target.value];
         if (selectedPaymentMethod) {
+
             $(selectedPaymentMethod).removeClass("hidden");
             currentPaymentMethod = e.target.value;
         }
     });
+
+
+    $(".form-radio").each((index, form) => {
+        if (form.value == paymentMethod) {
+            $(form).prop("checked", true)
+        }
+        console.log(form.value)
+    })
+
+
+
 }
 
 function checkConfirmPaymentMethod() {

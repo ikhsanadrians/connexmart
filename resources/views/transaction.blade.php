@@ -12,7 +12,7 @@
                 TenizenBank
             </a>
         </div>
-        <div class="transaction-status-search mt-4 lg:px-0 px-4">
+        <div class="transaction-status-search mt-4 lg:pl-0 pl-4 pr-4 lg:pr-0 flex-nowrap overflow-auto overflow-y-hidden">
             <div class="status flex items-center gap-5">
                 <div class="onproceed cursor-pointer bg-[#303fe2] px-5 py-1 rounded-md text-white">
                     Proses
@@ -27,58 +27,58 @@
                     Batal
                 </div>
             </div>
-            <div class="search">
-
-            </div>
         </div>
-        @if(count($transactions))
-          <div class="transactions mt-5">
-            @foreach($transactions as $transaction)
-            <div 
-                class="card mt-2 lg:mt-5 rounded-lg  border-b-[1.2px]  border-gray-200  relative py-4 px-3 lg:px-5 bg-white shadow-sm">
-                <div class="transaction-content ">
-                    <div class="status text-sm font-medium">
-                      @if($transaction->status == "ordered")
-                         Dalam Proses
-                      @elseif($transaction->status == "taken")
-                         Selesai
-                      @elseif($transaction->status == "cancelled") 
-                         Dibatalkan
-                      @endif
-                    </div>
-                    <hr class="my-1">
-                    <div class="wrappers flex items-center justify-between mt-2">
-                        <div class="content-wrappers flex items-center gap-4">
-                            <div class="buyer">
-                                <label class="text-xs lg:text-sm font-semibold">Kode Pemesanan</label>
-                                <p>#{{ $transaction->checkout_code }}</p>
+        @if (count($transactions))
+            <div class="transactions mt-5">
+                @foreach ($transactions as $transaction)
+                    <div
+                        class="card mt-2 lg:mt-5 rounded-lg  border-b-[1.2px]  border-gray-200  relative py-4 px-3 lg:px-5 bg-white shadow-sm">
+                        <div class="transaction-content ">
+                            <div class="status text-sm font-medium text-center text-gray-300">
+                                @if ($transaction->status == 'ordered')
+                                    Dalam Proses
+                                @elseif($transaction->status == 'taken')
+                                    Selesai
+                                @elseif($transaction->status == 'cancelled')
+                                    Dibatalkan
+                                @endif
                             </div>
-                            <div class="quantity">
-                                <label class="text-xs lg:text-sm font-semibold">Jumlah Barang</label>
-                                <p class="text-center">{{ $transaction->total_quantity }}</p>
-                            </div>
-                            <div class="total-price">
-                                <label class="text-xs lg:text-sm font-semibold">Total Harga</label>
-                                <p>{{ format_to_rp($transaction->total_price) }}</p>
+                            <hr class="my-1">
+                            <div class="wrappers flex items-center justify-between mt-2">
+                                <div class="content-wrappers flex items-center gap-4">
+                                    <div class="buyer">
+                                        <label class="text-xs lg:text-sm font-semibold">Kode Pemesanan</label>
+                                        <p>#{{ $transaction->checkout_code }}</p>
+                                    </div>
+                                    <div class="quantity">
+                                        <label class="text-xs lg:text-sm font-semibold">Jumlah Barang</label>
+                                        <p class="text-center">{{ $transaction->total_quantity }}</p>
+                                    </div>
+                                    <div class="total-price">
+                                        <label class="text-xs lg:text-sm font-semibold">Total Harga</label>
+                                        <p>{{ format_to_rp($transaction->total_price) }}</p>
+                                    </div>
+                                </div>
+                                <div class="content-action pb-4">
+                                    <a href="{{ url("cart/checkout/{$transaction->checkout_code}/success?detail=show") }}"
+                                        class="show-detail text-blue-500 cursor-pointer">
+                                        <span class="material-symbols-rounded">
+                                            arrow_forward
+                                        </span>
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                        <div class="content-action pb-4">
-                            <a href="{{ url("cart/checkout/{$transaction->checkout_code}/success?detail=show") }}" class="show-detail text-blue-500 cursor-pointer">
-                                <span class="material-symbols-rounded">
-                                    arrow_forward
-                                </span>
-                            </a>
-                        </div>
                     </div>
-                </div>
+                @endforeach
             </div>
-            @endforeach
-          </div>
-        @else 
-          <div class="transactions-empty mt-32 flex justify-center flex-col gap-4 items-center">
-              <img src="{{ asset("images/static/empty_transaction.png") }}" alt="" class="h-36">
-              <p class="text-center text-gray-600">Tidak ada transaksi Saat Ini</p>
-          </div>
+        @else
+            <div class="transactions-empty mt-32 flex justify-center flex-col gap-4 items-center">
+                <span class="material-symbols-rounded text-[60px] text-gray-600">
+                    contract_delete
+                </span>
+                <p class="text-center text-gray-600">Tidak ada transaksi Saat Ini</p>
+            </div>
         @endif
     </div>
 @endsection

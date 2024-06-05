@@ -34,7 +34,7 @@
 
         .header-title {
             width: 100%;
-            display: flex; 
+            display: flex;
             justify-content: space-between;
             align-items: center;
         }
@@ -131,7 +131,7 @@
             font-weight: 400;
             word-wrap: break-word;
         }
-    
+
         .item-number {
             font-size: 12px;
         }
@@ -184,9 +184,9 @@
 
         .items-table {
             width: 100%;
-            padding:0px;
+            padding: 0px;
             word-wrap: break-word;
-            font-size:16px;
+            font-size: 16px;
             margin-bottom: 5px;
             border-bottom: 1px dotted #6B6B6B;
         }
@@ -195,7 +195,7 @@
             width: 100%;
             margin-bottom: 10px;
         }
-        
+
         .items-table table tr td {
             padding-left: 10px;
             padding-top: 5px;
@@ -203,9 +203,6 @@
             padding-right: 10px;
             text-align: start;
         }
-
-
-
     </style>
 </head>
 
@@ -230,7 +227,7 @@
                 </div>
                 <div class="detail-row">
                     <div class="detail-title">Kasir</div>
-                    <div class="detail-value">{{ $checkouts->cashierName }}</div>
+                    <div class="detail-value">{{ $checkouts->cashierName ?? '' }}</div>
                 </div>
                 {{-- <div class="detail-row">
                     <div class="detail-title">Jenis layanan</div>
@@ -248,9 +245,10 @@
                             <td>Total</td>
                         </tr>
                         @foreach ($transactions as $key => $transaction)
-                        <tr>
+                            <tr>
                                 <td>{{ $key + 1 }}</td>
-                                <td style="padding-left:0px !important; padding-right: 0px !important;">{{ $transaction->product->name }}</td>
+                                <td style="padding-left:0px !important; padding-right: 0px !important;">
+                                    {{ $transaction->product->name }}</td>
                                 <td>{{ format_number($transaction->product->price) }}</td>
                                 <td>{{ format_number($transaction->quantity) }}</td>
                                 <td>{{ format_number($transaction->totalPricePerTransaction) }}</td>
@@ -265,12 +263,15 @@
                     </div>
                     <div class="total-row">
                         <div class="total-title">Tunai</div>
-                        <div class="total-value">{{ format_to_rp($checkouts->cash_total) }}</div>
+                        <div class="total-value">{{ format_to_rp($checkouts->cash_total ?? $checkouts->total_price) }}
+                        </div>
                     </div>
-                    <div class="total-row">
-                        <div class="total-title">Kembali</div>
-                        <div class="total-value">{{ format_to_rp($checkouts->refund_cash) }}</div>
-                    </div>
+                    @if ($checkouts->refund_cash)
+                        <div class="total-row">
+                            <div class="total-title">Kembali</div>
+                            {{-- <div class="total-value">{{ format_to_rp($checkouts->refund_cash) }}</div> --}}
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -279,7 +280,7 @@
 </body>
 
 <script>
-    const href = "/mart/cashier/" + window.location.pathname.split('/')[3] + "/success";
+    const href = document.referrer;
 
     setTimeout(function() {
         window.print();

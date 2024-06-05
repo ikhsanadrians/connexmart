@@ -502,13 +502,13 @@ class MartController extends Controller
                         "status" => "taken",
                         "order_id" => $checkout_code
                     ]);
-                }  
+                }
 
                 $currentCashierShift->sold_items += $request->total_quantity;
                 $currentCashierShift->refund_cash += $refund_cash;
                 $currentCashierShift->current_cash += $request->cash_amount;
-                $currentCashierShift->current_cash -= $request->refund_cash;
-               
+                $currentCashierShift->current_cash -= $refund_cash;
+
                 $currentCashierShift->save();
 
 
@@ -601,15 +601,20 @@ class MartController extends Controller
 
         $product_list = json_decode($checkouts->product_list);
 
-        $transactions = Transaction::whereIn("id", $product_list)->with('product')->where("user_id", Auth::user()->id)->get();
+
+        $transactions = Transaction::whereIn("id", $product_list)->with('product')->get();
 
         foreach ($transactions as $transaction) {
             $transaction->totalPricePerTransaction = ($transaction->product->price * $transaction->quantity);
         }
 
-        $cashier = CashierShift::where("status", "current")->first();
+        if($checkouts->cashierShift_id){
+            $checkouts->cashierName = $checkouts->cashierShift->name;
+        } else {
+            $cashier = CashierShift::where("status", "current")->first();
 
-        $checkouts->cashierName = $cashier->cashier_name;
+            $checkouts->cashierName = $cashier->cashier_name;
+        }
 
         return view("mart.cashierreceipt", compact("checkouts", "transactions"));
     }
@@ -618,35 +623,32 @@ class MartController extends Controller
     {
         $userCheckouts = UserCheckout::query();
 
-        if ($request->date) {
+        if ($request->has('date')) {
             $formattedDate = Carbon::createFromFormat('d_m_Y', $request->date)->format('Y-m-d');
             $userCheckouts->whereDate('updated_at', $formattedDate);
         }
 
-
-        if ($request->status) {
+        if ($request->has('status')) {
             $userCheckouts->where('status', $request->status);
         } else {
             $userCheckouts->whereIn('status', ['ordered', 'taken', 'canceled']);
         }
 
-        if ($request->sort) {
-            if ($request->sort == "oldfirst") {
-                $userCheckouts->orderBy("updated_at", "asc");
-            }
+        if ($request->has('sort') && $request->sort == "oldfirst") {
+            $userCheckouts->orderBy("updated_at", "asc");
         }
 
-        $userCheckouts = $userCheckouts->orderBy('updated_at', 'desc')->get();
+        $userCheckouts = $request->show === "all" ? $userCheckouts->orderBy('updated_at', 'desc')->get() : $userCheckouts->orderBy('updated_at', 'desc')->paginate($request->show ?? 50);
 
         $userCheckoutsDate = UserCheckout::whereIn("status", ["ordered", "taken", "canceled"])
             ->selectRaw('DATE_FORMAT(updated_at, "%d %M %Y") as formatted_date')
             ->groupBy('formatted_date')
             ->get();
 
+        $count_userCheckouts = UserCheckout::count();
 
-        return view("mart.transactions", compact("userCheckouts", "userCheckoutsDate"));
+        return view("mart.transactions", compact("userCheckouts", "userCheckoutsDate", "count_userCheckouts"));
     }
-
 
     public function transaction_detail(string $checkout_code)
     {
@@ -710,16 +712,39 @@ class MartController extends Controller
         return redirect()->back();
     }
 
-    public function cashier_shift_history()
+    public function cashier_shift_history(Request $request)
     {
-        $cashierShifts = CashierShift::orderBy('created_at', 'desc')->get();
+
+        $cashierShifts = CashierShift::query();
+
+        if ($request->has('date')) {
+            $formattedDate = Carbon::createFromFormat('d_m_Y', $request->date)->format('Y-m-d');
+            $cashierShifts->whereDate('updated_at', $formattedDate);
+        }
+
+        if ($request->has('status')) {
+            $cashierShifts->where('status', $request->status);
+        } else {
+            $cashierShifts->whereIn('status', ['current', 'ended']);
+        }
+
+        if ($request->has('sort') && $request->sort == "oldfirst") {
+            $cashierShifts->orderBy("updated_at", "asc");
+        }
+
+
+        $cashierShifts = $request->show === "all" ? $cashierShifts->orderBy('created_at', 'desc')->get() : $cashierShifts->orderBy('updated_at', 'desc')->paginate($request->show ?? 50);
+
+
 
         $cashierShiftDates = CashierShift::selectRaw('DATE_FORMAT(updated_at, "%d %M %Y") as formatted_date')
         ->groupBy('formatted_date')
         ->get();
 
+        $cashierShiftCounts = $cashierShifts->count();
 
-        return view("mart.cashiershifthistory", compact("cashierShifts", "cashierShiftDates"));
+
+        return view("mart.cashiershifthistory", compact("cashierShifts", "cashierShiftDates", "cashierShiftCounts"));
     }
 
     public function cashierAddToOrderListBarcode(Request $request)
@@ -816,6 +841,33 @@ class MartController extends Controller
         $userCheckouts = UserCheckout::where("cashier_shifts_id", $id)->get();
 
         return view("mart.cashiershifthistorydetail", compact("cashierHistory", "userCheckouts", "userCheckoutsCount"));
+    }
+
+    public function cashier_shift_history_search(Request $request){
+        $cashierShifts = null;
+
+        $cashierShifts = CashierShift::where("cashier_name", "LIKE", "%" . $request->searchValue . "%")->orWhere("id", "LIKE" , "%" . $request->searchValue . "%")->get();
+
+        foreach($cashierShifts as $cashierShift){
+            $cashierShift->starting_shift = \Carbon\Carbon::parse($cashierShift->starting_shift)->format("h:i; d M Y");
+            $cashierShift->end_shift = \Carbon\Carbon::parse($cashierShift->end_shift)->format("h:i; d M Y");
+        }
+
+        if (count($cashierShifts) == 0) {
+            return response()->json([
+                "message" => "cannot found cashiershift",
+                "data" => "empty"
+            ]);
+        }
+
+        return response()->json([
+            "message" => "success, get data",
+            "data" => $cashierShifts
+        ]);
+    }
+
+    public function transactionConfirm(Request $request){
+
     }
 
 

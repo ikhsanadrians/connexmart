@@ -12,7 +12,7 @@
 <body>
     <div class="container mx-auto flex justify-center mt-8">
 
-        <div class="login-forms mt-4 w-1/3 bg-white p-8">
+        <div class="login-forms mt-4 w-full lg:w-1/3 bg-white p-8">
             <div class="admin flex items-center gap-3 font-bold mb-5">
                 <img class="h-8" src="{{ asset('images/static/tenizenmart.png') }}" alt="">
                 <p>Selamat Datang di Kantin</p>

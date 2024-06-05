@@ -461,8 +461,8 @@ $(".delete-empty-product").on("click", function (e) {
 $(".btn-checkout").on("click", function (e) {
     const currentUrl = "/cart/checkout"
     let transactionList = [];
-    const currentTotalQuantity = $(".product-qty-info").attr("data-qty")
-    const currentTotalPrice = $(".product-price-info").attr("data-prices")
+    let currentTotalQuantity = $(".product-qty-info").attr("data-qty")
+    let currentTotalPrice = $(".product-price-info").attr("data-prices")
 
     checkboxCheckout.each((index, checkbox) => {
         if (checkbox.checked) {

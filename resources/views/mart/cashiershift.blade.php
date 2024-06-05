@@ -40,7 +40,9 @@
                             </div>
                             <div class="cashier-starting-shift mt-4">
                                 <label for="">Waktu Mulai</label>
-                                <h1 class="font-semibold text-xl">{{ $cashierShift->starting_shift }}</h1>
+                                <h1 class="font-semibold text-xl">
+                                    Pukul {{ \Carbon\Carbon::parse($cashierShift->starting_shift)->format('h:i - d M Y') }}
+                                </h1>
                             </div>
                             <div class="cashier-current-cash mt-4">
                                 <label for="">Kas Saat Ini</label>

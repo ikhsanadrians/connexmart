@@ -115,8 +115,12 @@ class TransactionController extends Controller
                 ],401);
             }
 
+            $singlePrice = $quantityToUpdate->product->price;
+            $priceTotalLatest = $singlePrice * $request->quantity;
+
             $quantityToUpdate->update([
                 'quantity' => $request->quantity,
+                "price" => $priceTotalLatest,
                 "cashier_shifts_id" => $currentShift->id,
             ]);
 
@@ -177,7 +181,7 @@ class TransactionController extends Controller
 
             if (!$currentShift) {
                 return response()->json([
-                    "message" => "Tidak Dapat Memproses!, Anda Belum memulai shift"
+                    "message" => "Tidak Dapat Memproses!, Toko Sedang Tutup"
                 ], 401);
             }
 
@@ -191,7 +195,7 @@ class TransactionController extends Controller
 
             if($checkTotalPrice != $request->total_price || $checkTotalQty != $request->total_quantity){
                 return response()->json([
-                      "message" => "Total harga atau Jumlah tidak Valid!"
+                     "message" => "Tidak Dapat Memproses!, Jumlah Dan Quantitas Tidak Valid"
                 ], 422);
             }
 

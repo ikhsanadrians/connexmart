@@ -107,7 +107,6 @@ Route::prefix('bank')->group(function () {
 
 Route::prefix('mart')->group(function () {
 
-
     Route::middleware('mart')->group(function () {
         Route::get('/', [MartController::class, 'index'])->name('mart.index');
 
@@ -131,11 +130,16 @@ Route::prefix('mart')->group(function () {
         Route::get('/transactions', [MartController::class, 'transactions'])->name('mart.transactions');
         Route::get('/transaction/{checkout_code}',[MartController::class,'transaction_detail'])->name('mart.transaction.detail');
         Route::post('/transaction/search',[MartController::class,'transactions_search'])->name("mart.transactions.search");
-        Route::get("/cashiershift", [MartController::class, 'cashier_shift'])->name("mart.cashier.shift");
-        Route::post("/cashiershift", [MartController::class, 'cashier_shift_post'])->name("mart.cashier.shift.post");
-        Route::put("/cashiershift/end",[MartController::class,'cashier_shift_end'])->name("mart.cashier.shift.end");
-        Route::get("/cashiershift/history",[MartController::class, 'cashier_shift_history'])->name("mart.cashier.shift.history");
-        Route::get("/cashiershift/history/{id}",[MartController::class,'cashier_shift_history_detail'])->name("mart.cashier.shift.history.detail");
+
+        Route::prefix("/cashiershift")->group(function(){
+            Route::get("/", [MartController::class, 'cashier_shift'])->name("mart.cashier.shift");
+            Route::post("/", [MartController::class, 'cashier_shift_post'])->name("mart.cashier.shift.post");
+            Route::put("/end",[MartController::class,'cashier_shift_end'])->name("mart.cashier.shift.end");
+            Route::get("/history",[MartController::class, 'cashier_shift_history'])->name("mart.cashier.shift.history");
+            Route::get("/history/{id}",[MartController::class,'cashier_shift_history_detail'])->name("mart.cashier.shift.history.detail");
+            Route::post("/history/search", [MartController::class, "cashier_shift_history_search"])->name("mart.cashier.shift.history.search");
+        });
+
         Route::prefix("/cashier")->group(function(){
             Route::get('/',[MartController::class,'cashier'])->name("mart.cashier");
             Route::post('/addorder',[MartController::class, 'cashierAddToOrderList'])->name("mart.cashier.addorder");

@@ -194,3 +194,18 @@ $("#search-transactions").on("input", function (event) {
     }, 300)
 
 })
+
+$(".recordsPerPage").on("change", function (event) {
+    const urlParams = new URLSearchParams(window.location.search);
+    urlParams.set('show', event.target.value);
+    if (event.target.value === 'all') {
+        urlParams.delete('page');
+    }
+    window.location.search = urlParams.toString();
+})
+
+
+$(".option").each((index, option) => {
+    const showParameterValue = new URLSearchParams(window.location.search).get('show');
+    if (showParameterValue == option.value) option.selected = true;
+});
