@@ -23,11 +23,14 @@
                 @yield('content')
             </div>
         </div>
-</main>
+    </main>
     <div class="backdrop hidden  bg-slate-900/70 fixed top-0 w-full h-full  z-40">
     </div>
     <script type="module" src="{{ asset('javascript/lib/jquery.min.js') }}"></script>
     <script type="module" src="{{ asset('javascript/lib/select2.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"
+        integrity="sha512-hUhvpC5f8cgc04OZb55j0KNGh4eh7dLxd/dPSJ5VyzqDWxsayYbojWyl5Tkcgrmb/RVKCRJI1jNlRbVP4WWC4w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     @stack('scripts')
     <script type="module" src="{{ asset('javascript/script/admin.js') }}"></script>
     @include('components.confirmmodal')

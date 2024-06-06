@@ -96,8 +96,13 @@
                         <tr class="!border-none">
                             <td class="!border-none text-start">
                                 <div class="buyer">
-                                    <label class="text-sm font-semibold">Nama Pembeli</label>
-                                    <p>{{ $userCheckouts->user->name }}</p>
+                                    @if ($userCheckouts->user_id != 4)
+                                        <label class="text-sm font-semibold">Nama Pembeli</label>
+                                        <p>{{ $userCheckouts->user->name }}</p>
+                                    @else
+                                        <label class="text-sm font-semibold">Nama Kasir</label>
+                                        <p>{{ $userCheckouts->cashier_name }}</p>
+                                    @endif
                                 </div>
                             </td>
                             <td class="!border-none text-start">

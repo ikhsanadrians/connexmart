@@ -653,6 +653,12 @@ class MartController extends Controller
     public function transaction_detail(string $checkout_code)
     {
         $userCheckouts = UserCheckout::where("checkout_code", $checkout_code)->first();
+        $cashierShiftName = CashierShift::where("id", $userCheckouts->cashier_shifts_id)->first();
+
+        if($cashierShiftName){
+            $userCheckouts->cashier_name = $cashierShiftName->cashier_name;
+        }
+
         $productListCheckout = json_decode($userCheckouts->product_list);
         $transactions = Transaction::whereIn("id", $productListCheckout)->with("product")->get();
 
@@ -838,7 +844,7 @@ class MartController extends Controller
     {
         $cashierHistory = CashierShift::where("id", $id)->first();
         $userCheckoutsCount = UserCheckout::where("cashier_shifts_id", $cashierHistory->id)->count();
-        $userCheckouts = UserCheckout::where("cashier_shifts_id", $id)->get();
+        $userCheckouts = UserCheckout::where("cashier_shifts_id", $id)->paginate(50);
 
         return view("mart.cashiershifthistorydetail", compact("cashierHistory", "userCheckouts", "userCheckoutsCount"));
     }

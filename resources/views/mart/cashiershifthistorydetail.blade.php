@@ -318,6 +318,101 @@
                     </div>
                 @endforeach
             </div>
+            <div class="pagination-and-back px-2 py-3 mb-12">
+                <div class="pagination flex flex-row justify-between w-full items-start lg:gap-0 gap-4 lg:items-center">
+                    <div class="page-records flex items-center gap-4">
+                        <div class="record-per-inputs relative">
+                            <select name="recordsPerPage" id="recordsPerPage"
+                                class="recordsPerPage appearance-none bg-transparent text-sm focus:outline-none border-[1.8px] border-slate-200 py-1 pl-3 pr-6 rounded-md">
+                                <option class="option" value="50">50 per Page</option>
+                                <option class="option" value="100">100 per Page</option>
+                                <option class="option" value="all">Show All</option>
+                            </select>
+                            <svg class="absolute right-0 top-1" width="24" height="25" viewBox="0 0 24 25"
+                                fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M7 10.875L12 15.875L17 10.875H7Z"
+                                    fill="black" fill-opacity="0.6" />
+                            </svg>
+
+                        </div>
+                        <div class="showing-inputs text-sm lg:block hidden">
+                            @if (Request::get('show') == 'all')
+                                {{-- Showing All of {{ $cashierShiftCounts }} records --}}
+                            @else
+                                Showing {{ $userCheckouts->firstItem() }} - {{ $userCheckouts->lastItem() }} of
+                                {{-- {{ $cashierShiftCounts }} --}}
+                                records
+                            @endif
+                        </div>
+                    </div>
+                    @if (request('show') != 'all')
+                        @php
+
+                            $pageLimit = 3;
+                            $startPage = max(1, $userCheckouts->currentPage() - floor($pageLimit / 2));
+                            $endPage = min($startPage + $pageLimit - 1, $userCheckouts->lastPage());
+                            $nextPage =
+                                $userCheckouts->currentPage() < $userCheckouts->lastPage()
+                                    ? $userCheckouts->currentPage() + 1
+                                    : $userCheckouts->lastPage();
+                            $prevPage = $userCheckouts->currentPage() > 1 ? $userCheckouts->currentPage() - 1 : 1;
+
+                        @endphp
+                        <div class="pagination-buttons flex items-center gap-2">
+
+                            <a href="{{ request('category') ? route('mart.cashier', ['category' => request('category'), 'page' => '1']) : $userCheckouts->url(1) }}"
+                                class="first-page p-2 h-8 w-8 flex items-center justify-center border-slate-200 border-[1.8px] rounded-md opacity-50">
+                                <svg width="16" height="17" viewBox="0 0 16 17" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M11.7267 12.875L12.6667 11.935L9.61341 8.875L12.6667 5.815L11.7267 4.875L7.72675 8.875L11.7267 12.875Z"
+                                        fill="#333333" />
+                                    <path
+                                        d="M7.33344 12.875L8.27344 11.935L5.2201 8.875L8.27344 5.815L7.33344 4.875L3.33344 8.875L7.33344 12.875Z"
+                                        fill="#333333" />
+                                </svg>
+                            </a>
+                            <a href="{{ request('category') ? route('mart.cashier', ['category' => request('category'), 'page' => $prevPage]) : $userCheckouts->previousPageUrl() }}"
+                                class="previous-page p-2 h-8 w-8 flex items-center justify-center border-slate-200 border-[1.8px] rounded-md opacity-50">
+                                <svg width="5" height="8" viewBox="0 0 5 8" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M4.06 8.875L5 7.935L1.94667 4.875L5 1.815L4.06 0.875L0.0599996 4.875L4.06 8.875Z"
+                                        fill="#1A1A1A" />
+                                </svg>
+                            </a>
+
+                            @for ($page = $startPage; $page <= $endPage; $page++)
+                                <div
+                                    class="page p-2 h-8 w-8 flex items-center justify-center border-slate-200 border-[1.8px] rounded-md">
+                                    <a
+                                        href="{{ request('category') ? route('mart.cashier', ['category' => request('category'), 'page' => $page]) : $userCheckouts->url($page) }}">{{ $page }}</a>
+                                </div>
+                            @endfor
+                            <a href="{{ request('category') ? route('mart.goods', ['category' => request('category'), 'page' => $nextPage]) : $userCheckouts->nextPageUrl() }}"
+                                class="next-pages p-2 h-8 w-8 flex items-center justify-center border-slate-200 border-[1.8px] rounded-md opacity-50">
+                                <svg width="5" height="9" viewBox="0 0 5 9" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M0.94 0.875L0 1.815L3.05333 4.875L0 7.935L0.94 8.875L4.94 4.875L0.94 0.875Z"
+                                        fill="#1A1A1A" />
+                                </svg>
+                            </a>
+                            <a href="/mart/cashiershift/history?page={{ $userCheckouts->lastPage() }}"
+                                class="last-page p-2 h-8 w-9 flex items-center justify-center border-slate-200 border-[1.8px] rounded-md opacity-50">
+                                <svg width="10" height="9" viewBox="0 0 10 9" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M1.27325 0.875L0.333252 1.815L3.38659 4.875L0.333252 7.935L1.27325 8.875L5.27325 4.875L1.27325 0.875Z"
+                                        fill="#1A1A1A" />
+                                    <path
+                                        d="M5.66656 0.875L4.72656 1.815L7.7799 4.875L4.72656 7.935L5.66656 8.875L9.66656 4.875L5.66656 0.875Z"
+                                        fill="#1A1A1A" />
+                                </svg>
+                            </a>
+                        </div>
+                    @endif
+                </div>
+            </div>
         @else
             <div class="no-transactions px-6 py-4">
                 <p>Saat Ini Belum Ada Transaksi</p>
