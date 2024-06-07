@@ -74,7 +74,7 @@
                     </svg>
                 </div>
             </div>
-            <div id="cashier-left" class="h-[73vh] max-h-screen relative">
+            <div id="cashier-left" class="h-auto lg:h-[73vh] max-h-screen relative">
                 <div class="loader absolute inset-0 m-auto !hidden"></div>
                 <div
                     class="product-list relative w-full cashier-prod-list grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6 px-4 overflow-y-scroll h-[80%] pb-16">
@@ -226,8 +226,6 @@
                     </a>
                 </div>
             </div>
-
-
         </div>
         <div class="cashier-order border-l-[1.8px] h-screen lg:block hidden w-[33%] border-slate-200">
             <div class="numbers-clock flex items-center justify-between border-b-[1.8px]  py-6 px-3  pb-4">
@@ -249,7 +247,7 @@
                         stroke-linejoin="round" />
                 </svg>
             </div>
-            <div class="pickup-items h-[73vh]">
+            <div class="pickup-items h-auto lg:h-[73vh]">
                 <div class="item-list cashier-items-list overflow-y-auto h-[80%]">
                     @if (count($transactions))
                         @foreach ($transactions as $transaction)

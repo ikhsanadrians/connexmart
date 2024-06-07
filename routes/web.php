@@ -124,7 +124,7 @@ Route::prefix('mart')->group(function () {
         Route::get("/product/{slug}",[MartController::class,'goodshow'])->name("mart.detailgoods");
         Route::get("/product/{slug}/edit", [MartController::class, 'goodsEditIndex'])->name("mart.editgoods");
         Route::put('/product/{slug}/update', [MartController::class, 'goodsupdate'])->name('mart.updategoods');
-        Route::delete('/product', [MartController::class, 'goodsdelete'])->name('mart.deletegoods');
+        Route::post('/product/{id}/delete', [MartController::class, 'goodsdelete'])->name('mart.deletegoods');
         Route::post('/product/search',[MartController::class, 'goodssearch'])->name("mart.goods.search");
 
         Route::get('/transactions', [MartController::class, 'transactions'])->name('mart.transactions');

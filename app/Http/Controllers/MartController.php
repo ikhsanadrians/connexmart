@@ -155,16 +155,19 @@ class MartController extends Controller
         return redirect()->route('mart.goods');
     }
 
-    public function goodsdelete(Request $request)
+    public function goodsdelete(Request $request, string $id)
     {
+        if($request->ajax()){
+            $deletedProduct = Product::where("id",$request->id_to_delete)->first();
 
-        $deletedProduct = Product::where("id",$request->product_id)->first();
+            $deletedProduct->delete();
 
-        $deletedProduct->delete();
+            alert()->success("Success", "Success Delete Product");
 
-        alert()->success("Success", "Success Delete Product");
-
-        return redirect()->route('mart.goods');
+            return response()->json([
+                "message" => "success delete product",
+            ]);
+        }
     }
 
     public function addcategory()

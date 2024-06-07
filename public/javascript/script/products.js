@@ -63,28 +63,36 @@ function showModalConfirm(visible, message) {
 }
 
 
+let currentDeleteId = null;
+
 $(".delete-btn-goods").on("click", function () {
     event.preventDefault();
     showModalConfirm(true, "Apakah Kamu Yakin Ingin Menghapus Produk Ini");
+    currentDeleteId = $(this).attr("id")
 })
 
 
-$(".next-confirm").on("click", function (event) {
-    event.preventDefault();
-    showModalConfirm(false)
-    $(".delete-product").submit();
-});
+$(".next-confirm").on("click", function () {
+    const currentUrl = `/mart/product/${currentDeleteId}/delete`;
+    $.ajax({
+        url: currentUrl,
+        method: "post",
+        dataType: 'json',
+        data: {
+            "id_to_delete" : currentDeleteId,
+            _token: $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function (response) {
+            showModalConfirm(false)
+            location.reload()
+        },
+        error: function (error) {
+            console.log(error)
+        }
 
-$(".delete-product").on("submit", function (event) {
-    event.preventDefault();
-    var form = this; // Store the form reference
-
-    // Close the modal
-    showModalConfirm(false, function() {
-        // Submit the form after the modal is closed
-        form.submit();
     });
 });
+
 
 
 $(".decline-confirm").on("click", function () {
