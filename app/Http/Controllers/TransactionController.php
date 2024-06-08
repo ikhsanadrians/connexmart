@@ -342,7 +342,7 @@ class TransactionController extends Controller
 
 
              $user_checkout->update([
-                 "status" => "ordered",
+                 "status" => "not_paid",
                  "payment_method" => $latest_payment_method,
                  "address_order" => $address
              ]);

@@ -22,11 +22,38 @@ class IndexController extends Controller
       return view('wishlist');
     }
 
-    public function transaction(){
-      $transactions = UserCheckout::where("user_id", Auth::user()->id)->get();
+    public function transaction(Request $request){
+      $transactions = UserCheckout::query();
+
+      if($request->has("status")){
+        switch($request->status){
+            case "all":
+                $transactions->where("user_id", Auth::user()->id);
+                break;
+            case "onconfirm":
+                $transactions->where("user_id", Auth::user()->id)->where("status", "not_paid");
+                break;
+            case "onproceed":
+                $transactions->where("user_id", Auth::user()->id)->where("status", "pending");
+                break;
+            case "ended":
+                $transactions->where("user_id", Auth::user()->id)->where("status", "ordered");
+                break;
+            case "picked-up":
+                $transactions->where("user_id", Auth::user()->id)->where("status", "taken");
+                break;
+            case "cancel":
+                $transactions->where("user_id", Auth::user()->id)->where("status", "canceled");
+                break;
+            default:
+                break;
+        }
+      }
+
+      $transactions = $transactions->get();
+
       return view('transaction', compact('transactions'));
     }
-
 
     public function login(){
         if(Auth::check()) return redirect()->route("home");

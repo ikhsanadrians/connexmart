@@ -118,6 +118,11 @@
                                          Pesanan Sudah Diantar
                                      </div>
                                  @endif
+                             @elseif($userCheckout->status == 'not_paid')
+                                 <div
+                                     class="not-payed-yet text-sm bg-yellow-500/50 text-yellow-800 font-medium px-3 py-1 rounded-lg">
+                                     Pesanan Belum Dibayar
+                                 </div>
                              @else
                                  <div class="taken bg-red-500/50 text-sm text-red-800 font-medium px-3 py-1 rounded-lg">
                                      Pesanan Dibatalkan

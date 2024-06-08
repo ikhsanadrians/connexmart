@@ -120,7 +120,6 @@ function checkConfirmPaymentMethod() {
 
             },
             success: function (data) {
-                console.log(data)
                 localStorage.setItem("payment_method", currentPaymentMethod)
                 modalPaymentMethod(false)
                 loadPaymentMethodBox()

@@ -23,7 +23,7 @@ return new class extends Migration
             $table->text("address_order")->nullable();
             $table->integer("cash_total")->nullable();
             $table->integer("refund_cash")->nullable();
-            $table->enum("status", ["pending", "ordered", "taken", "canceled"]);
+            $table->enum("status", ["pending", "not_paid", "ordered", "taken", "canceled"]);
             $table->timestamps();
         });
     }

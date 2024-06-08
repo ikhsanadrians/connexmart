@@ -187,7 +187,7 @@ th {
     }
 
 
-.payment-list::-webkit-scrollbar {
+.payment-list::-webkit-scrollbar, .transaction-status-search::-webkit-scrollbar {
     width: 4px;
     background-color: transparent
 }
@@ -255,4 +255,13 @@ th {
 
 .icon-check > span {
     @apply pointer-events-none select-none text-[55px] text-white font-bold
+}
+
+
+.filter-t {
+    @apply bg-gray-200 text-[#303fe2]
+}
+
+.filter-t-click {
+    @apply bg-[#303fe2] text-gray-200
 }

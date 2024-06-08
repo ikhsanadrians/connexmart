@@ -81,8 +81,13 @@
                                 Pesanan Sudah Diantar
                             </div>
                         @endif
+                    @elseif($userCheckouts->status == 'not_paid')
+                        <div
+                            class="not-payed-yet text-sm bg-yellow-500/50 text-yellow-800 font-medium px-3 py-1 rounded-lg">
+                            Pesanan Belum Dibayar
+                        </div>
                     @else
-                        <div class="taken bg-blue-500/50 text-blue-800 font-medium px-3 py-1 rounded-lg">
+                        <div class="taken bg-red-500/50 text-red-800 font-medium px-3 py-1 rounded-lg">
                             Pesanan Dibatalkan
                         </div>
                     @endif
@@ -166,7 +171,7 @@
                 </div>
                 <div class="content-action pb-4">
                     <div class="option mt-2 flex items-center gap-2">
-                        @if ($userCheckouts->status == 'ordered' && $userCheckouts->user_id != 4)
+                        @if (($userCheckouts->status == 'ordered' || $userCheckouts->status == 'not_paid') && $userCheckouts->user_id != 4)
                             <a href=""
                                 class="diambil cursor-pointer font-medium flex items-center gap-1 hover:opacity-80 bg-gradient-to-r  from-green-600 to-green-700 rounded-lg w-fit h-fit px-8 py-2 text-white">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"

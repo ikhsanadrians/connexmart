@@ -14,16 +14,25 @@
         </div>
         <div class="transaction-status-search mt-4 lg:pl-0 pl-4 pr-4 lg:pr-0 flex-nowrap overflow-auto overflow-y-hidden">
             <div class="status flex items-center gap-5">
-                <div class="onproceed cursor-pointer bg-[#303fe2] px-5 py-1 rounded-md text-white">
+                <div id="all" class="tfilter filter-t cursor-pointer px-5 py-1 rounded-md">
+                    Semua
+                </div>
+                <div id="onconfirm" class="tfilter flex gap-1 cursor-pointer filter-t px-5 py-1 rounded-md w-max">
+                    <p class="pointer-events-none">Dalam</p>
+                    <p class="pointer-events-none">
+                        Konfirmasi
+                    </p>
+                </div>
+                <div id="onproceed" class="tfilter cursor-pointer filter-t px-5 py-1 rounded-md">
                     Proses
                 </div>
-                <div class="ended cursor-pointer bg-gray-200 px-5 py-1 rounded-md text-[#303fe2]">
+                <div id="ended" class="tfilter cursor-pointer filter-t px-5 py-1 rounded-md">
                     Selesai
                 </div>
-                <div class="picked-up cursor-pointer bg-gray-200 px-5 py-1 rounded-md text-[#303fe2]">
+                <div id="picked-up" class="tfilter cursor-pointer filter-t px-5 py-1 rounded-md">
                     Diambil
                 </div>
-                <div class="cancel cursor-pointer bg-gray-200 px-5 py-1 rounded-md text-[#303fe2]">
+                <div id="cancel" class="tfilter cursor-pointer filter-t px-5 py-1 rounded-md">
                     Batal
                 </div>
             </div>
@@ -34,11 +43,13 @@
                     <div
                         class="card mt-2 lg:mt-5 rounded-lg  border-b-[1.2px]  border-gray-200  relative py-4 px-3 lg:px-5 bg-white shadow-sm">
                         <div class="transaction-content ">
-                            <div class="status text-sm font-medium text-center text-gray-300">
+                            <div class="status text-sm font-medium text-start text-[#303fe2]">
                                 @if ($transaction->status == 'ordered')
                                     Dalam Proses
                                 @elseif($transaction->status == 'taken')
                                     Selesai
+                                @elseif($transaction->status == 'pending' || $transaction->status == 'not_paid')
+                                    Menunggu Konfirmasi
                                 @elseif($transaction->status == 'cancelled')
                                     Dibatalkan
                                 @endif

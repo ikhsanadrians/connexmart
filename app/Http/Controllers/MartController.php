@@ -634,7 +634,7 @@ class MartController extends Controller
         if ($request->has('status')) {
             $userCheckouts->where('status', $request->status);
         } else {
-            $userCheckouts->whereIn('status', ['ordered', 'taken', 'canceled']);
+            $userCheckouts->whereIn('status', ['ordered', 'not_paid', 'taken', 'canceled']);
         }
 
         if ($request->has('sort') && $request->sort == "oldfirst") {

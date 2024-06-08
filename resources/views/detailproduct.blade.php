@@ -254,7 +254,7 @@
                                 </button>
                             @else
                                 <button disabled data-name="{{ $product->name }}" id="{{ $product->id }}"
-                                    class="disabled bg-gradient-to-r from-[#303fe2] to-blue-500 text-white py-3 px-4 text-sm w-full rounded-3xl font-semibold">
+                                    class="disabled bg-gradient-to-r from-red-300 to-red-200 text-red-600 py-3 px-4 text-sm w-full rounded-3xl font-semibold">
                                     Toko Sedang Tutup
                                 </button>
                             @endif
