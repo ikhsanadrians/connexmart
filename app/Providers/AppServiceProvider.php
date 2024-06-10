@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Models\CashierShift;
+use App\Models\Transaction;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -20,8 +22,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        view()->composer('components.headeradmin', function($view){
-            $view->with('cashier_shifts', CashierShift::where("status","current")->first());
-        });
+        view()->composer(['components.headeradmin', 'components.header', 'components.mobilebottomnav'], function($view){
+            $view
+               ->with('cashier_shifts', CashierShift::where("status","current")->first())
+               ->with('cart_quantity',  Transaction::where("status", "outcart")
+                                                           ->where("user_id", Auth::id())
+                                                           ->sum("quantity"));
+            });
     }
 }

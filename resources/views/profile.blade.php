@@ -94,33 +94,36 @@
                     <p>Daftar Transaksi</p>
                 </div>
                 <div
-                    class="order-types bg-gray-100 w-full h-auto mt-4 flex flex-col items-center justify-center rounded-md">
+                    class="order-types bg-gray-100 w-full h-auto mt-4 flex flex-col items-center overflow-hidden justify-center rounded-md">
                     <div class="wrapper grid grid-cols-4 w-full h-full items-center justify-evenly">
-                        <div class="proses cursor-pointer py-8 hover:bg-gray-300 h-full flex flex-col items-center gap-3">
+                        <a href="{{ route('transaction', ['status=onconfirm']) }}"
+                            class="not-paid cursor-pointer py-8 overflow-hidden hover:bg-gray-300 h-full flex flex-col items-center gap-3">
+                            <span class="material-symbols-rounded text-[28px] lg:text-[32px] text-gray-500">
+                                wallet
+                            </span>
+                            <p class="text-xs lg:text-sm text-gray-600">Belum Bayar</p>
+                        </a>
+                        <a href="{{ route('transaction', ['status=onproceed']) }}"
+                            class="proses cursor-pointer py-8 overflow-hidden hover:bg-gray-300 h-full flex flex-col items-center gap-3">
                             <span class="material-symbols-rounded text-[28px] lg:text-[32px] text-gray-500">
                                 deployed_code_history
                             </span>
-                            <p class="text-xs lg:text-sm text-gray-800">Dalam Proses</p>
-                        </div>
-                        <div class="done cursor-pointer py-8 hover:bg-gray-300 h-full flex flex-col items-center gap-3">
+                            <p class="text-xs lg:text-sm text-gray-600">Proses</p>
+                        </a>
+                        <a href="{{ route('transaction', ['status=ended']) }}"
+                            class="done cursor-pointer py-8 overflow-hidden hover:bg-gray-300 h-full flex flex-col items-center gap-3">
                             <span class="material-symbols-rounded text-[28px] lg:text-[32px] text-gray-500">
                                 deployed_code_update
                             </span>
-                            <p class="text-xs lg:text-sm text-gray-800">Transaksi Selesai</p>
-                        </div>
-                        <div class="diambil cursor-pointer py-8 hover:bg-gray-300 h-full flex flex-col items-center gap-3">
+                            <p class="text-xs lg:text-sm text-gray-600">Selesai</p>
+                        </a>
+                        <a href="{{ route('transaction', ['status=picked-up']) }}"
+                            class="diambil cursor-pointer py-8 overflow-hidden hover:bg-gray-300 h-full flex flex-col items-center gap-3">
                             <span class="material-symbols-rounded text-[28px] lg:text-[32px] text-gray-500">
                                 deployed_code_account
                             </span>
-                            <p class="text-xs lg:text-sm text-gray-800">Diambil</p>
-                        </div>
-                        <div
-                            class="dibatalkan cursor-pointer py-8 hover:bg-gray-300 h-full flex flex-col items-center gap-3">
-                            <span class="material-symbols-rounded text-[28px] lg:text-[32px] text-gray-500">
-                                deployed_code_alert
-                            </span>
-                            <p class="text-xs lg:text-sm text-gray-800">Dibatalkan</p>
-                        </div>
+                            <p class="text-xs lg:text-sm text-gray-600">Diambil</p>
+                        </a>
                     </div>
                 </div>
             </div>

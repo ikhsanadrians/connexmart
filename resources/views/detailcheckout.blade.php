@@ -24,7 +24,7 @@
                         TenizenMart</p>
                 </a>
                 <div class="checkout-title flex items-center">
-                    <a href="{{ route('home') }}" class="pr-2">
+                    <a href="javascript:history.back()" class="pr-2">
                         <span class="material-symbols-rounded text-[28px] mt-2 text-zinc-500 lg:hidden block">
                             arrow_back
                         </span>

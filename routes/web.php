@@ -33,9 +33,12 @@ Route::middleware('user')->group(function(){
     Route::get('/profile', [IndexController::class, 'profile'])->name('profile');
     Route::get('/transaction', [IndexController::class, 'transaction'])->name('transaction');
     Route::get('/wishlist', [IndexController::class, 'wishlist'])->name('wishlist');
+    Route::get('/search',[IndexController::class, 'search'])->name("search.page");
+    Route::post('/search',[IndexController::class, 'searchPost'])->name("search.post");
     Route::get('/scan',[ScannerController::class, 'scanner'])->name('scanner');
     Route::post('/scan/send',[ScannerController::class,'scannerSend'])->name('scanner.send');
     Route::put('/scan/confirm',[ScannerController::class,'scannerConfirm'])->name('scanner.confirm');
+
 
     Route::prefix('cart')->group(function () {
         Route::get('/', [TransactionController::class, 'index'])->name('cart.index');

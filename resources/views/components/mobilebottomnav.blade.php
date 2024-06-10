@@ -75,35 +75,39 @@
         <div class="container mx-auto flex items-center h-full justify-between px-5">
             <a href="{{ route('home') }}"
                 class="home flex flex-col justify-center items-center {{ Route::is('home') ? 'text-[#303fe2]' : 'text-zinc-400' }}">
-                <span class="material-symbols-rounded text-[26px]">
+                <span class="material-symbols-rounded text-[28px]">
                     home
                 </span>
                 <p class="text-xs">Beranda</p>
             </a>
             <a href="{{ route('wishlist') }}"
                 class="category flex flex-col justify-center items-center {{ Route::is('wishlist') ? 'text-[#303fe2]' : 'text-zinc-400' }}">
-                <span class="material-symbols-rounded text-[26px]">
+                <span class="material-symbols-rounded text-[28px]">
                     favorite
                 </span>
                 <p class="text-xs">Favorit</p>
             </a>
             <a href="{{ route('cart.index') }}"
-                class="shopping-cart flex flex-col justify-center items-center {{ Route::is('cart.index') ? 'text-[#303fe2]' : 'text-zinc-400' }}">
-                <span class="material-symbols-rounded text-[26px]">
+                class="shopping-cart flex flex-col relative justify-center items-center {{ Route::is('cart.index') ? 'text-[#303fe2]' : 'text-zinc-400' }}">
+                <div
+                    class="w-4 h-4 bg-red-500 text-white font-medium text-[10px] text-center flex items-center justify-center absolute right-3 -top-1 rounded-full">
+                    {{ $cart_quantity }}
+                </div>
+                <span class="material-symbols-rounded text-[28px]">
                     shopping_cart
                 </span>
                 <p class="text-xs">Keranjang</p>
             </a>
             <a href="{{ route('transaction') }}"
                 class="shopping-cart flex flex-col justify-center items-center {{ Route::is('transaction') ? 'text-[#303fe2]' : 'text-zinc-400' }}">
-                <span class="material-symbols-rounded text-[26px]">
+                <span class="material-symbols-rounded text-[28px]">
                     package_2
                 </span>
                 <p class="text-xs">Transaksi</p>
             </a>
             <a href="{{ route('profile') }}"
                 class="person flex flex-col justify-center items-center {{ Route::is('profile') ? 'text-[#303fe2]' : 'text-zinc-400' }}">
-                <span class="material-symbols-rounded text-[26px]">
+                <span class="material-symbols-rounded text-[28px]">
                     person
                 </span>
                 <p class="text-xs">Akun</p>

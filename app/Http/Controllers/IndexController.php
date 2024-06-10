@@ -101,6 +101,38 @@ class IndexController extends Controller
     }
 
 
+    public function search(){
+        $populerSearchs = Product::inRandomOrder()->take(5)->get();
+
+
+        return view("search", compact("populerSearchs"));
+    }
+
+    public function searchPost(Request $request){
+        if($request->ajax()){
+           $currentSearchValues = Product::where("name", "LIKE", '%' . $request->searchValue . '%')->get();
+
+           if(count($currentSearchValues)  < 1){
+             return response()->json([
+                "message" => "Product Not Found!",
+                "data" => "empty"
+             ]);
+           } else if ($request->searchValue == ""){
+             return response()->json([
+                "message" => "Search Input Empty!",
+                "data" => "search_input_null"
+             ]);
+           }
+
+           return response()->json([
+               "message" => "Product Found",
+               "data" => $currentSearchValues
+           ]);
+
+        }
+    }
+
+
     public function logout(){
         Auth::logout();
 
