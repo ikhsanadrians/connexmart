@@ -1,6 +1,9 @@
 let debounceTimer;
+let currentSearchValue;
+
 $("#search-products").on("input", function (event) {
     const urlParams = new URLSearchParams(window.location.search);
+    currentSearchValue = event.target.value;
 
     clearTimeout(debounceTimer);
     $(".loader").removeClass("!hidden")
@@ -65,7 +68,27 @@ $("#search-products").on("input", function (event) {
 
             }
         });
-        // console.log(event.target.value);
     }, 300);
 });
 
+$(".search-button").on("click", function (event) {
+    searchProduct()
+})
+
+$("#search-products").on("keypress", function (event) {
+     if(event.keyCode == 13){
+        searchProduct()
+     }
+})
+
+function searchProduct(){
+    const url = `${window.location.href}/${currentSearchValue}`
+    window.location.href = url
+    $("#search-products").val(currentSearchValue)
+}
+
+//searchquery pages 
+
+$(".filter-checkout").click(function(event) {
+    console.log(event.target.id)
+})

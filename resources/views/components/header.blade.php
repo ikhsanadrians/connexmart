@@ -34,7 +34,7 @@
 
             <a href="{{ route('search.page') }}" class="w-full">
                 <div
-                    class="search relative basis-full @if (Route::is('home') || Route::is('show.product')) block @else lg:block hidden @endif">
+                    class="search relative basis-full @if (Route::is('home') || Route::is('show.product') || Route::is("search.query")) block @else lg:block hidden @endif">
                     <div class="flex items-center w-full">
                         <svg class="absolute left-3" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                             fill="#9196a3" class="bi bi-search" viewBox="0 0 16 16">
@@ -43,7 +43,7 @@
                         </svg>
                         <input
                             class="py-2 pl-9 pr-4 lg:w-[33rem] w-full bg-transparent focus:bg-gray-100 bg-gray-100 focus:outline-none focus:border-[1.5px] border-gray-300 border-[1.5px] rounded-lg"
-                            type="text" placeholder="Kamu mau cari apa?">
+                            type="text" @if(Route::is("search.query")) value="{{ $query }}"  @endif placeholder="Kamu mau cari apa?">
 
                     </div>
                 </div>

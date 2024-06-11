@@ -35,6 +35,7 @@ Route::middleware('user')->group(function(){
     Route::get('/wishlist', [IndexController::class, 'wishlist'])->name('wishlist');
     Route::get('/search',[IndexController::class, 'search'])->name("search.page");
     Route::post('/search',[IndexController::class, 'searchPost'])->name("search.post");
+    Route::get('/search/{query}',[IndexController::class, 'searchQuery'])->name("search.query");
     Route::get('/scan',[ScannerController::class, 'scanner'])->name('scanner');
     Route::post('/scan/send',[ScannerController::class,'scannerSend'])->name('scanner.send');
     Route::put('/scan/confirm',[ScannerController::class,'scannerConfirm'])->name('scanner.confirm');

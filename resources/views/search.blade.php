@@ -30,7 +30,8 @@
                         class="py-2 px-4 w-full bg-transparent focus:bg-gray-100 bg-gray-100 focus:outline-none focus:border-[1.5px] border-gray-300 border-[1.5px] rounded-lg"
                         type="text" placeholder="Kamu mau cari apa?">
                     <div
-                        class="search-button  absolute right-2 top-1 rounded-xl text-white bg-[#303fe2] w-8 h-8 flex items-center justify-center">
+                        class="search-button cursor-pointer
+                          absolute right-2 top-1 rounded-xl text-white bg-[#303fe2] w-8 h-8 flex items-center justify-center">
                         <span class="material-symbols-rounded text-[18px]">
                             search
                         </span>

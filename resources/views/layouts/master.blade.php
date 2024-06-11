@@ -29,6 +29,7 @@
     <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
     <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/mobile-detect/1.4.5/mobile-detect.min.js"></script>
     <script type="module" src="{{ asset('javascript/script/scanner.js') }}"></script>
+    @stack('scripts')
 
     @if (!Route::is('scanner'))
         @include('components.footer')

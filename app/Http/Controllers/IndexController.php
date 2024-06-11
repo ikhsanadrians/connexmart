@@ -131,8 +131,12 @@ class IndexController extends Controller
 
         }
     }
-
-
+    
+    public function searchQuery(string $query){
+          $searchValues = Product::where("name", 'LIKE', '%' . $query . '%')->get();
+          return view("searchquery",compact("searchValues", "query"));
+    }    
+ 
     public function logout(){
         Auth::logout();
 
