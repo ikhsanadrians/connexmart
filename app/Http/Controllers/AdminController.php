@@ -35,9 +35,6 @@ class AdminController extends Controller
 
         if(Auth::attempt($credentials)) return redirect()->route('admin.index');
 
-
-
-
         return redirect()->back();
     }
 
@@ -46,7 +43,6 @@ class AdminController extends Controller
         $users = User::with('roles')->get();
         return view('admin.adduser',compact('roles','users'));
     }
-
     public function useradd(Request $request){
       $validation = $request->validate([
         "name" => "required",

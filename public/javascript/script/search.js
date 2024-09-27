@@ -90,5 +90,12 @@ function searchProduct(){
 //searchquery pages 
 
 $(".filter-checkout").click(function(event) {
-    console.log(event.target.id)
+    const urlParams = new URLSearchParams(window.location.search);
+    urlParams.set("sortby", event.target.name)
+    window.location.search = urlParams.toString()
+})
+
+$(".filter-checkout").each((index,filter)=>{
+    console.log(filter.name)
+    // if(filter.name == )
 })

@@ -17,7 +17,7 @@
             <div class="relevant filter text-gray-600 flex gap-2">
                 <div class="filter-input flex items-center justify-center relative">
                     <input class="filter-checkout h-5 w-5 peer shrink-0 relative checked:fill-white rounded-md border-2 border-[#303fe2] focus:outline-none checked:bg-[#303fe2] disabled:border-[1.5px] disabled:border-gray-300 appearance-none"
-                        type="radio" name="checkfilter" id="check-relevant">
+                        type="radio" name="relevant" id="check-relevant">
                     <span
                         class="material-symbols-rounded pointer-events-none absolute left-0 text-[20px] text-white invisible peer-checked:visible">
                         done
@@ -28,7 +28,7 @@
             <div class="base-on-rating filter text-gray-600 flex gap-2">
                 <div class="filter-input flex items-center justify-center relative">
                     <input class="filter-checkout h-5 w-5 peer shrink-0 relative checked:fill-white rounded-md border-2 border-[#303fe2] focus:outline-none checked:bg-[#303fe2] disabled:border-[1.5px] disabled:border-gray-300 appearance-none"
-                        type="radio" name="checkfilter" id="check-rating">
+                        type="radio" name="rating" id="check-rating">
                     <span
                         class="material-symbols-rounded pointer-events-none absolute left-0 text-[20px] text-white invisible peer-checked:visible">
                         done
@@ -39,7 +39,7 @@
             <div class="newest filter text-gray-600 flex gap-2">
                 <div class="filter-input flex items-center justify-center relative">
                     <input class="filter-checkout h-5 w-5 peer shrink-0 relative checked:fill-white rounded-md border-2 border-[#303fe2] focus:outline-none checked:bg-[#303fe2] disabled:border-[1.5px] disabled:border-gray-300 appearance-none"
-                        type="radio" name="checkfilter" id="check-newest">
+                        type="radio" name="latest" id="check-newest">
                     <span
                         class="material-symbols-rounded pointer-events-none absolute left-0 text-[20px] text-white invisible peer-checked:visible">
                         done
@@ -50,7 +50,7 @@
             <div class="price-highest filter text-gray-600 flex gap-2">
                 <div class="filter-input flex items-center justify-center relative">
                     <input class="filter-checkout h-5 w-5 peer shrink-0 relative checked:fill-white rounded-md border-2 border-[#303fe2] focus:outline-none checked:bg-[#303fe2] disabled:border-[1.5px] disabled:border-gray-300 appearance-none"
-                        type="radio" name="checkfilter" id="check-pricehighest">
+                        type="radio" name="highestprice" id="check-pricehighest">
                     <span
                         class="material-symbols-rounded pointer-events-none absolute left-0 text-[20px] text-white invisible peer-checked:visible">
                         done
@@ -61,7 +61,7 @@
             <div class="price-lowest filter text-gray-600 flex gap-2">
                 <div class="filter-input flex items-center justify-center relative">
                     <input class="filter-checkout h-5 w-5 peer shrink-0 relative checked:fill-white rounded-md border-2 border-[#303fe2] focus:outline-none checked:bg-[#303fe2] disabled:border-[1.5px] disabled:border-gray-300 appearance-none"
-                        type="radio" name="checkfilter" id="check-pricelowest">
+                        type="radio" name="lowestprice" id="check-pricelowest">
                     <span
                         class="material-symbols-rounded pointer-events-none absolute left-0 text-[20px] text-white invisible peer-checked:visible">
                         done

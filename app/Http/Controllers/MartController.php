@@ -457,6 +457,8 @@ class MartController extends Controller
             //     ], 422);
             // }
 
+        
+
             if ($request->payment_method == "tenbank") {
                 $checkout_code = now()->format("dmYHis") . Auth::user()->id . substr(uniqid(), 0, 3);
 
@@ -693,6 +695,7 @@ class MartController extends Controller
             "cashierName" => "required",
             "startCash" => "required",
         ]);
+        
         CashierShift::create([
             "cashier_name" => $request->cashierName,
             "starting_cash" => $request->startCash,

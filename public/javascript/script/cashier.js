@@ -182,6 +182,7 @@ function updateQuantity(transactionId, quantity, type) {
         }
     });
 }
+
 let debounceTimer;
 $(".product-search").on("input", function (event) {
 
@@ -623,6 +624,7 @@ function startEventChecking(code) {
 }
 
 
+
 //scanner logic
 let barcode = ""
 let interval;
@@ -699,3 +701,4 @@ function AddToListBarcode(scannedBarcode) {
         }
     });
 }
+

@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BankController;
 use App\Http\Controllers\MartController;
 use App\Http\Controllers\ScannerController;
+use App\Http\Controllers\PenerimaanStokController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -157,7 +158,20 @@ Route::prefix('mart')->group(function () {
             Route::get('/{checkout_code}/download',[MartController::class, 'downloadReceipt'])->name("mart.cashier.downloadreceipt");
             Route::get('/{checkout_code}/print',[MartController::class,'printReceipt'])->name("mart.cashier.printreceipt");
         });
+        Route::prefix("/penerimaan-stok")->group(function(){
+            Route::get('/', [PenerimaanStokController::class, 'index'])->name('penerimaanstok.index');
+            Route::get('/create', [PenerimaanStokController::class, 'create'])->name('penerimaanstok.create');
+            Route::post('/', [PenerimaanStokController::class, 'store'])->name('penerimaanstok.store');
+            Route::get('/{id}', [PenerimaanStokController::class, 'show'])->name('penerimaanstok.show');
+            Route::get('/{id}/edit', [PenerimaanStokController::class, 'edit'])->name('penerimaanstok.edit');
+            Route::put('/{id}', [PenerimaanStokController::class, 'update'])->name('penerimaanstok.update');
+            Route::delete('/{id}', [PenerimaanStokController::class, 'destroy'])->name('penerimaanstok.destroy');
+        });
+
+
         Route::get('/logout', [MartController::class, 'martlogout'])->name('mart.logout');
+        
+  
     });
 
     Route::middleware('loggedin')->group(function() {
