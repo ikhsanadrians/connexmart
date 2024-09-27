@@ -261,24 +261,33 @@ class MartController extends Controller
 
         return redirect()->back();
     }
-
     public function cashier(Request $request)
     {
-        $categories = Category::all();
-        $products = Product::query();
-        $transactions =  Transaction::with('product')->where('user_id', 4)->where('status', 'outcart')->orderBy('created_at', 'asc')->get();
+        try {
+            $categories = Category::all();
+            $products = Product::query();
+            $transactions = Transaction::with('product')
+                ->where('user_id', 4)
+                ->where('status', 'outcart')
+                ->orderBy('created_at', 'asc')
+                ->get();
 
-        if ($request->category) {
-            $category = Category::where("slug", $request->category)->first();
-            $products->where("category_id", $category->id);
+            if ($request->category) {
+                $category = Category::where("slug", $request->category)->first();
+                if ($category) {
+                    $products->where("category_id", $category->id);
+                }
+            }
+
+            $products = $request->show == "all" ? $products->get() : $products->paginate($request->show ?? 50);
+            $count_products = $products->count();
+
+            return view("mart.cashier", compact("products", "categories", "count_products", "transactions"));
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => 'An error occurred: ' . $e->getMessage()]);
         }
-
-        $products = $request->show == "all" ? $products->get() : $products->paginate($request->show ?? 50);
-
-        $count_products = $products->count();
-
-        return view("mart.cashier", compact("products", "categories", "count_products", "transactions"));
     }
+    
     public function cashierAddToOrderList(Request $request)
     {
         if ($request->ajax()) {

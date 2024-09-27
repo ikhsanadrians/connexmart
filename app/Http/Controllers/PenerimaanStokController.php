@@ -8,7 +8,7 @@ class PenerimaanStokController extends Controller
 {
 
     public function index(){
-        return view('');
+        return view('mart.stockinput.index');
     }
 
 
@@ -23,6 +23,7 @@ class PenerimaanStokController extends Controller
     public function inputPenerimaanStokEdit(Request $request){
         
     }
+
     
 
 
