@@ -40,9 +40,28 @@ class Product extends Model
         return $this->belongsTo(Merk::class);
     }
 
+
+    public function stokProduk(){
+        return $this->hasMany(StokProduk::class);
+    }
+
     protected static function booted(){
         static::creating(function($product){
             $product->slug = Str::slug($product->name);
+        });
+        static::created(function($product){
+            $stokProduk = StokProduk::create([
+                'statusenabled' => true,
+                'product_id' => $product->id,
+                'keterangan' => 'STOK AWAL PRODUK BARU:, ' . now(),
+                'stokawal' => 0,
+                'qtyin' => 0,
+                'qtyout' => 0,
+                'stok_akhir' => 0,
+            ]);
+
+            $product->stock = $stokProduk->stok_akhir;
+            $product->save();
         });
     }
 

@@ -33,7 +33,7 @@
                     <select id="category-input"
                         class="category-select-goods w-full rounded-md focus:outline-none  bg-gray-100 my-2 px-4 py-3"
                         name="category_id">
-                        <option value="goods-category">Pilih Kategori Produk</option>
+                        <option value="goods-category" selected disabled>Pilih Kategori Produk</option>
                         @foreach ($productcategories as $productcategory)
                             <option value="{{ $productcategory->id }}">{{ ucfirst($productcategory->name) }}
                             </option>

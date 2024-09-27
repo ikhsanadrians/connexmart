@@ -18,4 +18,11 @@ class StokProduk extends Model
         'qtyout',
         'stok_akhir',
     ];
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
+
+
 }

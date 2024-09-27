@@ -160,9 +160,9 @@ Route::prefix('mart')->group(function () {
         });
         Route::prefix("/penerimaan-stok")->group(function(){
             Route::get('/', [PenerimaanStokController::class, 'index'])->name('penerimaanstok.index');
-            Route::get('/create', [PenerimaanStokController::class, 'create'])->name('penerimaanstok.create');
+            Route::get('/create', [PenerimaanStokController::class, 'createStok'])->name('penerimaanstok.create');
             Route::post('/', [PenerimaanStokController::class, 'store'])->name('penerimaanstok.store');
-            Route::get('/{id}', [PenerimaanStokController::class, 'show'])->name('penerimaanstok.show');
+            Route::get('/{id}/show', [PenerimaanStokController::class, 'showStok'])->name('penerimaanstok.show');
             Route::get('/{id}/edit', [PenerimaanStokController::class, 'edit'])->name('penerimaanstok.edit');
             Route::put('/{id}', [PenerimaanStokController::class, 'update'])->name('penerimaanstok.update');
             Route::delete('/{id}', [PenerimaanStokController::class, 'destroy'])->name('penerimaanstok.destroy');
@@ -170,8 +170,8 @@ Route::prefix('mart')->group(function () {
 
 
         Route::get('/logout', [MartController::class, 'martlogout'])->name('mart.logout');
-        
-  
+
+
     });
 
     Route::middleware('loggedin')->group(function() {
