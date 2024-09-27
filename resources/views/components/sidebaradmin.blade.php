@@ -199,6 +199,14 @@
                 </svg>
                 Kas / Shift Kasir
             </a>
+            <a href="{{ route('mart.cashier.shift') }}"
+                class="flex hover:bg-slate-300 hover:text-[#003034] rounded transition text-sm items-center gap-3 px-3 py-2 @if (request()->routeIs('mart.cashier.shift')) bg-gradient-to-r from-gray-200 to-white text-[#003034] rounded-md font-semibold @endif">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box2-fill" viewBox="0 0 16 16">
+                    <path d="M3.75 0a1 1 0 0 0-.8.4L.1 4.2a.5.5 0 0 0-.1.3V15a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V4.5a.5.5 0 0 0-.1-.3L13.05.4a1 1 0 0 0-.8-.4zM15 4.667V5H1v-.333L1.5 4h6V1h1v3h6z"/>
+                  </svg>
+                </svg>
+                Stok Produk
+            </a>
             <a href="{{ route('mart.logout') }}"
                 class="transaction fixed bottom-4 hover:bg-slate-300 hover:text-[#003034] transition  rounded text-sm px-3 py-2 flex items-center gap-3 @if (request()->routeIs('logout')) bg-gradient-to-r from-gray-200 to-white text-[#003034] rounded-md font-semibold @endif">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"

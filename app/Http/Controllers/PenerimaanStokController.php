@@ -6,5 +6,24 @@ use Illuminate\Http\Request;
 
 class PenerimaanStokController extends Controller
 {
-    //
+
+    public function index(){
+        return view('');
+    }
+
+
+    public function inputPenerimaanStokIndex(){
+
+    }
+
+    public function inputPenerimaanStokPost(Request $request){
+        $stokData = [];
+    }
+
+    public function inputPenerimaanStokEdit(Request $request){
+        
+    }
+    
+
+
 }

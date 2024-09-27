@@ -23,24 +23,11 @@ class MartController extends Controller
 {
     public function index()
     {
-        $products = Product::all();
-        $categories = Category::all();
-
-        $charts = (new LarapexChart)->setType('area')
-            ->setTitle('Total Users Monthly')
-            ->setSubtitle('From January to March')
-            ->setXAxis([
-                'Jan', 'Feb', 'Mar'
-            ])
-            ->setDataset([
-                [
-                    'name'  =>  'Active Users',
-                    'data'  =>  [250, 700, 1200]
-                ]
-            ]);
+        $products = Product::paginate(25);
+        $categories = Category::paginate(25);
 
 
-        return view('mart.index',  compact("products", "categories", "charts"));
+        return view('mart.index',  compact("products", "categories"));
     }
 
 
@@ -292,40 +279,27 @@ class MartController extends Controller
 
         return view("mart.cashier", compact("products", "categories", "count_products", "transactions"));
     }
-
     public function cashierAddToOrderList(Request $request)
     {
         if ($request->ajax()) {
-            $product = Product::find($request->product_id);
-            $productPrice = $product->price;
-            $transaction_id = "";
-            $productSummaryPrice = ($productPrice * $request->quantity);
-            $currentCashierShift = CashierShift::where("status", "current")->first();
+            try {
+                $product = Product::findOrFail($request->product_id);
+                $currentCashierShift = CashierShift::where("status", "current")->firstOrFail();
 
-            $sameTransaction = Transaction::where('product_id', $request->product_id)
-                ->where('user_id', Auth::user()->id)
-                ->where('status', 'outcart')
-                ->first();
+                if ($product->stock < $request->quantity) {
+                    return response()->json([
+                        "message" => "failed, product stock is not enough"
+                    ], 401);
+                }
 
-            if (!$currentCashierShift) {
-                return response()->json([
-                    "message" => "Tidak Dapat Memproses!, Anda Belum memulai shift"
-                ], 401);
-            }
+                $sameTransaction = Transaction::where('product_id', $request->product_id)
+                    ->where('user_id', Auth::user()->id)
+                    ->where('status', 'outcart')
+                    ->first();
 
-            if ($product->stock < $request->quantity) {
-                return response()->json([
-                    "message" => "failed, product stock is not enough"
-                ], 401);
-            } else {
                 if ($sameTransaction) {
-                    $sumQuantity = $sameTransaction->quantity += $request->quantity;
-                    $sumPrice = $sumQuantity * $product->price;
-                    $sameTransaction->update([
-                        'quantity' => $sumQuantity,
-                        'price' => $sumPrice
-                    ]);
-
+                    $sameTransaction->increment('quantity', $request->quantity);
+                    $sameTransaction->update(['price' => $sameTransaction->quantity * $product->price]);
                     $transaction_id = $sameTransaction->id;
                 } else {
                     $transaction = Transaction::create([
@@ -335,17 +309,19 @@ class MartController extends Controller
                         "cashier_shifts_id" => $currentCashierShift->id,
                         "order_id" => "INV-" . Auth::user()->id . now()->format('dmYHis'),
                         "quantity" => $request->quantity,
-                        "price" => $productSummaryPrice,
+                        "price" => $product->price * $request->quantity,
                     ]);
-
                     $transaction_id = $transaction->id;
                 }
-
 
                 return response()->json([
                     "message" => "success",
                     "data" => $transaction_id,
                 ]);
+            } catch (\Exception $e) {
+                return response()->json([
+                    "message" => "An error occurred: " . $e->getMessage()
+                ], 500);
             }
         }
     }
