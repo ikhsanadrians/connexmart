@@ -874,6 +874,6 @@ class MartController extends Controller
 
         request()->session()->invalidate();
 
-        return redirect()->route('mart.auth');
+        return redirect()->route('auth');
     }
 }

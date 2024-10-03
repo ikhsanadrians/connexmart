@@ -38,7 +38,7 @@
                     <path
                         d="M16 6.5h-5.551a2.678 2.678 0 0 1-.443 1.042C9.613 8.088 8.963 8.5 8 8.5c-.963 0-1.613-.412-2.006-.958A2.679 2.679 0 0 1 5.551 6.5H0v6A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-6z" />
                 </svg>
-                Top Up Request
+                Request Top Up
             </a>
             <a href="{{ route('bank.topup') }}"
                 class="home hover:bg-slate-300 hover:text-[#003034] rounded transition text-sm px-3 py-2 flex items-center gap-3 @if (request()->routeIs('admin.index')) bg-gradient-to-r from-gray-200 to-white text-[#003034] rounded-md font-semibold @endif">

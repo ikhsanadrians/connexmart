@@ -11,12 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('wallets', function (Blueprint $table) {
+        Schema::create('detail_saldo_banks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->char('norec',8)->nullable();
-            $table->double('credit',10)->default(0);
-            $table->double('debit',10)->default(0);
+            $table->boolean('statusenabled');
+            $table->text('keterangan');
+            $table->foreignId('wallet_id');
+            $table->integer('saldoawal');
+            $table->integer('saldoin');
+            $table->integer('saldoout');
+            $table->integer('saldoakhir');
             $table->timestamps();
         });
     }
@@ -26,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('wallets');
+        Schema::dropIfExists('detail_saldo_banks');
     }
 };

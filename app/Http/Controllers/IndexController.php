@@ -72,7 +72,7 @@ class IndexController extends Controller
              $isUserRemember = $request->isUserRemember;
 
              $attempt = Auth::attempt($data, $isUserRemember);
-
+             
              if(!$attempt) return response()->json([
                 "status" => "unauthenticated",
              ]);

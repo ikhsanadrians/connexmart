@@ -1,159 +1,174 @@
 @extends('layouts.admin')
+@push('scripts')
+    <script type="module" src="{{ asset('javascript/script/products.js') }}"></script>
+@endpush
 @section('content')
-<div class="addusermodal hidden fixed z-50 w-3/5 h-3/4 bg-white -translate-x-1/2 left-1/2 shadow-lg overflow-hidden rounded-lg">
-    <div class="wrappers flex h-full w-full">
-        <div class="modal-input-group relative w-full px-4 py-8">
-            <div class="flex justify-between pr-5">
-                <p class="font-bold px-6 text-xl"><span id="user-name-modal">Top Up</span></p>
-                <button id="closemodal">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" class="bi bi-x-lg" viewBox="0 0 16 16">
-                        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
-                      </svg>
-                </button>
+    <div class="crud-content bg-white rounded-lg">
+        <div class="content-top p-4">
+            <div class="headers flex justify-between items-center">
+                <h1 class="text-xl font-bold">Request Top Up</h1>
+                <a href="{{ route('mart.addgoodsview') }}"
+                    class="add-products bg-[#303fe2] text-white px-5 font-medium py-3 hover:bg-slate-300 hover:text-[#003034] transition cursor-pointer rounded-xl flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
+                        class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                        <path
+                            d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
+                    </svg>
+                    Top Up Baru
+                </a>
             </div>
-            <form  method="POST" class="input mt-4 px-6">
-                @csrf
-                <div class="nominal py-1">
-                    <label for="nominal">
-                        Nominal
-                </label>
-                    <input data-userid="" id="nominal-input" class="w-full rounded-md focus:outline-none focus:ring-2 ring-[#003034] bg-gray-100 my-2 p-2" type="text" name="name" id="nominal" placeholder="Type An Nominal Here">
+            <div class="searchandfilter grid grid-cols-7 items-center gap-3 mt-4">
+                <div class="search relative flex items-center w-full col-span-3">
+                    <svg class="absolute left-2" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                        fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path
+                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                    </svg>
+                    <input id="search_products" type="text" placeholder="Cari Top Up ID"
+                        class="pl-8 pr-4 py-2 rounded-md bg-slate-100 border-[1.5px] border-slate-200 focus:outline-none w-full">
                 </div>
-                <div class="py-1">
-                    <label for="role">
-                        Users
-                    </label>
-                    <select id="role-input" class="role-select w-full rounded-md focus:outline-none focus:ring-2 ring-[#003034] bg-gray-100 my-2 p-2" name="role_id">
-                          <option value="role">Select User</option>
-                        @foreach($users as $user)
-                          <option value="{{ $user->id }}">{{ ucfirst($user->name) }}</option>
-                        @endforeach
-                    </select>
+                {{-- <select name="category" id="p_category"
+                    class="select-category col-span-2 py-2 px-3 rounded-md bg-slate-100 border-[1.5px] border-slate-200">
+                    <option class="option-status" value="all">Semua Kategori</option>
+                    @foreach ($productcategories as $productcategory)
+                        <option class="option-status" value="{{ $productcategory->slug }}">{{ $productcategory->name }}
+                        </option>
+                    @endforeach
+                </select> --}}
+                <select name="transaction_sorting" id="t_sorting"
+                    class="select-transactions-sorting py-2 px-8 rounded-md bg-slate-100 col-span-2 border-[1.5px] border-slate-200">
+                    <option class="option-sorting" value="newfirst">Terbaru</option>
+                    <option class="option-sorting" value="oldfirst">Terlama</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="products-list w-full mt-2 mb-2">
+            <table class="w-full !shadow-none">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nama Nasabah</th>
+                        <th>Nomor Wallet</th>
+                        <th>Harga</th>
+                        <th>Stok</th>
+                        <th>Kategori</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="product-container">
+                     @foreach ($topups as $key => $topup) 
+                        <tr>
+                            <td class="topup-id" data-productid="{{ $topup->id }}">
+                                @if (!Request::get('show'))
+                                    {{ $topups->firstItem() + $key }}
+                                @else
+                                    {{ $key + 1 }}
+                                @endif
+                            </td>
+                            <td class="topup-td">{{ $topup->user->name }}</td>
+                            <td class="topup-td">{{ format_to_rp($topup->nominals) }}
+                            </td>
+                            <td class="topup-id">{{ $topup->unique_code }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        <div class="pagination-and-back px-2 py-3 mb-12">
+            <div class="pagination flex flex-row justify-between w-full items-start lg:gap-0 gap-4 lg:items-center">
+                <div class="page-records flex items-center gap-4">
+                    <div class="record-per-inputs relative">
+                        <select name="recordsPerPage" id="recordsPerPage"
+                            class="recordsPerPage appearance-none bg-transparent text-sm focus:outline-none border-[1.8px] border-slate-200 py-1 pl-3 pr-6 rounded-md">
+                            <option class="option" value="50">50 per Page</option>
+                            <option class="option" value="100">100 per Page</option>
+                            <option class="option" value="all">Show All</option>
+                        </select>
+                        <svg class="absolute right-0 top-1" width="24" height="25" viewBox="0 0 24 25"
+                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M7 10.875L12 15.875L17 10.875H7Z"
+                                fill="black" fill-opacity="0.6" />
+                        </svg>
+
+                    </div>
+                    <div class="showing-inputs text-sm lg:block hidden">
+                        @if (Request::get('show') == 'all')
+                            Showing All of {{ $count_topups }} records
+                        @else
+                            Showing {{ $topups->firstItem() }} - {{ $topups->lastItem() }} of {{ $count_topups }}
+                            records
+                        @endif
+                    </div>
                 </div>
-                <button id="default" type="submit" class="submit-btn bg-[#303fe2] py-2 text-white px-4 rounded-md mt-4 w-full">
-                    Submit
-                </button>
-            </form>
+                @if (request('show') != 'all')
+                    @php
+
+                        $pageLimit = 3;
+                        $startPage = max(1, $topups->currentPage() - floor($pageLimit / 2));
+                        $endPage = min($startPage + $pageLimit - 1, $topups->lastPage());
+                        $nextPage =
+                            $topups->currentPage() < $topups->lastPage()
+                                ? $topups->currentPage() + 1
+                                : $topups->lastPage();
+                        $prevPage = $topups->currentPage() > 1 ? $topups->currentPage() - 1 : 1;
+
+                    @endphp
+                    <div class="pagination-buttons flex items-center gap-2">
+
+                        <a href="{{ request('category') ? route('mart.cashier', ['category' => request('category'), 'page' => '1']) : $topups->url(1) }}"
+                            class="first-page p-2 h-8 w-8 flex items-center justify-center border-slate-200 border-[1.8px] rounded-md opacity-50">
+                            <svg width="16" height="17" viewBox="0 0 16 17" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M11.7267 12.875L12.6667 11.935L9.61341 8.875L12.6667 5.815L11.7267 4.875L7.72675 8.875L11.7267 12.875Z"
+                                    fill="#333333" />
+                                <path
+                                    d="M7.33344 12.875L8.27344 11.935L5.2201 8.875L8.27344 5.815L7.33344 4.875L3.33344 8.875L7.33344 12.875Z"
+                                    fill="#333333" />
+                            </svg>
+                        </a>
+                        <a href="{{ request('category') ? route('mart.cashier', ['category' => request('category'), 'page' => $prevPage]) : $topups->previousPageUrl() }}"
+                            class="previous-page p-2 h-8 w-8 flex items-center justify-center border-slate-200 border-[1.8px] rounded-md opacity-50">
+                            <svg width="5" height="8" viewBox="0 0 5 8" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4.06 8.875L5 7.935L1.94667 4.875L5 1.815L4.06 0.875L0.0599996 4.875L4.06 8.875Z"
+                                    fill="#1A1A1A" />
+                            </svg>
+                        </a>
+
+                        @for ($page = $startPage; $page <= $endPage; $page++)
+                            <div
+                                class="page p-2 h-8 w-8 flex items-center justify-center border-slate-200 border-[1.8px] rounded-md">
+                                <a
+                                    href="{{ request('category') ? route('mart.cashier', ['category' => request('category'), 'page' => $page]) : $topups->url($page) }}">{{ $page }}</a>
+                            </div>
+                        @endfor
+                        <a href="{{ request('category') ? route('mart.goods', ['category' => request('category'), 'page' => $nextPage]) : $topups->nextPageUrl() }}"
+                            class="next-pages p-2 h-8 w-8 flex items-center justify-center border-slate-200 border-[1.8px] rounded-md opacity-50">
+                            <svg width="5" height="9" viewBox="0 0 5 9" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M0.94 0.875L0 1.815L3.05333 4.875L0 7.935L0.94 8.875L4.94 4.875L0.94 0.875Z"
+                                    fill="#1A1A1A" />
+                            </svg>
+                        </a>
+                        <a href="/mart/products?page={{ $topups->lastPage() }}"
+                            class="last-page p-2 h-8 w-9 flex items-center justify-center border-slate-200 border-[1.8px] rounded-md opacity-50">
+                            <svg width="10" height="9" viewBox="0 0 10 9" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M1.27325 0.875L0.333252 1.815L3.38659 4.875L0.333252 7.935L1.27325 8.875L5.27325 4.875L1.27325 0.875Z"
+                                    fill="#1A1A1A" />
+                                <path
+                                    d="M5.66656 0.875L4.72656 1.815L7.7799 4.875L4.72656 7.935L5.66656 8.875L9.66656 4.875L5.66656 0.875Z"
+                                    fill="#1A1A1A" />
+                            </svg>
+                        </a>
+                    </div>
+                @endif 
+            </div>
         </div>
     </div>
-</div>
 
-<h1 class="text-2xl font-bold">Transaction User</h1>
-    <div class="flex justify-between items-center">
-        <div class="searchandfilter mt-3 flex items-center gap-3">
-            <div class="search mt-2 relative flex items-center">
-                <svg class="absolute left-2" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                  </svg>
-                <input type="text" placeholder="Search Top Up Request" class="pl-8 pr-4 py-2 rounded-md focus:outline-none">
-            </div>
-            <div class="filter bg-[#303fe2] text-white mt-2 p-[11px] rounded-md">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel-fill" viewBox="0 0 16 16">
-                    <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2z"/>
-                  </svg>
-            </div>
-        </div>
-        <div class="add-topup">
-            <button id="openaddmodal" class="add-user bg-[#F3F7FA] text-blue-500 px-4 py-3 rounded-lg flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                    class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
-                    <path
-                        d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
-                </svg>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wallet-fill" viewBox="0 0 16 16">
-                    <path d="M1.5 2A1.5 1.5 0 0 0 0 3.5v2h6a.5.5 0 0 1 .5.5c0 .253.08.644.306.958.207.288.557.542 1.194.542.637 0 .987-.254 1.194-.542.226-.314.306-.705.306-.958a.5.5 0 0 1 .5-.5h6v-2A1.5 1.5 0 0 0 14.5 2h-13z"/>
-                    <path d="M16 6.5h-5.551a2.678 2.678 0 0 1-.443 1.042C9.613 8.088 8.963 8.5 8 8.5c-.963 0-1.613-.412-2.006-.958A2.679 2.679 0 0 1 5.551 6.5H0v6A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-6z"/>
-                  </svg>
-            </button>
-        </div>
-    </div>
-
-  <div class="user-list w-full mt-8 mb-8">
-    <table class="w-full">
-        <thead>
-          <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Unique Code</th>
-            <th>Nominals</th>
-            <th>Date</th>   
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-         @foreach ( $topups as $topup )
-         <tr>
-             <td>{{ $topup->id }}</td>
-             <td>{{ $topup->user->name }}</td>
-             <td>{{ $topup->unique_code }}</td>
-             <td>{{ format_to_rp($topup->nominals) }}</td>
-             <td>{{ $topup->created_at }}</td>
-             <td class="flex justify-center">
-                @if($topup->status == "unconfirmed")
-                 <div class="bg-gradient-to-r from-red-400 font-semibold to-red-600 shadow-md w-fit px-3 py-[5px] rounded-md text-white flex items-center gap-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-backspace-fill" viewBox="0 0 16 16">
-                        <path d="M15.683 3a2 2 0 0 0-2-2h-7.08a2 2 0 0 0-1.519.698L.241 7.35a1 1 0 0 0 0 1.302l4.843 5.65A2 2 0 0 0 6.603 15h7.08a2 2 0 0 0 2-2V3zM5.829 5.854a.5.5 0 1 1 .707-.708l2.147 2.147 2.146-2.147a.5.5 0 1 1 .707.708L9.39 8l2.146 2.146a.5.5 0 0 1-.707.708L8.683 8.707l-2.147 2.147a.5.5 0 0 1-.707-.708L7.976 8 5.829 5.854z"/>
-                      </svg>
-                     Unconfirm
-                 </div>
-                @elseif($topup->status == "confirmed")
-                 <div class="bg-gradient-to-r from-green-400 font-semibold to-emerald-600 shadow-md w-fit px-3 py-[5px] rounded-md text-white flex items-center gap-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-shield-fill-check" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M8 0c-.69 0-1.843.265-2.928.56-1.11.3-2.229.655-2.887.87a1.54 1.54 0 0 0-1.044 1.262c-.596 4.477.787 7.795 2.465 9.99a11.777 11.777 0 0 0 2.517 2.453c.386.273.744.482 1.048.625.28.132.581.24.829.24s.548-.108.829-.24a7.159 7.159 0 0 0 1.048-.625 11.775 11.775 0 0 0 2.517-2.453c1.678-2.195 3.061-5.513 2.465-9.99a1.541 1.541 0 0 0-1.044-1.263 62.467 62.467 0 0 0-2.887-.87C9.843.266 8.69 0 8 0zm2.146 5.146a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647z"/>
-                      </svg>
-                     Confirmed
-                 </div>
-                @else
-                <div class="bg-gradient-to-r from-yellow-500 font-semibold to-red-500 shadow-md w-fit px-3 py-[5px] rounded-md text-white flex items-center gap-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill" viewBox="0 0 16 16">
-                        <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                      </svg>
-                     Rejected
-                 </div>
-                @endif
-             </td>
-             <td>
-                <div class="wrappers flex gap-2 justify-center">
-                    @if($topup->status == "unconfirmed")
-                    <form method="POST" action="{{ route('bank.topupconfirm') }}">
-                        @csrf
-                        @method('PUT')
-                        <input type="hidden" value="{{ $topup->unique_code }}" name="unique_code">
-                        <input type="hidden" value="{{ $topup->user->id }}" name="user_id">
-                        <input type="hidden" value="{{ $topup->nominals }}" name="nominals">
-                        <button type="submit" class="bg-gradient-to-r from-green-500 to-emerald-600 p-2 text-white rounded-md">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
-                                <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
-                              </svg>
-                        </button>
-                    </form>
-                    <form action="{{ route('bank.topupreject')}}" method="POST">
-                        @csrf
-                        @method('patch')
-                        <input type="hidden" value="{{ $topup->unique_code }}" name="unique_code">
-                        <button type="submit" class="bg-gradient-to-r from-red-500 to-red-600 text-white p-2 rounded-md">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-backspace-fill" viewBox="0 0 16 16">
-                                <path d="M15.683 3a2 2 0 0 0-2-2h-7.08a2 2 0 0 0-1.519.698L.241 7.35a1 1 0 0 0 0 1.302l4.843 5.65A2 2 0 0 0 6.603 15h7.08a2 2 0 0 0 2-2V3zM5.829 5.854a.5.5 0 1 1 .707-.708l2.147 2.147 2.146-2.147a.5.5 0 1 1 .707.708L9.39 8l2.146 2.146a.5.5 0 0 1-.707.708L8.683 8.707l-2.147 2.147a.5.5 0 0 1-.707-.708L7.976 8 5.829 5.854z"/>
-                              </svg>
-                        </button>
-                    </form>
-                    @else
-                    <div class="bg-gradient-to-r from-blue-500 font-semibold to-sky-600 shadow-md w-fit px-3 py-[5px] rounded-md text-white flex items-center gap-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check-all" viewBox="0 0 16 16">
-                            <path d="M8.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L2.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093L8.95 4.992a.252.252 0 0 1 .02-.022zm-.92 5.14.92.92a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 1 0-1.091-1.028L9.477 9.417l-.485-.486-.943 1.179z"/>
-                          </svg>
-                         Done
-                     </div>
-                    @endif
-
-                </div>
-            </td>
-        </tr>
-
-         @endforeach
-        </tbody>
-      </table>
-  </div>
-
+    <script src="{{ asset('javascript/lib/jquery.min.js') }}"></script>
 @endsection

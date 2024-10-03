@@ -43,7 +43,7 @@ table {
 }
 
 tr,td,th {
-    @apply p-2 border-[1.6px]
+    @apply px-2 py-1 border-[1.6px]
 }
 
 td {

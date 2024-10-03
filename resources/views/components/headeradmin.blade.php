@@ -8,6 +8,15 @@
                     <p class="font-semibold text-xl text-[#303fe2] lg:block hidden">
                         TenizenMart
                     </p>
+                    <div class="tenmart-section font-medium">
+                        @if(Auth::user()->role_id == 1)
+                        <p>Admin</p>
+                       @elseif(Auth::user()->role_id == 2)
+                        <p>Bank</p>
+                       @elseif (Auth::user()->role_id == 3)
+                        <p>Kantin</p>
+                       @endif
+                    </div>
                 </a>
             </div>
             @if (Auth::user()->role_id == 3 && $cashier_shifts)

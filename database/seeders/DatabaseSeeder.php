@@ -10,6 +10,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Roles;
 use App\Models\Wallet;
+use App\Models\TopUp;
 
 
 class DatabaseSeeder extends Seeder
@@ -124,6 +125,19 @@ class DatabaseSeeder extends Seeder
            "credit" => 100000,
            "debit" => 0
          ]);
+
+
+         
+    $topUps = [
+        ["user_id" => 1, "nominals" => 100000, "unique_code" => "TOPUP123", "status" => "unconfirmed"],
+        ["user_id" => 2, "nominals" => 50000, "unique_code" => "TOPUP456", "status" => "confirmed"],
+        ["user_id" => 3, "nominals" => 200000, "unique_code" => "TOPUP789", "status" => "rejected"],
+    ];
+
+    foreach ($topUps as $topUp) {
+        TopUp::create($topUp);
+    }
+
 
 
 
