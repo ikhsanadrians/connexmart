@@ -42,6 +42,18 @@ if(!function_exists('meta_title_check')){
     }
 }
 
+if(!function_exists('generate_norec_number')){
+     function generate_norec_number(){
+        return str_pad(random_int(0, 99999999), 8, '0', STR_PAD_LEFT);
+     }
+}
+
+
+if(!function_exists('generate_keterangan_stok')){
+    function generate_keterangan_stok(){
+        
+    }
+}
 
 
 ?>

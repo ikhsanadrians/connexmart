@@ -17,10 +17,25 @@ class BankController extends Controller
         return view("bank.index",compact('topups'));
     }
 
-    public function topUp(){
-        $topups = TopUp::all();
+    public function topUp(Request $request){
+        $topups = TopUp::query();
+
+        if ($request->sort) {
+            $sortOrder = $request->sort === "oldfirst" ? "asc" : "desc";
+        } else {
+            $sortOrder = "desc";
+        }
+
+        if ($request->show === "all") {
+            $topups = $topups->orderBy("created_at", $sortOrder)->get();
+        } else {
+            $topups = $topups->orderBy("created_at", $sortOrder)->paginate($request->show ?? 50);
+        }
+
+
+        $count_topups = count(TopUp::all());
         $users = User::all();
-        return view('bank.topup', compact('topups', 'users'));
+        return view('bank.topup', compact('topups', 'users','count_topups'));
     }
 
 
@@ -88,7 +103,7 @@ class BankController extends Controller
 
         request()->session()->invalidate();
 
-        return redirect()->route('bank.auth');
+        return redirect()->route('auth');
 
     }
 

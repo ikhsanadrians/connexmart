@@ -118,7 +118,7 @@ class AdminController extends Controller
 
         request()->session()->invalidate();
 
-        return redirect()->route('admin.auth');
+        return redirect()->route('auth');
 
     }
 
