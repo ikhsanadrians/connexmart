@@ -22,7 +22,7 @@ class PenerimaanStokController extends Controller
 
     public function showStok(string $id){
         try {
-            $currentStok = StokProduk::find($id);
+            $currentStok = StokProduk::with('product')->find($id);
             if (!$currentStok) {
                 return response()->json([
                     "message" => "Stok not found",
@@ -39,8 +39,5 @@ class PenerimaanStokController extends Controller
             ], 500);
         }
     }
-
-
-
 
 }

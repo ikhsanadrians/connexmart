@@ -15,8 +15,8 @@ $('.select-product-to-add-stock').on('change', function (event) {
             _token: $('meta[name="csrf-token"]').attr('content')
         },
         success: function (response) {
-            console.log(response);
             $('.stok-list-container').html(`
+                <p class="mb-2 font-medium">Stok Saat Ini : <span class="text-slate-600 font-normal">${response.data.product.name}</span></p>
                 <table class="w-full !shadow-none">
                     <thead>
                         <tr class="text-sm">
@@ -39,9 +39,21 @@ $('.select-product-to-add-stock').on('change', function (event) {
                        </tr>
                     </tbody>
                 </table>`)
+            $('.reset-stok-switch').removeClass('hidden').addClass('flex')
         },
         error: function (error) {
             return
         }
     });
 });
+
+let productToStok = [];
+
+let isStockReset = false;
+$("#switch-btn").on("change", function () {
+    isStockReset = $(this).is(':checked');
+    $("#description-stok-text").text(isStockReset ? "Jumlah Stok Baru" : "Jumlah Stok Tambahan");
+    $("#stok-inputnew").attr("placeholder", isStockReset ? "Masukan Stok Baru" : "Masukan Stok Tambahan");
+});
+
+
