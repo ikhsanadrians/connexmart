@@ -49,4 +49,11 @@ if(!function_exists('generate_norec_number')){
 }
 
 
+if(!function_exists('generate_keterangan_stok')){
+    function generate_keterangan_stok(){
+        
+    }
+}
+
+
 ?>

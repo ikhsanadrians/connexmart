@@ -18,6 +18,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use ArielMejiaDev\LarapexCharts\LarapexChart;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\StokProduk;
 
 class MartController extends Controller
 {
@@ -492,7 +493,24 @@ class MartController extends Controller
                         "status" => "taken",
                         "order_id" => $checkout_code
                     ]);
+                } 
+
+                $productLists = array();
+
+                foreach($transactions as $transaction){
+                    array_push($productList, $transaction->product_id);
                 }
+
+                $stokProduk = new StokProduk();
+
+                foreach($productLists as $productList){
+                    $stokProduk->statusenabled = true;
+                    $stokProduk->product_id = $productList;
+                    $stokProduk->keterangan 
+
+                }
+                
+
 
                 $currentCashierShift->sold_items += $request->total_quantity;
                 $currentCashierShift->refund_cash += $refund_cash;
