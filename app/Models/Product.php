@@ -53,7 +53,7 @@ class Product extends Model
             $stokProduk = StokProduk::create([
                 'statusenabled' => true,
                 'product_id' => $product->id,
-                'keterangan' => 'STOK AWAL PRODUK BARU:, ' . now(),
+                'keterangan' => generate_keterangan_stok("init"),
                 'stokawal' => 0,
                 'qtyin' => 0,
                 'qtyout' => 0,

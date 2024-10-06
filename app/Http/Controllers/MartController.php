@@ -264,7 +264,7 @@ class MartController extends Controller
     }
     public function cashier(Request $request)
     {
-        try {
+
             $categories = Category::all();
             $products = Product::query();
             $transactions = Transaction::with('product')
@@ -284,17 +284,21 @@ class MartController extends Controller
             $count_products = $products->count();
 
             return view("mart.cashier", compact("products", "categories", "count_products", "transactions"));
-        } catch (\Exception $e) {
-            return redirect()->back()->withErrors(['error' => 'An error occurred: ' . $e->getMessage()]);
-        }
+
     }
-    
+
     public function cashierAddToOrderList(Request $request)
     {
         if ($request->ajax()) {
-            try {
                 $product = Product::findOrFail($request->product_id);
-                $currentCashierShift = CashierShift::where("status", "current")->firstOrFail();
+                $currentCashierShift = CashierShift::where("status", "current")->first();
+
+                if(!$currentCashierShift){
+                    return response()->json([
+                        "message" => "Anda Belum Memulai Shift!"
+                    ], 401);
+                }
+
 
                 if ($product->stock < $request->quantity) {
                     return response()->json([
@@ -328,11 +332,6 @@ class MartController extends Controller
                     "message" => "success",
                     "data" => $transaction_id,
                 ]);
-            } catch (\Exception $e) {
-                return response()->json([
-                    "message" => "An error occurred: " . $e->getMessage()
-                ], 500);
-            }
         }
     }
 
@@ -443,7 +442,7 @@ class MartController extends Controller
             //     ], 422);
             // }
 
-        
+
 
             if ($request->payment_method == "tenbank") {
                 $checkout_code = now()->format("dmYHis") . Auth::user()->id . substr(uniqid(), 0, 3);
@@ -493,24 +492,18 @@ class MartController extends Controller
                         "status" => "taken",
                         "order_id" => $checkout_code
                     ]);
-                } 
-
-                $productLists = array();
+                }
 
                 foreach($transactions as $transaction){
-                    array_push($productList, $transaction->product_id);
-                }
-
-                $stokProduk = new StokProduk();
-
-                foreach($productLists as $productList){
+                    $stokProduk = new StokProduk();
                     $stokProduk->statusenabled = true;
-                    $stokProduk->product_id = $productList;
-                    $stokProduk->keterangan 
-
+                    $stokProduk->product_id = $transaction->product_id;
+                    $stokProduk->keterangan = generate_keterangan_stok("transaction", ["notransaksi" => $transaction->id]);
+                    $stokProduk->qtyin = 0;
+                    $stokProduk->qtyout = $transaction->quantity;
+                    $stokProduk->stok_akhir = $stokProduk->stokawal + $stokProduk->qtyin - $stokProduk->qtyout;
+                    $stokProduk->save();
                 }
-                
-
 
                 $currentCashierShift->sold_items += $request->total_quantity;
                 $currentCashierShift->refund_cash += $refund_cash;
@@ -698,7 +691,7 @@ class MartController extends Controller
             "cashierName" => "required",
             "startCash" => "required",
         ]);
-        
+
         CashierShift::create([
             "cashier_name" => $request->cashierName,
             "starting_cash" => $request->startCash,

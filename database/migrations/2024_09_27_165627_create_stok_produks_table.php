@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('stok_produks', function (Blueprint $table) {
             $table->id();
             $table->boolean('statusenabled');
-            $table->foreignId('product_id')->constrained()->onDelete('CASCADE');  
+            $table->foreignId('product_id')->constrained()->onDelete('CASCADE');
             $table->text('keterangan');
-            $table->integer('stokawal');
-            $table->integer('qtyin');
-            $table->integer('qtyout');
-            $table->integer('stok_akhir');
+            $table->integer('stokawal')->default(0);
+            $table->integer('qtyin')->default(0);
+            $table->integer('qtyout')->default(0);
+            $table->integer('stok_akhir')->default(0);
             $table->timestamps();
         });
     }

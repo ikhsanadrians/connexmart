@@ -42,9 +42,9 @@
                 <input id="stok-inputnew" name="new-stok-input" type="number" placeholder="Masukan Jumlah Stok Tambahan"
                     class="stok-input outline-none px-4 py-3 bg-gray-100 rounded-md">
             </div>
-            <button type="submit"
+            <button id="add_stok" type="button"
                 class="mt-2 bg-gradient-to-r text-white font-semibold rounded-lg duration-300 from-blue-600 to-blue-500 py-3 ">
-                Tambah Produk
+                Tambah Stok
             </button>
         </form>
     </div>

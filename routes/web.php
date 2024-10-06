@@ -161,7 +161,7 @@ Route::prefix('mart')->group(function () {
         Route::prefix("/penerimaan-stok")->group(function(){
             Route::get('/', [PenerimaanStokController::class, 'index'])->name('penerimaanstok.index');
             Route::get('/create', [PenerimaanStokController::class, 'createStok'])->name('penerimaanstok.create');
-            Route::post('/', [PenerimaanStokController::class, 'store'])->name('penerimaanstok.store');
+            Route::post('/create', [PenerimaanStokController::class, 'storeData'])->name('penerimaanstok.store');
             Route::get('/{id}/show', [PenerimaanStokController::class, 'showStok'])->name('penerimaanstok.show');
             Route::get('/{id}/edit', [PenerimaanStokController::class, 'edit'])->name('penerimaanstok.edit');
             Route::put('/{id}', [PenerimaanStokController::class, 'update'])->name('penerimaanstok.update');

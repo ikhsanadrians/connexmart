@@ -50,8 +50,19 @@ if(!function_exists('generate_norec_number')){
 
 
 if(!function_exists('generate_keterangan_stok')){
-    function generate_keterangan_stok(){
-        
+    function generate_keterangan_stok(String $msg_type, Array $data = []){
+        $finalMessage = "";
+
+        if($msg_type == "init"){
+            $finalMessage = "STOK AWAL PRODUK BARU TGL:" . now();
+        } else if ($msg_type == "transaction"){
+            $finalMessage = "Pembelian Produk No Transaksi:" . $data["notransaksi"] . "TGL:" . now();
+        } else if ($msg_type == "addition_stock"){
+            $finalMessage = "Penambahan Stok Baru TGL:" . now();
+        }
+
+        return $finalMessage;
+
     }
 }
 
