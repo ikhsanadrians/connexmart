@@ -22,10 +22,10 @@
                 <select
                     class="select-product-to-add-stock pl-8 pr-4 outline-none px-4 !py-3 bg-gray-100 rounded-md focus:outline-none w-full"
                     name="state">
-                    <option class="option-date" selected disabled>Pilih Produk Yang Ingin Ditambahan Stok</option>
+                    <option class="option-product-to-add-stock-example" selected disabled>Pilih Produk Yang Ingin Ditambahan Stok</option>
                     @foreach ($dataProducts as $dataProduct)
                         <option class="option-date" value="{{ $dataProduct->id }}">
-                            {{ $dataProduct->name }}
+                            {{ $dataProduct->name }} | QTY: {{ $dataProduct->stock }}
                         </option>
                     @endforeach
                 </select>
@@ -44,7 +44,10 @@
             </div>
             <button id="add_stok" type="button"
                 class="mt-2 bg-gradient-to-r text-white font-semibold rounded-lg duration-300 from-blue-600 to-blue-500 py-3 ">
-                Tambah Stok
+                <p id="btn-text">
+                    Tambah Stok
+                </p>
+                <span id="loader" class="loader !hidden"></span>
             </button>
         </form>
     </div>

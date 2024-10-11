@@ -302,7 +302,7 @@ class MartController extends Controller
 
                 if ($product->stock < $request->quantity) {
                     return response()->json([
-                        "message" => "failed, product stock is not enough"
+                        "message" => "Tidak dapat ditambahkan, Stok Product Tersebut Kosong!"
                     ], 401);
                 }
 
@@ -498,11 +498,18 @@ class MartController extends Controller
                     $stokProduk = new StokProduk();
                     $stokProduk->statusenabled = true;
                     $stokProduk->product_id = $transaction->product_id;
-                    $stokProduk->keterangan = generate_keterangan_stok("transaction", ["notransaksi" => $transaction->id]);
+                    $stokProduk->keterangan = generate_keterangan_stok("transaction", ["notransaksi" => $data->checkout_code]);
+                    $stokProduk->stokawal = StokProduk::where("product_id", $transaction->product_id)->latest()->value('stok_akhir');
                     $stokProduk->qtyin = 0;
                     $stokProduk->qtyout = $transaction->quantity;
                     $stokProduk->stok_akhir = $stokProduk->stokawal + $stokProduk->qtyin - $stokProduk->qtyout;
                     $stokProduk->save();
+
+
+                    $product = Product::where("id", $transaction->product_id)->get();
+                    $product->update([
+                         "stock" => $stokProduk->stok_akhir
+                    ]);
                 }
 
                 $currentCashierShift->sold_items += $request->total_quantity;

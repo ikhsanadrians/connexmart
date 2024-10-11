@@ -167,8 +167,8 @@ th {
 
 
 .loader {
-    width: 48px;
-    height: 48px;
+    width: 30px;
+    height: 30px;
     border: 5px solid #f0f0f0;
     border-bottom-color: #303fe2;
     border-radius: 50%;

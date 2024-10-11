@@ -5,11 +5,14 @@ const loadModalMessage = (messageText) => {
         $("#modal-message").addClass("hidden-items")
     }, 2000)
 }
+const toggleLoad = (show) => {
+    show ? $("#loader").removeClass("!hidden") : $("#loader").addClass("!hidden");
+    show ? $("#btn-text").addClass("hidden") : $("#btn-text").removeClass("hidden");
+}
 
 
 $(document).ready(function () {
     $('.select-product-to-add-stock').select2();
-
 });
 
 
@@ -30,6 +33,7 @@ function fetchDetailStock(params) {
                     <thead>
                         <tr class="text-sm">
                             <th>Stok ID</th>
+                            <th>Nama Produk</th>
                             <th>Keterangan</th>
                             <th>Stok Awal</th>
                             <th>QTY IN</th>
@@ -40,6 +44,7 @@ function fetchDetailStock(params) {
                     <tbody class="product-container">
                        <tr>
                          <td>${response.data.id}</td>
+                         <td>${response.data.product.name}</td>
                          <td>${response.data.keterangan}</td>
                          <td>${response.data.stokawal}</td>
                          <td>${response.data.qtyin}</td>
@@ -82,11 +87,19 @@ $("#stok-inputnew").on("change", function () {
 
 
 $("#add_stok").on("click", function () {
+    toggleLoad(true)
+
     if (!stockquantity) {
-        loadModalMessage("Masukkan jumlah stok terlebih dahulu.");
+        loadModalMessage("Masukkan jumlah stok terlebih dahulu!");
+        toggleLoad(false)
         return;
     }
 
+    if(!productId) {
+        loadModalMessage("Pilih Product Terlebih dahulu!")
+        toggleLoad(false)
+        return;
+    }
 
     let typeOfStock = isStockReset ? "new" : "additional";
 
@@ -104,11 +117,16 @@ $("#add_stok").on("click", function () {
             if (response.code === "success") {
                 loadModalMessage("Stok berhasil diperbarui!")
                 fetchDetailStock(response.data.product_id)
+                toggleLoad(false)
+                $('.select-product-to-add-stock').val($('.option-product-to-add-stock-example').val()).trigger('change');
+                $('#stok-inputnew').val('');
             } else {
                 loadModalMessage("Gagal memperbarui Stok");
+                toggleLoad(false)
             }
         },
         error: function (xhr, status, error) {
+            toggleLoad(false)
             loadModalMessage(error)
         }
     });

@@ -34,6 +34,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     @stack('scripts')
     <script type="module" src="{{ asset('javascript/script/admin.js') }}"></script>
+    @include('components.cartmessagemodal')
     @include('components.confirmmodal')
     @include('components.backdrop')
 </body>

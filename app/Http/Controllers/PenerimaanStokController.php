@@ -48,7 +48,7 @@ class PenerimaanStokController extends Controller
                 "code" => "success",
                 "data" => $currentStockProduct
             ],200);
-            
+
           }
         } catch (\Exception $e) {
          return response()->json([
@@ -63,6 +63,7 @@ class PenerimaanStokController extends Controller
             $currentStok = StokProduk::with('product')
                             ->where('product_id', $id)
                             ->orderBy('created_at', 'desc')
+                            ->with('product')
                             ->first(); // Mengambil stok terbaru
 
             // Jika stok tidak ditemukan

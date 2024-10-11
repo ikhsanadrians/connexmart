@@ -49,6 +49,7 @@ class Product extends Model
         static::creating(function($product){
             $product->slug = Str::slug($product->name);
         });
+
         static::created(function($product){
             $stokProduk = StokProduk::create([
                 'statusenabled' => true,
@@ -60,8 +61,9 @@ class Product extends Model
                 'stok_akhir' => 0,
             ]);
 
-            $product->stock = $stokProduk->stok_akhir;
-            $product->save();
+
+        $product->stock = $stokProduk->stok_akhir;
+        $product->save();
         });
     }
 
