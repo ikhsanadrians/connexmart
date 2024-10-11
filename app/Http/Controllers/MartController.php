@@ -505,11 +505,12 @@ class MartController extends Controller
                     $stokProduk->stok_akhir = $stokProduk->stokawal + $stokProduk->qtyin - $stokProduk->qtyout;
                     $stokProduk->save();
 
-
-                    $product = Product::where("id", $transaction->product_id)->get();
-                    $product->update([
-                         "stock" => $stokProduk->stok_akhir
-                    ]);
+                    $product = Product::find($transaction->product_id);
+                    if ($product) {
+                        $product->update([
+                            "stock" => $stokProduk->stok_akhir
+                        ]);
+                    }
                 }
 
                 $currentCashierShift->sold_items += $request->total_quantity;
@@ -518,6 +519,7 @@ class MartController extends Controller
                 $currentCashierShift->current_cash -= $refund_cash;
 
                 $currentCashierShift->save();
+                
 
 
                 return response()->json([
