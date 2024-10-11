@@ -21,22 +21,39 @@ class PenerimaanStokController extends Controller
     }
 
     public function storeData(Request $request){
-        if($request->ajax()){
+        try {
+          if($request->ajax()){
+            
             $typeOfStock = $request->typeOfStock;
             $currentStockProduct = StokProduk::create([
                 'statusenabled' => true,
                 'product_id' => $request->productId,
-                'keterangan' => generate_keterangan_stok($typeOfStock == "new" ? "init" : "addtion_stock"),
-                'stokawal' => $typeOfStock == "new" ? 0 : StokProduk::where("product_id", $request->product_id)->latest()->value('stok_akhir'),
+                'keterangan' => generate_keterangan_stok($typeOfStock == "new" ? "init" : "addition_stock"),
+                'stokawal' => $typeOfStock == "new" ? 0 : StokProduk::where("product_id", $request->productId)->latest()->value('stok_akhir'),
                 'qtyin' => $request->quantityIn,
                 'qtyout' => 0,
-                'stok_akhir' => $typeOfStock == "new" ? $request->quantityIn : StokProduk::where("product_id", $request->product_id)->latest()->value('stok_akhir') + $request->quantityIn,
+                'stok_akhir' => $typeOfStock == "new" ? $request->quantityIn : StokProduk::where("product_id", $request->productId)->latest()->value('stok_akhir') + $request->quantityIn,
             ]);
+
+        
+            $productQtyUpdate = Product::where("id", $request->productId)->first();
+            $lastStock = $currentStockProduct->stok_akhir;
+            
+            $productQtyUpdate->stock = $lastStock;
+            $productQtyUpdate->save();
+             
 
             return response()->json([
                 "message" => "success, get data!",
+                "code" => "success",
                 "data" => $currentStockProduct
             ],200);
+            
+          }
+        } catch (\Exception $e) {
+         return response()->json([
+            "message" => "An Error occurred!"
+         ]);
         }
     }
 

@@ -1,3 +1,11 @@
+const loadModalMessage = (messageText) => {
+    $("#modal-message").removeClass("hidden-items")
+    $("#modal-text").text(messageText)
+    setTimeout(() => {
+        $("#modal-message").addClass("hidden-items")
+    }, 2000)
+}
+
 
 $(document).ready(function () {
     $('.select-product-to-add-stock').select2();
@@ -5,6 +13,7 @@ $(document).ready(function () {
 });
 
 
+let productId;
 
 function fetchDetailStock(params) {
     $.ajax({
@@ -40,7 +49,6 @@ function fetchDetailStock(params) {
                     </tbody>
                 </table>`)
             $('.reset-stok-switch').removeClass('hidden').addClass('flex')
-            product_id = response.data.product.id
         },
         error: function (error) {
             return
@@ -53,12 +61,12 @@ function fetchDetailStock(params) {
 $('.select-product-to-add-stock').on('change', function (event) {
     let selectedOption = $(this).find('option:selected').val();
     fetchDetailStock(selectedOption);
+    productId = selectedOption
 });
 
 let productToStok = [];
 
 let isStockReset = false;
-let product_id;
 let stockquantity;
 // Menentukan apakah stok baru atau tambahan berdasarkan tombol switch
 $("#switch-btn").on("change", function () {
@@ -72,41 +80,43 @@ $("#stok-inputnew").on("change", function () {
     stockquantity = $(this).val();
 });
 
-// Ketika tombol tambah stok diklik
+
 $("#add_stok").on("click", function () {
-    // Validasi input
     if (!stockquantity) {
-        alert("Masukkan jumlah stok terlebih dahulu.");
+        loadModalMessage("Masukkan jumlah stok terlebih dahulu.");
         return;
     }
 
-    // Tentukan tipe stok, apakah 'new' atau 'additional'
+
     let typeOfStock = isStockReset ? "new" : "additional";
 
-    // Kirim data melalui AJAX
     $.ajax({
         url: `/mart/penerimaan-stok/create`,
         method: "POST",
         dataType: 'json',
         data: {
             _token: $('meta[name="csrf-token"]').attr('content'),
-            productId: product_id,
+            productId: productId,
             quantityIn: stockquantity,
             typeOfStock: typeOfStock
         },
         success: function (response) {
-            if (response.message === "success, get data!") {
-                alert("Stok berhasil diperbarui!");
+            if (response.code === "success") {
+                loadModalMessage("Stok berhasil diperbarui!")
                 fetchDetailStock(response.data.product_id)
             } else {
-                alert("Gagal memperbarui stok.");
+                loadModalMessage("Gagal memperbarui Stok");
             }
         },
         error: function (xhr, status, error) {
-            console.error(error);
+            loadModalMessage(error)
         }
     });
 });
+
+
+
+
 
 
 

@@ -21,6 +21,7 @@
     @include('components.backdrop')
     <script type="module" src="{{ asset('javascript/lib/jquery.min.js') }}"></script>
     <script type="module" src="{{ asset('javascript/script/core.js') }}"></script>
+    <script type="module" src="{{ asset('javascript/script/utils/modalsMessage.js')}}"></script>
     <script type="module" src="{{ asset('javascript/script/auth.js') }}"></script>
     <script type="module" src="{{ asset('javascript/script/cart.js') }}"></script>
     <script type="module" src="{{ asset('javascript/script/topup.js') }}"></script>
