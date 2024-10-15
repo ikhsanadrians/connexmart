@@ -22,7 +22,8 @@
                 <select
                     class="select-product-to-add-stock pl-8 pr-4 outline-none px-4 !py-3 bg-gray-100 rounded-md focus:outline-none w-full"
                     name="state">
-                    <option class="option-product-to-add-stock-example" selected disabled>Pilih Produk Yang Ingin Ditambahan Stok</option>
+                    <option class="option-product-to-add-stock-example" selected disabled>Pilih Produk Yang Ingin Ditambahan
+                        Stok</option>
                     @foreach ($dataProducts as $dataProduct)
                         <option class="option-date" value="{{ $dataProduct->id }}">
                             {{ $dataProduct->name }} | QTY: {{ $dataProduct->stock }}

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('stok_produks', function (Blueprint $table) {
             $table->id();
             $table->boolean('statusenabled');
+            $table->enum('stoktype', ['newstock','transaction','stockupdate']);
             $table->foreignId('product_id')->constrained()->onDelete('CASCADE');
             $table->text('keterangan');
             $table->integer('stokawal')->default(0);

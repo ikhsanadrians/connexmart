@@ -13,6 +13,7 @@ const toggleLoad = (show) => {
 
 $(document).ready(function () {
     $('.select-product-to-add-stock').select2();
+    $('.select-date-range').select2();
 });
 
 
@@ -95,7 +96,7 @@ $("#add_stok").on("click", function () {
         return;
     }
 
-    if(!productId) {
+    if (!productId) {
         loadModalMessage("Pilih Product Terlebih dahulu!")
         toggleLoad(false)
         return;

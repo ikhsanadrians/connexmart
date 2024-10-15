@@ -18,7 +18,7 @@
 
     <main class="px-0 flex">
         @include('components.sidebaradmin')
-        <div class="container flex pl-3 lg:pl-[18rem] w-[95%] justify-center pt-8">
+        <div class="container flex pl-3 lg:pl-[18rem] xl:w-[100%] lg:w-[97%] justify-center pt-8">
             <div class="wrappers w-full lg:w-full">
                 @yield('content')
             </div>
@@ -27,7 +27,7 @@
     <div class="backdrop hidden  bg-slate-900/70 fixed top-0 w-full h-full  z-40">
     </div>
     <script type="module" src="{{ asset('javascript/lib/jquery.min.js') }}"></script>
-    <script type="module" src="{{ asset('javascript/script/utils/modalsMessage.js')}}"></script>
+    <script type="module" src="{{ asset('javascript/script/utils/modalsMessage.js') }}"></script>
     <script type="module" src="{{ asset('javascript/lib/select2.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"
         integrity="sha512-hUhvpC5f8cgc04OZb55j0KNGh4eh7dLxd/dPSJ5VyzqDWxsayYbojWyl5Tkcgrmb/RVKCRJI1jNlRbVP4WWC4w=="

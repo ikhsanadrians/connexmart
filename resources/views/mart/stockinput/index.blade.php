@@ -1,5 +1,6 @@
 @extends('layouts.admin')
 @push('scripts')
+    <script type="module" src="{{ asset('javascript/script/stockinput/stockinput.js') }}"></script>
 @endpush
 @section('content')
     <div class="crud-content bg-white rounded-lg">
@@ -43,8 +44,9 @@
                     <select name="category" id="p_category"
                         class="select-category py-2 px-3 rounded-md bg-slate-100 border-[1.5px] border-slate-200">
                         <option class="option-status" disabled selected value="all">Jenis Stok</option>
-                        <option value="">Barang Keluar</option>
-                        <option value="">Barang Masuk</option>
+                        <option value="">Transaksi</option>
+                        <option value="">Stok Baru</option>
+                        <option value="">Stok Tambahan</option>
                     </select>
                     <select name="transaction_sorting" id="t_sorting"
                         class="select-transactions-sorting py-2 px-8 rounded-md bg-slate-100 border-[1.5px] border-slate-200">
@@ -55,11 +57,14 @@
                 </div>
                 <div class="date-and-export flex justify-between w-full">
                     <div class="date-and-search flex items-center gap-2">
-                        <select name="tanggal" id="tanggal"
-                            class="select-category py-2 px-3 rounded-md bg-slate-100 border-[1.5px] w-80 border-slate-200">
+                        <select name="date" id="tanggal"
+                            class="select-date-range py-2 px-3 rounded-md bg-slate-100 border-[1.5px] w-80 border-slate-200">
                             <option class="option-status" disabled selected value="all">Tanggal</option>
-                            <option value="">Barang Keluar</option>
-                            <option value="">Barang Masuk</option>
+                            @foreach ($stokProductDates as $stokProductDate)
+                                <option value="{{ format_date_slug($stokProductDate->formatted_date) }}">
+                                    {{ $stokProductDate->formatted_date }}
+                                </option>
+                            @endforeach
                         </select>
                         <div
                             class="search-btn  bg-[#303fe2] text-white px-3 w-fit font-medium py-3 hover:bg-slate-300 hover:text-[#003034] transition cursor-pointer rounded-xl">
@@ -90,10 +95,11 @@
         </div>
 
         <div class="products-list w-full mt-2 mb-2">
-            <table class="w-full !shadow-none">
+            <table class="w-full !shadow-none text-[15px]">
                 <thead>
                     <tr>
                         <th>Transaksi ID</th>
+                        <th>Produk</th>
                         <th>Keterangan</th>
                         <th>Stok Awal</th>
                         <th>QTY IN</th>
@@ -102,64 +108,17 @@
                     </tr>
                 </thead>
                 <tbody class="product-container">
-                    {{-- @foreach ($products as $key => $product)
+                    @foreach ($productStocks as $key => $productStock)
                         <tr>
-                            <td class="product-id" data-productid="{{ $product->id }}">
-                                @if (!Request::get('show'))
-                                    {{ $products->firstItem() + $key }}
-                                @else
-                                    {{ $key + 1 }}
-                                @endif
-                            </td>
-                            <td class="product-thumbnail flex justify-center border-none"
-                                data-thumbnail="{{ $product->photo }}">
-                                <div class="thumbnail overflow-hidden h-12 w-16">
-                                    @if (!empty($product->photo) && File::exists(public_path($product->photo)))
-                                        <img class="w-full h-full object-cover" src="{{ asset($product->photo) }}"
-                                            alt="">
-                                    @else
-                                        <img class="w-full h-full object-cover" src="{{ asset('images/default/mart.png') }}"
-                                            alt="">
-                                    @endif
-                                </div>
-                            </td>
-                            <td class="product-td" data-description="{{ $product->desc }}">{{ $product->name }}</td>
-                            <td class="price-td" data-price="{{ $product->price }}">{{ format_to_rp($product->price) }}
-                            </td>
-                            <td class="product-stock">{{ $product->stock }}</td>
-                            <td data-categoryid="{{ $product->category->id }}" class="product-category">
-                                {{ $product->category->name }}</td>
-                            <td>
-                                <div class="action-wrappers flex items-center gap-2 justify-center">
-                                    <a href="{{ route('mart.detailgoods', $product->slug) }}"
-                                        class="bg-green-400/60 text-green-600 p-2 rounded-md">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
-                                            fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
-                                            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
-                                            <path
-                                                d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
-                                        </svg>
-                                    </a>
-                                    <a href="{{ route('mart.editgoods', $product->slug) }}"
-                                        class="bg-yellow-400/60 text-yellow-600/70 p-2 rounded-md">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
-                                            fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
-                                            <path
-                                                d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z" />
-                                        </svg>
-                                    </a>
-                                   <button id="{{ $product->id }}" class="delete-btn-goods bg-red-400/60 text-red-500/70 p-2 rounded-md">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
-                                                fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-                                                <path
-                                                    d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" />
-                                            </svg>
-                                   </button>
-                                    </form>
-                                </div>
-                            </td>
+                            <td>{{ $key + 1 }}</td>
+                            <td>{{ $productStock->product->name }}</td>
+                            <td>{{ $productStock->keterangan }}</td>
+                            <td>{{ $productStock->stokawal }}</td>
+                            <td>{{ $productStock->qtyin }}</td>
+                            <td>{{ $productStock->qtyout }}</td>
+                            <td>{{ $productStock->stok_akhir }}</td>
                         </tr>
-                    @endforeach --}}
+                    @endforeach
                 </tbody>
             </table>
         </div>
