@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\StokProduk;
+use Carbon\Carbon;
+
 
 class PenerimaanStokController extends Controller
 {

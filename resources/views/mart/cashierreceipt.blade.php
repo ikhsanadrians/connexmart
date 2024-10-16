@@ -269,7 +269,7 @@
                     @if ($checkouts->refund_cash)
                         <div class="total-row">
                             <div class="total-title">Kembali</div>
-                            {{-- <div class="total-value">{{ format_to_rp($checkouts->refund_cash) }}</div> --}}
+                            <div class="total-value">{{ format_to_rp($checkouts->refund_cash) }}</div>
                         </div>
                     @endif
                 </div>

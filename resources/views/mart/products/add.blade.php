@@ -42,7 +42,7 @@
                 </div>
                 <div class="input-stock flex flex-col mt-2 space-y-2">
                     <label class="font-medium">Stok Produk</label>
-                    <input name="stock" type="text" placeholder="Masukan Stok Produk"
+                    <input disabled value="0" name="stock" type="text" placeholder="Masukan Stok Produk"
                         class="outline-none px-4 py-3 bg-gray-100 rounded-md">
                 </div>
             </div>
