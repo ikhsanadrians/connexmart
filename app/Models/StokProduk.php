@@ -12,7 +12,6 @@ class StokProduk extends Model
 
     protected $fillable = [
         'statusenabled',
-        'stoktype',
         'product_id',
         'keterangan',
         'stokawal',

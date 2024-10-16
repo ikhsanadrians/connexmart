@@ -519,7 +519,7 @@ class MartController extends Controller
                 $currentCashierShift->current_cash -= $refund_cash;
 
                 $currentCashierShift->save();
-
+                
 
 
                 return response()->json([

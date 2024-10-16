@@ -79,7 +79,7 @@ $(".next-confirm").on("click", function () {
         method: "post",
         dataType: 'json',
         data: {
-            "id_to_delete": currentDeleteId,
+            "id_to_delete" : currentDeleteId,
             _token: $('meta[name="csrf-token"]').attr('content')
         },
         success: function (response) {

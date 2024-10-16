@@ -10,10 +10,48 @@ use Carbon\Carbon;
 
 class PenerimaanStokController extends Controller
 {
+    public function index(Request $request){
+        $productStocks = StokProduk::query();
 
-    public function index()
-    {
-        return view('mart.stockinput.index');
+        if ($request->stock_type) {
+            if($request->stock_type == "transaction"){
+                $productStocks->where('stoktype','transaction');
+            } else if ($request->stock_type == "newstock"){
+                $productStocks->where('stoktype','newstock');
+            } else if ($request->stock_type == 'stockupdate'){
+                $productStocks->where('stoktype','stockupdate');
+            }
+        }
+
+
+        if ($request->has('date')) {
+            $formattedDate = Carbon::createFromFormat('d_m_Y', $request->date)->format('Y-m-d');
+            $productStocks->whereDate('created_at', $formattedDate);
+        }
+
+        if ($request->sort) {
+            $sortOrder = $request->sort === "oldfirst" ? "asc" : "desc";
+        } else {
+            $sortOrder = "desc";
+        }
+
+        if ($request->show === "all") {
+            $productStocks = $productStocks->orderBy("created_at", $sortOrder)->get();
+        } else {
+            $productStocks = $productStocks->orderBy("created_at", $sortOrder)->paginate($request->show ?? 50);
+        }
+
+
+        $count_products = StokProduk::count();
+
+
+
+        $stokProductDates = StokProduk::selectRaw('DATE_FORMAT(updated_at, "%d %M %Y") as formatted_date')
+            ->groupBy('formatted_date')
+            ->get();
+
+
+        return view('mart.stockinput.index', compact('productStocks', 'count_products', 'stokProductDates'));
     }
 
 
@@ -39,7 +77,6 @@ class PenerimaanStokController extends Controller
                 $previousStock = StokProduk::where("product_id", $validatedData['productId'])->latest()->value('stok_akhir') ?? 0;
                 $initialStock = ($typeOfStock === 'new') ? 0 : $previousStock;
                 $finalStock = $initialStock + $validatedData['quantityIn'];
-
                 $newStockEntry = StokProduk::create([
                     'statusenabled' => true,
                     'product_id' => $validatedData['productId'],
