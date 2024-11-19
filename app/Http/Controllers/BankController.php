@@ -13,7 +13,7 @@ class BankController extends Controller
 {
     public function index(){
 
-        $topups = TopUp::latest()->paginate(5);
+        $topups = TopUp::latest()->paginate(1000);
         return view("bank.index",compact('topups'));
     }
 
@@ -27,9 +27,9 @@ class BankController extends Controller
         }
 
         if ($request->show === "all") {
-            $topups = $topups->orderBy("created_at", $sortOrder)->get();
+            $topups = $topups->with('user')->orderBy("created_at", $sortOrder)->get();
         } else {
-            $topups = $topups->orderBy("created_at", $sortOrder)->paginate($request->show ?? 50);
+            $topups = $topups->with('user')->orderBy("created_at", $sortOrder)->paginate($request->show ?? 50);
         }
 
 
@@ -94,8 +94,9 @@ class BankController extends Controller
     }
 
     public function transaction(){
-        $transactions = Transaction::all();
-        return view('bank.transaction',compact('transactions'));
+        $topups = TopUp::with('user')->get();
+        // @dd($topups);
+        return view('bank.transaction',compact('topups'));
     }
 
     public function banklogout(){

@@ -47,12 +47,12 @@
             <table class="w-full !shadow-none">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>No</th>
+                        <th>Id Nasabah</th>
                         <th>Nama Nasabah</th>
-                        <th>Nomor Wallet</th>
-                        <th>Harga</th>
-                        <th>Stok</th>
-                        <th>Kategori</th>
+                        <th>Nominal</th>
+                        <th>Kode Unik</th>
+                        <th>Status</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -66,10 +66,55 @@
                                     {{ $key + 1 }}
                                 @endif
                             </td>
+                            <td class="topup-td">{{ $topup->user->id }}</td>
                             <td class="topup-td">{{ $topup->user->name }}</td>
                             <td class="topup-td">{{ format_to_rp($topup->nominals) }}
                             </td>
-                            <td class="topup-id">{{ $topup->unique_code }}</td>
+                            <td class="topup-td">{{ $topup->unique_code }}</td>
+                            <td class="text-center self-center">
+                                @if($topup->status == "unconfirmed")
+                                <p class="bg-yellow-200 text-yellow-600 px-2 py-1 rounded-lg w-fit">
+                                   Belum Dikonfirmasi
+                                </p>
+                                @elseif($topup->status == "confirmed")
+                                <p class="bg-green-200 text-green-600 px-2 py-1 rounded-lg w-fit">
+                                    Sudah Dikonfirmasi
+                                 </p>
+                                @elseif($topup->status == "rejected")
+                                <p class="bg-red-200 text-red-600 px-2 py-1 rounded-lg w-fit">
+                                    Ditolak
+                                 </p>
+                                @endif
+                            </td>
+                            <td>
+                                <div class="action-wrappers flex items-center gap-2 justify-center">
+                                    <a 
+                                        class="bg-green-400/60 text-green-600 p-2 rounded-md">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                            fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                                            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
+                                            <path
+                                                d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
+                                        </svg>
+                                    </a>
+                                    <a 
+                                        class="bg-yellow-400/60 text-yellow-600/70 p-2 rounded-md">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                            fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
+                                            <path
+                                                d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z" />
+                                        </svg>
+                                    </a>
+                                   <button class="delete-btn-goods bg-red-400/60 text-red-500/70 p-2 rounded-md">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                                fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" />
+                                            </svg>
+                                   </button>
+                                    </form>
+                                </div>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

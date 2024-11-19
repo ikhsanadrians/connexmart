@@ -6,7 +6,7 @@
     <div class="crud-content bg-white rounded-lg">
         <div class="content-top p-4">
             <div class="headers flex justify-between items-center">
-                <h1 class="text-xl font-bold">Tambah Produk / Barang</h1>
+                <h1 class="text-xl font-bold">Transaksi Bank</h1>
                 <a href="{{ route('mart.addgoodsview') }}"
                     class="add-products bg-[#303fe2] text-white px-5 font-medium py-3 hover:bg-slate-300 hover:text-[#003034] transition cursor-pointer rounded-xl flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
@@ -14,7 +14,7 @@
                         <path
                             d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
                     </svg>
-                    Tambah Produk
+                    Top Up Baru
                 </a>
             </div>
             <div class="searchandfilter grid grid-cols-7 items-center gap-3 mt-4">
@@ -47,78 +47,46 @@
             <table class="w-full !shadow-none">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Thumbnail</th>
-                        <th>Nama Produk</th>
-                        <th>Harga</th>
-                        <th>Stok</th>
-                        <th>Kategori</th>
+                        <th>No</th>
+                        <th>Id Nasabah</th>
+                        <th>Nama Nasabah</th>
+                        <th>Nominal</th>
+                        <th>Kode Unik</th>
+                        <th>Status</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="product-container">
-                    {{-- @foreach ($products as $key => $product)
+                <tbody class="topups-container">
+                @foreach ($topups as $key => $topup)
                         <tr>
-                            <td class="product-id" data-productid="{{ $product->id }}">
-                                @if (!Request::get('show'))
-                                    {{ $products->firstItem() + $key }}
-                                @else
-                                    {{ $key + 1 }}
-                                @endif
-                            </td>
-                            <td class="product-thumbnail flex justify-center border-none"
-                                data-thumbnail="{{ $product->photo }}">
-                                <div class="thumbnail overflow-hidden h-12 w-16">
-                                    @if (!empty($product->photo) && File::exists(public_path($product->photo)))
-                                        <img class="w-full h-full object-cover" src="{{ asset($product->photo) }}"
-                                            alt="">
-                                    @else
-                                        <img class="w-full h-full object-cover" src="{{ asset('images/default/mart.png') }}"
-                                            alt="">
-                                    @endif
-                                </div>
-                            </td>
-                            <td class="product-td" data-description="{{ $product->desc }}">{{ $product->name }}</td>
-                            <td class="price-td" data-price="{{ $product->price }}">{{ format_to_rp($product->price) }}
-                            </td>
-                            <td class="product-stock">{{ $product->stock }}</td>
-                            <td data-categoryid="{{ $product->category->id }}" class="product-category">
-                                {{ $product->category->name }}</td>
                             <td>
-                                <div class="action-wrappers flex items-center gap-2 justify-center">
-                                    <a href="{{ route('mart.detailgoods', $product->slug) }}"
-                                        class="bg-green-400/60 text-green-600 p-2 rounded-md">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
-                                            fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
-                                            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
-                                            <path
-                                                d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
-                                        </svg>
-                                    </a>
-                                    <a href="{{ route('mart.editgoods', $product->slug) }}"
-                                        class="bg-yellow-400/60 text-yellow-600/70 p-2 rounded-md">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
-                                            fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
-                                            <path
-                                                d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z" />
-                                        </svg>
-                                    </a>
-                                   <button id="{{ $product->id }}" class="delete-btn-goods bg-red-400/60 text-red-500/70 p-2 rounded-md">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
-                                                fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-                                                <path
-                                                    d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" />
-                                            </svg>
-                                   </button>
-                                    </form>
-                                </div>
+                               {{ $key + 1}}
                             </td>
+                            <td>
+                                {{ $topup->user->id}}
+                            </td>
+                            <td>
+                                {{ $topup->user->name}}
+                            </td>
+                            <td>
+                                {{ $topup ->nominals}}
+                            </td>
+                            <td>
+                                {{ $topup ->unique_code}}
+                            </td>
+                            <td>
+                                {{ $topup ->status}}
+                            </td>
+                            <td>
+                                Aksi
+                            </td>          
                         </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
-        <div class="pagination-and-back px-2 py-3 mb-12">
+    
+        {{-- <div class="pagination-and-back px-2 py-3 mb-12">
             <div class="pagination flex flex-row justify-between w-full items-start lg:gap-0 gap-4 lg:items-center">
                 <div class="page-records flex items-center gap-4">
                     <div class="record-per-inputs relative">
@@ -208,9 +176,9 @@
                             </svg>
                         </a>
                     </div>
-                @endif --}}
+                @endif 
             </div>
-        </div>
+        </div> --}}
     </div>
 
     <script src="{{ asset('javascript/lib/jquery.min.js') }}"></script>
