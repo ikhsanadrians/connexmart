@@ -10,21 +10,27 @@
     </div>
     <div class="products-container w-full mt-5 bg-white mb-12 rounded-lg flex flex-col gap-3 overflow-hidden">
         <div class="product-description px-6 pt-6 pb-8">
-            <h1 class="text-2xl font-bold">Request Top Up dengan Kode: {{ $topup->unique_code }}</h1>
+            <h1 class="text-2xl font-bold">Request Top Up dengan Kode: {{ $topup->unique_code ?? '-' }}</h1>
 
             <div class="input-name flex flex-col mt-2 space-y-2">
                 <label class="font-medium" for="">Kode Unik</label>
                 <h1 class="text-xl font-semibold">
-                    #{{ $topup->unique_code }}
+                    #{{ $topup->unique_code ?? '-' }}
                 </h1>
             </div>
             <div class="input-barcode flex flex-col mt-2 space-y-2">
                 <label class="font-medium">Nominal Top Up</label>
-                <h1 class="text-xl font-semibold">{{ format_to_rp($topup->nominals) }}</h1>
+                <h1 class="text-xl font-semibold">
+                    @if (empty($topup->nominals) || $topup->nominals == 0)
+                        <span class="text-red-500">Nominal tidak boleh nol atau kosong</span>
+                    @else
+                        {{ format_to_rp($topup->nominals) }}
+                    @endif
+                </h1>
             </div>
             <div class="input-price flex flex-col mt-2 space-y-2">
                 <label class="font-medium">Nama Nasabah</label>
-                <h1 class="text-xl font-semibold">{{ $topup->user->name }}</h1>
+                <h1 class="text-xl font-semibold">{{ $topup->user->name ?? '-' }}</h1>
             </div>
             <div class="grid grid-cols-1 gap-3">
                 <div class="input-category flex flex-col mt-2 space-y-2">
@@ -41,20 +47,24 @@
                         <p class="bg-red-200 text-red-600 px-2 py-1 rounded-lg w-full">
                             Ditolak
                         </p>
+                    @else
+                        <p class="bg-gray-200 text-gray-600 px-2 py-1 rounded-lg w-fit">
+                            -
+                        </p>
                     @endif
                 </div>
                 <div class="input-stock flex flex-col mt-2 space-y-2">
                     <label class="font-medium">Saldo Nasabah Saat Ini:</label>
-                    <h1 class="text-xl font-semibold">{{ format_to_rp($topup->wallet->credit) }}</h1>
+                    <h1 class="text-xl font-semibold">{{ format_to_rp($topup->wallet->credit ?? 0) }}</h1>
                 </div>
             </div>
         </div>
-        @if ($topup->status == 'unconfirmed')
+        @if ($topup->status == 'unconfirmed' && !empty($topup->nominals) && $topup->nominals != 0)
             <form action="{{ route('bank.topupconfirm') }}" method="POST" class="self-end m-8">
                 @csrf
-                <input type="hidden" name="unique_code" value="{{ $topup->unique_code }}">
-                <input type="hidden" name="user_id" value="{{ $topup->user->id }}">
-                <input type="hidden" name="nominals" value="{{ $topup->nominals }}">
+                <input type="hidden" name="unique_code" value="{{ $topup->unique_code ?? '' }}">
+                <input type="hidden" name="user_id" value="{{ $topup->user->id ?? '' }}">
+                <input type="hidden" name="nominals" value="{{ $topup->nominals ?? '' }}">
                 <button type="submit"
                     class="add-products bg-[#303fe2] text-white px-5 w-fit font-medium py-3 hover:bg-slate-300 hover:text-[#003034] transition cursor-pointer rounded-xl flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -74,7 +84,7 @@
                 </button>
             </div>
         @elseif($topup->status == 'rejected')
-            <div class="self-end m-8">
+            <div class="self-end m-8 w-fit">
                 <button disabled
                     class="add-products bg-red-500 text-white px-5 w-fit font-medium py-3 rounded-xl flex items-center gap-2">
                     Ditolak
