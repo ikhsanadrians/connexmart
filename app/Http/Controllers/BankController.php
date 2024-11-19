@@ -39,23 +39,36 @@ class BankController extends Controller
     }
 
 
+    public function confirmtopupindex(string $id){
+        $topup = TopUp::with('user')->where('id',$id)->first();
+        $currentUserId = $topup->user->id;
+        $wallet = Wallet::where('user_id', $currentUserId)->first();
+        $topup->wallet = $wallet;
+
+        return view('bank.confirmtopup', compact('topup'));
+    }
+
     public function topupconfirm(Request $request){
-        $topUp = TopUp::where('unique_code',$request->unique_code)->first();
-        $userWallet = Wallet::where('user_id',$request->user_id)->first();
-        $sumTopUp = $userWallet->credit += $request->nominals;
+        $topUp = TopUp::where('unique_code', $request->unique_code)->first();
+        $userWallet = Wallet::where('user_id', $request->user_id)->first();
 
-        $userWallet->update([
-            "credit" => $sumTopUp
-        ]);
+        if ($topUp && $userWallet) {
+            $sumTopUp = $userWallet->credit + $request->nominals;
 
-        $topUp->update([
-            "status" => "confirmed"
-        ]);
+            $userWallet->update([
+                "credit" => $sumTopUp
+            ]);
 
-        alert()->success('Success','Success Confirm Top Up!');
+            $topUp->update([
+                "status" => "confirmed"
+            ]);
 
-        return redirect()->back();
+            alert()->success('Success', 'Success Confirm Top Up!');
+        } else {
+            alert()->error('Error', 'Failed to Confirm Top Up!');
+        }
 
+        return redirect()->route('bank.topup');
     }
 
     public function topupreject(Request $request){

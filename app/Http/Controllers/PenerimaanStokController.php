@@ -68,7 +68,7 @@ class PenerimaanStokController extends Controller
         try {
             if ($request->ajax()) {
                 $validatedData = $request->validate([
-                    'typeOfStock' => 'required|string|in:new,addition',
+                    'typeOfStock' => 'required|string|in:new,additional',
                     'productId' => 'required|exists:products,id',
                     'quantityIn' => 'required|integer|min:1',
                 ]);
@@ -102,7 +102,7 @@ class PenerimaanStokController extends Controller
 
         } catch (\Exception $e) {
             \Log::error("Error in storeData: " . $e->getMessage());
-            return response()->json(["message" => "An error occurred!"], 500);
+            return response()->json(["message" => "An error occurred!", "payload" => $e->getMessage()], 500);
         }
     }
 
@@ -114,7 +114,7 @@ class PenerimaanStokController extends Controller
                 ->where('product_id', $id)
                 ->orderBy('created_at', 'desc')
                 ->with('product')
-                ->first(); 
+                ->first();
 
             if (!$currentStok) {
                 return response()->json([

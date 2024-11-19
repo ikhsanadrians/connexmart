@@ -96,8 +96,9 @@ Route::prefix('bank')->group(function () {
     Route::middleware('bank')->group(function () {
         Route::get('/', [BankController::class, 'index'])->name('bank.index');
         Route::get('/topup', [BankController::class, 'topup'])->name('bank.topup');
-        Route::put('/topup', [BankController::class, 'topupconfirm'])->name('bank.topupconfirm');
+        Route::post('/topup', [BankController::class, 'topupconfirm'])->name('bank.topupconfirm');
         Route::patch('/topup', [BankController::class, 'topupreject'])->name('bank.topupreject');
+        Route::get('/topup/{id}/confirm', [BankController::class,'confirmtopupindex'])->name('bank.confirmtopup');
         Route::get('/client', [BankController::class, 'clientindex'])->name('bank.client');
         Route::get('/logout', [BankController::class, 'banklogout'])->name('bank.logout');
     });
