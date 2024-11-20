@@ -49,23 +49,27 @@ class BankController extends Controller
     }
 
     public function topupconfirm(Request $request){
-        $topUp = TopUp::where('unique_code', $request->unique_code)->first();
-        $userWallet = Wallet::where('user_id', $request->user_id)->first();
+        try {
+            $topUp = TopUp::where('unique_code', $request->unique_code)->first();
+            $userWallet = Wallet::where('user_id', $request->user_id)->first();
 
-        if ($topUp && $userWallet) {
-            $sumTopUp = $userWallet->credit + $request->nominals;
+            if ($topUp && $userWallet) {
+                $sumTopUp = $userWallet->credit + $request->nominals;
 
-            $userWallet->update([
-                "credit" => $sumTopUp
-            ]);
+                $userWallet->update([
+                    "credit" => $sumTopUp
+                ]);
 
-            $topUp->update([
-                "status" => "confirmed"
-            ]);
+                $topUp->update([
+                    "status" => "confirmed"
+                ]);
 
-            alert()->success('Success', 'Success Confirm Top Up!');
-        } else {
-            alert()->error('Error', 'Failed to Confirm Top Up!');
+                alert()->success('Success', 'Success Confirm Top Up!');
+            } else {
+                alert()->error('Error', 'Failed to Confirm Top Up!');
+            }
+        } catch (\Exception $e) {
+            alert()->error('Error', 'An error occurred while confirming the top up!');
         }
 
         return redirect()->route('bank.topup');
@@ -110,6 +114,44 @@ class BankController extends Controller
         $topups = TopUp::with('user')->get();
         // @dd($topups);
         return view('bank.transaction',compact('topups'));
+    }
+
+    public function newtopup(){
+        $users = User::all();
+        return view('bank.newtopup', compact('users'));
+    }
+
+    public function newtopuppost(Request $request){
+        try {
+            $user = User::where('id', $request->selected_nasabah)->first();
+            $userWallet = Wallet::where('user_id', $user->id)->first();
+
+            if ($user && $userWallet) {
+                $sumTopUp = $userWallet->credit + $request->nominals;
+
+                $userWallet->update([
+                    "credit" => $sumTopUp
+                ]);
+
+                TopUp::create([
+                    "user_id" => $user->id,
+                    "nominals" => $request->nominals,
+                    "unique_code" => "NEW-TopUp",
+                    "status" => "confirmed"
+                ]);
+                
+
+                alert()->success('Success', 'Success Top Up!');
+            } else {
+                alert()->error('Error', 'Failed to Top Up!');
+            }
+
+            
+        return redirect()->route('bank.newtopup');
+
+        } catch (\Exception $e) {
+            alert()->error('Error', 'An error occurred while processing the top-up.');
+        }
     }
 
     public function banklogout(){

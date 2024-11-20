@@ -99,6 +99,8 @@ Route::prefix('bank')->group(function () {
         Route::post('/topup', [BankController::class, 'topupconfirm'])->name('bank.topupconfirm');
         Route::patch('/topup', [BankController::class, 'topupreject'])->name('bank.topupreject');
         Route::get('/topup/{id}/confirm', [BankController::class,'confirmtopupindex'])->name('bank.confirmtopup');
+        Route::get('/newtopup',[BankController::class,'newtopup'])->name('bank.newtopup');
+        Route::post('/newtopup', [BankController::class,'newtopuppost'])->name('bank.newtopuppost');    
         Route::get('/client', [BankController::class, 'clientindex'])->name('bank.client');
         Route::get('/logout', [BankController::class, 'banklogout'])->name('bank.logout');
     });

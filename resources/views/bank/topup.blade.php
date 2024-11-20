@@ -1,13 +1,10 @@
 @extends('layouts.admin')
-@push('scripts')
-    <script type="module" src="{{ asset('javascript/script/products.js') }}"></script>
-@endpush
 @section('content')
     <div class="crud-content bg-white rounded-lg">
         <div class="content-top p-4">
             <div class="headers flex justify-between items-center">
                 <h1 class="text-xl font-bold">Request Top Up</h1>
-                <a href="{{ route('mart.addgoodsview') }}"
+                <a href="{{ route('bank.newtopup') }}"
                     class="add-products bg-[#303fe2] text-white px-5 font-medium py-3 hover:bg-slate-300 hover:text-[#003034] transition cursor-pointer rounded-xl flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
                         class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
@@ -75,11 +72,11 @@
                             <td class="topup-td">{{ $topup->unique_code }}</td>
                             <td class="text-center self-center">
                                 @if ($topup->status == 'unconfirmed')
-                                    <p class="bg-yellow-200 text-yellow-600 px-2 py-1 rounded-lg w-fit">
+                                    <p class="bg-yellow-200 text-yellow-600 px-2 py-1 rounded-lg w-full">
                                         Belum Dikonfirmasi
                                     </p>
                                 @elseif($topup->status == 'confirmed')
-                                    <p class="bg-green-200 text-green-600 px-2 py-1 rounded-lg w-fit">
+                                    <p class="bg-green-200 text-green-600 px-2 py-1 rounded-lg w-full">
                                         Sudah Dikonfirmasi
                                     </p>
                                 @elseif($topup->status == 'rejected')
