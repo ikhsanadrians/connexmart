@@ -32,10 +32,14 @@ class BankController extends Controller
             $topups = $topups->with('user')->orderBy("created_at", $sortOrder)->paginate($request->show ?? 50);
         }
 
+        $walletUser = Wallet::where('user_id', $topups->user_id)->get();
 
-        $count_topups = count(TopUp::all());
-        $users = User::all();
-        return view('bank.topup', compact('topups', 'users','count_topups'));
+        $count_topups = TopUp::count();
+        $topups->wallet = $walletUser;
+
+        $users = User::with('wallet')->get();
+        
+        return view('bank.topup', compact('topups', 'count_topups'));
     }
 
 
@@ -87,8 +91,10 @@ class BankController extends Controller
     }
 
     public function clientindex(){
-        $clients = User::where('role_id',4)->with('wallet')->get();
-        return view('bank.client',compact('clients'));
+        $clients = User::where('role_id',4)->with('wallet')->paginate(25);
+        $counts_clients = count($clients);
+        
+        return view('bank.client',compact('clients', 'counts_clients'));
     }
 
     public function auth(){

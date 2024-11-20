@@ -64,7 +64,7 @@
                                     {{ $key + 1 }}
                                 @endif
                             </td>
-                            <td class="topup-td">{{ $topup->user->id }}</td>
+                            <td class="topup-td">{{ $topup->wallet}}</td>
                             <td class="topup-td">{{ $topup->user->created_at }}</td>
                             <td class="topup-td">{{ $topup->user->name }}</td>
                             <td class="topup-td">{{ format_to_rp($topup->nominals) }}

@@ -1,7 +1,7 @@
 import rupiah from "./utils/rupiahFormater.js";
 
 
-$(document).ready(function () {
+$(document).ready(function() {
     calculateTotal("price");
     calculateTotal("quantity");
     loadCurrentTransIdList()
@@ -40,11 +40,7 @@ function calculateTotal(type) {
         totalQty = total
     }
 
-    console.log(`Total QTY : ${totalQty} ,  Total Pric : ${totalPrices}`)
 }
-
-
-
 
 function orderListEmptyShow() {
     return `<div class="empty-cart flex justify-center items-center h-full">
@@ -80,7 +76,7 @@ function checkIfOrderEmpty() {
 }
 
 
-$(".recordsPerPage").on("change", function (event) {
+$(".recordsPerPage").on("change", function(event) {
     const urlParams = new URLSearchParams(window.location.search);
     urlParams.set('show', event.target.value);
     window.location.search = urlParams.toString();
@@ -102,9 +98,7 @@ updateClock();
 
 setInterval(updateClock, 60000);
 
-
-
-$(document).on("click", ".add", function (event) {
+$(document).on("click", ".add", function(event) {
     const currentUrl = "/mart/cashier/addorder"
     const itemList = $(".item-list")
     const products = $(event.currentTarget).closest(".product-card")
@@ -122,7 +116,7 @@ $(document).on("click", ".add", function (event) {
             "quantity": 1,
             _token: $('meta[name="csrf-token"]').attr('content')
         },
-        success: function (response) {
+        success: function(response) {
             const existingItem = itemList.find(`#product-${productId}`);
 
             if (existingItem.length) {
@@ -158,11 +152,12 @@ $(document).on("click", ".add", function (event) {
             checkIfOrderEmpty()
             loadCurrentTransIdList()
         },
-        error: function (error) {
+        error: function(error) {
             loadModalMessage(error.responseJSON.message)
         }
     });
 })
+
 function updateQuantity(transactionId, quantity, type) {
     $.ajax({
         url: '/mart/cashier/quantityupdate',
@@ -174,17 +169,17 @@ function updateQuantity(transactionId, quantity, type) {
             "type": type,
             _token: $('meta[name="csrf-token"]').attr('content')
         },
-        success: function (data) {
+        success: function(data) {
             loadModalMessage(data.message);
         },
-        error: function (error) {
+        error: function(error) {
             console.log(error)
         }
     });
 }
 
 let debounceTimer;
-$(".product-search").on("input", function (event) {
+$(".product-search").on("input", function(event) {
 
     const urlParams = new URLSearchParams(window.location.search);
     let category = urlParams.get("category")
@@ -204,7 +199,7 @@ $(".product-search").on("input", function (event) {
                 "category": category,
                 _token: $('meta[name="csrf-token"]').attr('content')
             },
-            success: function (response) {
+            success: function(response) {
                 productListContainer.empty();
 
                 if (response.data == "empty") {
@@ -275,7 +270,7 @@ $(".product-search").on("input", function (event) {
 
 
             },
-            error: function (error) {
+            error: function(error) {
                 $(".loader").addClass("!hidden")
             }
         });
@@ -284,7 +279,7 @@ $(".product-search").on("input", function (event) {
 });
 
 
-$(document).on("click", ".decrease", function (event) {
+$(document).on("click", ".decrease", function(event) {
     const decreaseWrapper = $(event.target).parent();
     const orderQtyCount = decreaseWrapper.closest(".pickup-item").find(".order-quantity-count");
     const qtyInputValue = decreaseWrapper.find("input").val();
@@ -312,7 +307,7 @@ $(document).on("click", ".decrease", function (event) {
 
 
 
-$(document).on("click", ".increase", function (e) {
+$(document).on("click", ".increase", function(e) {
     const increaseWrapper = $(e.target).parent();
     const orderQtyCount = increaseWrapper.closest(".pickup-item").find(".order-quantity-count");
     const qtyInputValue = increaseWrapper.find("input").val();
@@ -336,7 +331,7 @@ $(document).on("click", ".increase", function (e) {
 });
 
 
-$(document).on('input', '.input-of-quantity', function (e) {
+$(document).on('input', '.input-of-quantity', function(e) {
     let qtyInputValue = $(e.target).val()
     let qtyInputWrapper = $(e.target).parent()
     let qtyInputParsed = qtyInputValue.replace(/[^\d]|,|\.| /g, '')
@@ -360,21 +355,21 @@ $(document).on('input', '.input-of-quantity', function (e) {
                 "quantity": qtyInputParsed,
                 _token: $('meta[name="csrf-token"]').attr('content')
             },
-            success: function (data) {
+            success: function(data) {
                 calculateTotal('quantity')
                 calculateTotal('price')
                 checkIfOrderEmpty()
                 loadModalMessage(data.message)
                 qtyPickupItemInfo.text(qtyInputParsed);
             },
-            error: function (error) {
+            error: function(error) {
                 loadModalMessage("Kamu tidak bisa menambahkan produk karena stoknya habis.")
             }
         })
     }
 })
 
-$(".clear-order").on("click", function () {
+$(".clear-order").on("click", function() {
     if (orderListId.length > 0) {
         $.ajax({
             url: '/mart/cashier/clearorder',
@@ -383,7 +378,7 @@ $(".clear-order").on("click", function () {
             data: {
                 _token: $('meta[name="csrf-token"]').attr('content')
             },
-            success: function (response) {
+            success: function(response) {
                 $(".item-list").empty()
                 $("#order-price-payment-total").text(rupiah(0))
                 $(".order-qty-info").text(0)
@@ -392,7 +387,7 @@ $(".clear-order").on("click", function () {
                 $(".item-list").append(orderListEmptyShow)
                 loadModalMessage("Berhasil menghapus semua order list")
             },
-            error: function (error) {
+            error: function(error) {
                 loadModalMessage("Tidak bisa melakukan clear order")
             }
         })
@@ -418,18 +413,18 @@ const toggleCashierModalPayment = (option) => {
 }
 
 
-$(".proceed").on("click", function () {
+$(".proceed").on("click", function() {
     toggleCashierModalPayment(true)
 })
 
-$(".back-cpm").on("click", function () {
+$(".back-cpm").on("click", function() {
     toggleCashierModalPayment(false)
 })
 
 let currentPaymentMethod = ""
 let currentNominals = ""
 
-$(document).on("click", ".nominal", function (event) {
+$(document).on("click", ".nominal", function(event) {
     $(".nominal").removeClass("selected-payment");
     $(".rupiah-check").addClass("hidden");
 
@@ -445,7 +440,7 @@ $(document).on("click", ".nominal", function (event) {
 
 
 
-$(".cash-amount-input").on("input", function (event) {
+$(".cash-amount-input").on("input", function(event) {
     let inputVal = $(this).val();
     inputVal = inputVal.replace(/[^0-9]/g, '');
     inputVal = inputVal.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
@@ -475,7 +470,7 @@ function generateCloseRupiahAmounts(baseAmount) {
     return amounts;
 }
 
-$(".next-confirm").on("click", function () {
+$(".next-confirm").on("click", function() {
     const currentUrl = "/mart/cashier/proceed"
     const totalQuantity = totalQty
     const totalPrice = totalPrices
@@ -492,7 +487,7 @@ $(".next-confirm").on("click", function () {
                 "total_quantity": totalQuantity,
                 _token: $('meta[name="csrf-token"]').attr('content')
             },
-            success: function (data) {
+            success: function(data) {
                 $(".hint-content").empty()
                 addLoader()
                 setTimeout(() => {
@@ -520,7 +515,7 @@ $(".next-confirm").on("click", function () {
 
                 startEventChecking(data.checkoutCode);
             },
-            error: function (error) {
+            error: function(error) {
                 console.log(error)
             }
         })
@@ -537,7 +532,7 @@ $(".next-confirm").on("click", function () {
                 "total_quantity": totalQuantity,
                 _token: $('meta[name="csrf-token"]').attr('content')
             },
-            success: function (data) {
+            success: function(data) {
                 $(".hint-content").empty()
                 addLoader()
                 setTimeout(() => {
@@ -547,12 +542,13 @@ $(".next-confirm").on("click", function () {
                 startEventChecking(data.checkoutCode);
                 console.log(data)
             },
-            error: function (error) {
+            error: function(error) {
                 console.log(error)
             }
         })
     }
 })
+
 function displaySuccessPayment(checkout) {
     return `
     <div class="success-scanning flex justify-center items-center mt-5">
@@ -602,7 +598,7 @@ function startEventChecking(code) {
     const currentUrl = `/mart/cashier/stream/${code}`;
     let eventSource = new EventSource(currentUrl);
 
-    eventSource.onmessage = function (event) {
+    eventSource.onmessage = function(event) {
         try {
             let checkout = JSON.parse(event.data);
 
@@ -660,7 +656,7 @@ function AddToListBarcode(scannedBarcode) {
             "quantity": 1,
             _token: $('meta[name="csrf-token"]').attr('content')
         },
-        success: function (response) {
+        success: function(response) {
             const existingItem = itemList.find(`#product-${response.data.id}`);
 
             if (existingItem.length) {
@@ -696,9 +692,8 @@ function AddToListBarcode(scannedBarcode) {
             checkIfOrderEmpty()
             loadCurrentTransIdList()
         },
-        error: function (error) {
+        error: function(error) {
             loadModalMessage(error.responseJSON.message)
         }
     });
 }
-
